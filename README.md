@@ -37,7 +37,7 @@ This repository contains code examples developed for a university-level converge
 
 | Course&nbsp;Code| Course            | Type          | Instructor      | Organized&nbsp;by                       |
 |:----------:|:------------------|:-------------:|:---------------:|:----------------------------------------|
-|`DCCS326-00`|CONVERGENCE INFORMATICS|Elective|Prof. Minseok&nbsp;Seo|Dept. of Computer & Software Engineering|
+|`DCCS326-00`|CONVERGENCE INFORMATICS|Major Elective|Prof. Minseok&nbsp;Seo|Dept. of Computer & Software Engineering|
 
 - **📖 References**
 
