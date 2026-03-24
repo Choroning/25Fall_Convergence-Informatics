@@ -52,7 +52,7 @@ Dimensionality reduction is widely used in:
 - Quality control
 - OCR / Handwriting recognition
 
-> **Key Point:** Occam's Razor applies -- "When faced with two equally good hypotheses, always choose the simpler." Reducing dimensions often leads to simpler, more generalizable models.
+> **Key Point:** Occam's Razor applies — "When faced with two equally good hypotheses, always choose the simpler." Reducing dimensions often leads to simpler, more generalizable models.
 
 ---
 
@@ -120,7 +120,7 @@ Dimensionality Reduction
 
 ### 4.2 Linear Combination
 
-A linear combination combines constant multipliers and sums of vectors -- it describes a vector by combining two (or more) characteristics at once.
+A linear combination combines constant multipliers and sums of vectors — it describes a vector by combining two (or more) characteristics at once.
 
 ### 4.3 Linear Transformation
 
@@ -219,8 +219,8 @@ For a 2D covariance matrix:
 
 $$\boldsymbol{\Sigma} = \begin{bmatrix} \sigma_x^2 & \text{Cov}(X,Y) \\ \text{Cov}(X,Y) & \sigma_y^2 \end{bmatrix}$$
 
-- **Diagonal entries** (sigma_x^2, sigma_y^2): the **spread (variance) along each axis** -- how much data stretches along X and Y independently
-- **Off-diagonal entries** (Cov(X,Y)): the **joint spread** between variables -- how X and Y move together
+- **Diagonal entries** (sigma_x^2, sigma_y^2): the **spread (variance) along each axis** — how much data stretches along X and Y independently
+- **Off-diagonal entries** (Cov(X,Y)): the **joint spread** between variables — how X and Y move together
 
 **Why X^T X captures covariance:**
 

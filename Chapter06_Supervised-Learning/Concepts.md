@@ -137,7 +137,7 @@ Class Prediction
 1. **Induction**: A learning algorithm processes the training set to learn and produce a model
 2. **Deduction**: The learned model is applied to the test set to make predictions
 
-> **Key Point:** If data is used without distinguishing between training and test sets, the model will likely overfit -- performing well on known data but poorly on new, unseen data.
+> **Key Point:** If data is used without distinguishing between training and test sets, the model will likely overfit — performing well on known data but poorly on new, unseen data.
 
 ---
 
@@ -156,7 +156,7 @@ In statistics, overfitting is *"the production of an analysis that corresponds t
 - The target values may be unreliable
 - There is **sampling error**: accidental regularities appear just because of the particular training cases chosen
 - When fitting a model, it cannot tell which regularities are real and which are caused by sampling error, so it fits both kinds
-- If the model is very flexible, it can model the sampling error really well -- this is a disaster
+- If the model is very flexible, it can model the sampling error really well — this is a disaster
 
 ### 6.3 Overfitting vs. Underfitting
 
@@ -196,14 +196,14 @@ Three fitting approaches compared:
 | Quadratic | 0.962 |
 | Piecewise | 3.33 |
 
-Both methods confirm that the **quadratic model is best** -- it achieves the lowest test error despite not fitting the training data perfectly (unlike piecewise which interpolates exactly but generalizes worst).
+Both methods confirm that the **quadratic model is best** — it achieves the lowest test error despite not fitting the training data perfectly (unlike piecewise which interpolates exactly but generalizes worst).
 
 ### 6.6 Overfitting Visual Description
 
 The characteristic signature of overfitting is visible when plotting error vs. model complexity:
 
 - **Training error**: monotonically **decreasing** as model complexity increases (more parameters always fit training data better)
-- **Test error**: **U-shaped** -- initially decreasing as the model captures real patterns, then increasing as the model starts fitting noise
+- **Test error**: **U-shaped** — initially decreasing as the model captures real patterns, then increasing as the model starts fitting noise
 
 The point where training and test error curves **diverge** marks the onset of overfitting. The optimal model complexity is at the minimum of the test error curve.
 
@@ -268,17 +268,17 @@ $$CV_{(K)} = \sum_{k=1}^{K} \frac{n_k}{n} MSE_k$$
 
 The confusion matrix originates from hypothesis testing. Statistical test results either reject or fail to reject the null hypothesis:
 
-- **H_0 (signal absent)**: The null hypothesis -- no effect, no signal
-- **H_1 (signal present)**: The alternative hypothesis -- effect or signal exists
+- **H_0 (signal absent)**: The null hypothesis — no effect, no signal
+- **H_1 (signal present)**: The alternative hypothesis — effect or signal exists
 
 |  | H_1: Signal Present | H_0: Signal Absent |
 |--|---------------------|-------------------|
-| **Detection** | True Positive (TP) | False Positive (FP) -- Type I error |
-| **Null Result** | False Negative (FN) -- Type II error | True Negative (TN) |
+| **Detection** | True Positive (TP) | False Positive (FP) — Type I error |
+| **Null Result** | False Negative (FN) — Type II error | True Negative (TN) |
 
 Key connections:
-- **TPF (True Positive Fraction) = Sensitivity = Power** = TP / (TP + FN) -- the probability of correctly detecting a true signal
-- **FPF (False Positive Fraction) = 1 - Specificity** = FP / (FP + TN) -- the probability of falsely detecting a signal when none exists
+- **TPF (True Positive Fraction) = Sensitivity = Power** = TP / (TP + FN) — the probability of correctly detecting a true signal
+- **FPF (False Positive Fraction) = 1 - Specificity** = FP / (FP + TN) — the probability of falsely detecting a signal when none exists
 
 ### 8.2 Primary Measures
 
@@ -339,7 +339,7 @@ The choice of K fundamentally changes the decision boundary.
 ### 9.4 Instance-Based (Lazy) Learning
 
 KNN is called **instance-based** or **lazy learning** because:
-- It does **not build an explicit model** during training -- it simply **stores all training data**
+- It does **not build an explicit model** during training — it simply **stores all training data**
 - All computation is deferred to classification time
 - **Computational cost**: high at prediction time because it must compute distances to all stored training points for every new query
 - **Memory cost**: must store the entire training dataset

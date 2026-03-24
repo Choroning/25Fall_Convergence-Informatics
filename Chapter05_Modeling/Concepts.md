@@ -273,7 +273,7 @@ The professor's diet journey illustrates how regression is used for real predict
 - **Data**: Weight measurements recorded over time from 2016 to 2019, showing the trajectory of weight changes
 - **Application**: The regression line extrapolates forward from current weight (81kg) to predict when the target weight (74kg) will be reached
 
-This example demonstrates that regression is not just abstract mathematics -- it can answer practical "when" and "how much" questions using real data.
+This example demonstrates that regression is not just abstract mathematics — it can answer practical "when" and "how much" questions using real data.
 
 ---
 

@@ -25,7 +25,7 @@
 
 The term originates from the German word *Informatik* (Steinbuch, K. 1957), equivalent to Computer Science in English, the French *Informatique* (Philippe, 1692), and the English *Informatics* (Walter, 1967).
 
-- Data Science principles apply to **all data -- big and small**
+- Data Science principles apply to **all data — big and small**
 
 ### 1.2 Convergence (Multidisciplinary) Informatics
 
@@ -35,7 +35,7 @@ Convergence Informatics integrates knowledge from diverse fields to extract mean
 - R Programming
 - Statistical Skills for Informatics
 - Computational Technologies for Informatics
-- Bioinformatics and Computational Biology (second-half course focus -- a multidisciplinary intersection of Computer Science, Chemistry, Engineering, Mathematics, Biochemistry, Statistics, and Biology)
+- Bioinformatics and Computational Biology (second-half course focus — a multidisciplinary intersection of Computer Science, Chemistry, Engineering, Mathematics, Biochemistry, Statistics, and Biology)
 - Application of Informatics
 
 ### 1.3 Key Elements of Data Science
@@ -44,7 +44,7 @@ Data science involves interactions among many fields: Statistics, Pattern Recogn
 
 ### 1.4 The Data Scientist
 
-- **Data Scientist == Informatician** -- referred to as **"The Sexiest Job of the 21st Century"**
+- **Data Scientist == Informatician** — referred to as **"The Sexiest Job of the 21st Century"**
 - Data scientists are the key to realizing the opportunities presented by big data. They bring structure to data, find compelling patterns, and advise on products, processes, and decisions.
 
 **Required skills for a Data Scientist / Informatician:**
@@ -58,7 +58,7 @@ Data science involves interactions among many fields: Statistics, Pattern Recogn
 | Database | Data Base Storage and Management |
 | Machine Learning | Machine Learning and discovery |
 
-> **Key Point:** Convergence Informatics is inherently multidisciplinary -- it requires skills in mathematics, statistics, solid programming, data mining, database management, and machine learning. All disciplines interact with each other.
+> **Key Point:** Convergence Informatics is inherently multidisciplinary — it requires skills in mathematics, statistics, solid programming, data mining, database management, and machine learning. All disciplines interact with each other.
 
 ---
 
@@ -136,8 +136,8 @@ A Random Variable is a function that maps real phenomena into data values. There
 - **Continuous attributes** have real-number values and can take infinitely many, uncountable values (represented as floating-point variables)
 - **Discrete attributes** have a finite or infinite set of countable values (usually expressed as integers); binary attributes are a special form
 - **Discrete vs Categorical nuance**: How you interpret integer data depends on your analysis goal:
-  - **Continuous interpretation** -- treat the number as a quantity for calculation (e.g., age of 22 for computing the mean or running regression)
-  - **Categorical interpretation** -- treat the number as a class for classification (e.g., belonging to the "20s" group for counting group frequencies or comparing characteristics between groups)
+  - **Continuous interpretation** — treat the number as a quantity for calculation (e.g., age of 22 for computing the mean or running regression)
+  - **Categorical interpretation** — treat the number as a class for classification (e.g., belonging to the "20s" group for counting group frequencies or comparing characteristics between groups)
 - Continuous variables can be converted to discrete variables through **binning**
 - Whether a variable is continuous or categorical is determined by the **mapping process**
 
@@ -145,7 +145,7 @@ A Random Variable is a function that maps real phenomena into data values. There
 
 Categorizing data requires **at least 3 same-value samples** to establish a meaningful category. This is related to the degrees of freedom in statistical analysis.
 
-**Example -- Age represented at different resolutions:**
+**Example — Age represented at different resolutions:**
 
 | Target | Age_Cont | Age_Cate1 | Age_Cate2 |
 |--------|----------|-----------|-----------|
@@ -168,10 +168,10 @@ Tabulation is the process of converting **unstructured data into structured data
 
 The tabulation process follows these steps:
 
-1. **Experimental design** -- define the research question
-2. **Determination of population** -- identify the target population
-3. **Set variables / Get values** -- define features and collect measurements
-4. **Prescreening** -- clean and validate the data (Data Mining)
+1. **Experimental design** — define the research question
+2. **Determination of population** — identify the target population
+3. **Set variables / Get values** — define features and collect measurements
+4. **Prescreening** — clean and validate the data (Data Mining)
 
 ### 3.5 Feature Extraction, Selection, and Engineering
 
@@ -179,7 +179,7 @@ The tabulation process follows these steps:
 - **Feature selection**: Removing low-signal variables that do not contribute useful information to the analysis
 - **Feature engineering**: Introducing domain-relevant, informative attributes to improve model performance
 
-**Concrete feature extraction example** -- tabulating unstructured letter sequences (AAAAA / BB / CCC / D):
+**Concrete feature extraction example** — tabulating unstructured letter sequences (AAAAA / BB / CCC / D):
 
 | Sample | # of Alphabets | # of A | # of B | # of C | # of D |
 |--------|---------------|--------|--------|--------|--------|
@@ -240,7 +240,7 @@ Both supervised and unsupervised learning require **structured data**; the diffe
 
 ### 4.2 Class (Label) in Supervised Learning
 
-A "class" has many synonyms: **label, exact answer, ground truth, responsible variable, outcome variable, dependent variable**. Importantly, **any R.V. can be a class** -- it depends on your analysis purpose.
+A "class" has many synonyms: **label, exact answer, ground truth, responsible variable, outcome variable, dependent variable**. Importantly, **any R.V. can be a class** — it depends on your analysis purpose.
 
 > **Q: Does a "class" always exist in structured data?**
 >
@@ -253,10 +253,10 @@ A "class" has many synonyms: **label, exact answer, ground truth, responsible va
 
 ### 4.4 Clustering and Association (USL)
 
-Unsupervised learning is often compared to the **human brain's intelligence**, with **pattern recognition** being its central mechanism. Humans naturally group and categorize the world around them -- it is an innate ability. Computers, which only process 0s and 1s, need specially designed functions to replicate this.
+Unsupervised learning is often compared to the **human brain's intelligence**, with **pattern recognition** being its central mechanism. Humans naturally group and categorize the world around them — it is an innate ability. Computers, which only process 0s and 1s, need specially designed functions to replicate this.
 
 - **Clustering (class discovery)**: Grouping objects into subsets (clusters) based on **similarity** between objects; finds and visualizes structures; used in quality control processes like outlier identification
-- **Association**: Mapping relationships between different items in unlabeled data (e.g., market basket analysis -- discovering which items are frequently purchased together)
+- **Association**: Mapping relationships between different items in unlabeled data (e.g., market basket analysis — discovering which items are frequently purchased together)
 
 > **Key Point:** Supervised learning requires labeled data and aims to predict a specific outcome (classification for categorical, regression for continuous), while unsupervised learning works with unlabeled data and aims to discover hidden patterns or groupings (clustering for groups, association for relationships).
 
@@ -268,7 +268,7 @@ Informatics is applied in most disciplines and industries. The applications are 
 
 ### 5.1 Medical Informatics
 
-Medical informatics is the application of computers, communications, and information technology and systems to all fields of medicine -- medical care, medical education, and medical research. It is a **multidisciplinary** field integrating Medicine/Biology, Mathematics, Information Systems, Computer Science, Statistics, Decision Analysis, Economics/Health Care Policy, and Psychology.
+Medical informatics is the application of computers, communications, and information technology and systems to all fields of medicine — medical care, medical education, and medical research. It is a **multidisciplinary** field integrating Medicine/Biology, Mathematics, Information Systems, Computer Science, Statistics, Decision Analysis, Economics/Health Care Policy, and Psychology.
 
 **Electronic Medical Records (EMR):**
 
@@ -325,7 +325,7 @@ Selection/Reconciliation --> Ordering --> Verification/Dispensing --> Administra
 |---------|-----------|
 | Convergence Informatics | Multidisciplinary field integrating data science, statistics, programming, and domain knowledge |
 | Data Scientist | == Informatician; "Sexiest Job of the 21st Century"; requires math, stats, programming (C/C++, Java, R, Python, Julia, SQL, JavaScript), data mining, DB, ML |
-| Data Science Scope | Principles apply to all data -- big and small |
+| Data Science Scope | Principles apply to all data — big and small |
 | Population vs Sample | Population = all possible outcomes; Sample = subset used for analysis |
 | Variance | Population: divide by N; Sample: divide by (n-1) for unbiased estimation |
 | Sampling | Error = random variation; Bias = systematic distortion |

@@ -193,7 +193,7 @@ $$r_s = \rho_{\text{rg}_X, \text{rg}_Y} = \frac{\text{cov}(\text{rg}_X, \text{rg
 
 ### 5.4 Pearson vs. Spearman: Concrete Examples
 
-**Example 1 -- Data without outliers (4 employees):**
+**Example 1 — Data without outliers (4 employees):**
 
 | Employee | Hrs. Worked (Monthly) | Tasks Completed | Satisfaction |
 |----------|----------------------|-----------------|--------------|
@@ -221,7 +221,7 @@ Spearman correlations:
 - HW-TC is perfectly linear, so both correctly measure 1.0
 - HW-S is monotonic but not perfectly linear; Pearson underestimates at 0.96, while Spearman correctly captures the perfect monotonic trend as 1.0
 
-**Example 2 -- Data with outlier (Employee D: Tasks = 5):**
+**Example 2 — Data with outlier (Employee D: Tasks = 5):**
 
 | Employee | Hrs. Worked (Monthly) | Tasks Completed | Satisfaction |
 |----------|----------------------|-----------------|--------------|
@@ -260,7 +260,7 @@ $$D(X, Y) = 1 - |cor(X, Y)|$$
 - Correlation range is [-1, 1], but distance range must be [0, infinity)
 - Correlation can be **negative**, so it cannot be used directly as distance
 - The transformation D = 1 - |cor| maps to [0, 1], which satisfies distance requirements
-- **Limitation:** Directional information is lost -- you cannot determine whether the original correlation was positive or negative
+- **Limitation:** Directional information is lost — you cannot determine whether the original correlation was positive or negative
 
 **Advantage of correlation-based distance:**
 - Correlation is **scale-invariant**, so no normalization is needed
