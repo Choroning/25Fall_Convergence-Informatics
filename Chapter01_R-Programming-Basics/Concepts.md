@@ -6,7 +6,7 @@
 
 ## Table of Contents
 
-1. [Introduction to R](#1-introduction-to-r) -- What is R, RStudio, Console/Prompt, Good Habits, Cheatsheets, Workspace
+1. [Introduction to R](#1-introduction-to-r) — What is R, RStudio, Console/Prompt, Good Habits, Cheatsheets, Workspace
 2. [Basic Data Types](#2-basic-data-types)
 3. [Variables and Assignment](#3-variables-and-assignment)
 4. [Vectors and Operations](#4-vectors-and-operations)
@@ -46,13 +46,13 @@ RStudio has four main panes:
 
 - Commands are entered interactively at the R user prompt (`>`)
 - **Up** and **down** arrow keys scroll through your command history
-- Programming directly in the prompt window is **not recommended** -- if the system crashes or a blackout occurs, all unsaved work is lost
+- Programming directly in the prompt window is **not recommended** — if the system crashes or a blackout occurs, all unsaved work is lost
 
 ### 1.5 Good Programming Habits
 
 - Always save your scripts regularly and make backups
 - One of the best habits is to save every time you modify a script
-- Use meaningful file naming conventions -- avoid names like `final`, `Realfinal`, `Realfinal222`
+- Use meaningful file naming conventions — avoid names like `final`, `Realfinal`, `Realfinal222`
 
 ### 1.6 RStudio Cheatsheets
 
@@ -68,8 +68,8 @@ setwd("path") # Change working directory (Warning: "\" is escape character)
 ```
 
 Two options for saving your work:
-1. **Save your R script** -- saves only code in text format
-2. **Save your R workspace** using `save.image()` -- saves all variables in RAM
+1. **Save your R script** — saves only code in text format
+2. **Save your R workspace** using `save.image()` — saves all variables in RAM
 
 > **Key Point:** R is a **case-sensitive** language. `variableName` and `variablename` are treated as two different variables.
 
@@ -200,7 +200,7 @@ cbind(a, b)   # Combine column-wise (side by side)
 rbind(a, b)   # Combine row-wise (stacked)
 ```
 
-> **Key Point:** R operations on vectors are **vectorized** by default -- they apply element-wise without the need for explicit loops.
+> **Key Point:** R operations on vectors are **vectorized** by default — they apply element-wise without the need for explicit loops.
 
 ---
 
