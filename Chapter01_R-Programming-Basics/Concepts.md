@@ -1,6 +1,13 @@
 # Chapter 01 — R Programming Basics
 
-> **Last Updated:** 2026-03-23
+> **Last Updated:** 2026-04-01
+
+> **Prerequisites**: [Programming Language] No prior R knowledge required.
+>
+> **Learning Objectives**:
+> 1. Set up the R/RStudio environment and run basic commands
+> 2. Understand R data types (vectors, factors, data frames)
+> 3. Write simple R scripts with variables and expressions
 
 ---
 
@@ -15,6 +22,8 @@
 7. [Summary](#summary)
 
 ---
+
+<br>
 
 ## 1. Introduction to R
 
@@ -75,6 +84,8 @@ Two options for saving your work:
 
 ---
 
+<br>
+
 ## 2. Basic Data Types
 
 ### 2.1 Core Data Types
@@ -115,6 +126,8 @@ Data frames are particularly useful because they can **combine different data ty
 
 ---
 
+<br>
+
 ## 3. Variables and Assignment
 
 ### 3.1 Assignment Operator
@@ -137,6 +150,8 @@ rm(list = ls())    # Remove all variables from the environment
 > **Key Point:** Always use `<-` for assignment in R. Reserve `=` for function arguments (e.g., `rnorm(n = 100, mean = 0)`).
 
 ---
+
+<br>
 
 ## 4. Vectors and Operations
 
@@ -204,6 +219,8 @@ rbind(a, b)   # Combine row-wise (stacked)
 
 ---
 
+<br>
+
 ## 5. Basic Functions
 
 ### 5.1 Output Functions
@@ -261,6 +278,8 @@ help.start()   # Open R's HTML help system in a browser
 
 ---
 
+<br>
+
 ## 6. Packages
 
 ### 6.1 Installing and Loading Packages
@@ -296,6 +315,8 @@ boxplot(Height ~ Gender, data = ourData, col = c("blue", "red"))  # Boxplot
 > **Key Point:** One of the greatest strengths of R is its package ecosystem. You can write new functions, package them into an "R package" (or "R library"), and share them with the community via CRAN.
 
 ---
+
+<br>
 
 ## Summary
 

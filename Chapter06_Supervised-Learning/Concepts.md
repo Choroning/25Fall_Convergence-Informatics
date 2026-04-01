@@ -1,6 +1,13 @@
 # Chapter 06 — Supervised Learning
 
-> **Last Updated:** 2026-03-23
+> **Last Updated:** 2026-04-01
+
+> **Prerequisites**: [Programming Language] R programming (Ch 1-5). [Statistics] Modeling concepts (Ch 5).
+>
+> **Learning Objectives**:
+> 1. Apply classification algorithms (decision trees, SVM, k-NN)
+> 2. Evaluate classifier performance using confusion matrices and ROC curves
+> 3. Handle imbalanced datasets and apply ensemble methods
 
 ---
 
@@ -18,6 +25,8 @@
 10. [Summary](#summary)
 
 ---
+
+<br>
 
 ## 1. Definition of Classification
 
@@ -37,6 +46,8 @@
 
 ---
 
+<br>
+
 ## 2. Classification vs. Prediction
 
 ### 2.1 Classification
@@ -53,6 +64,8 @@
 > **Key Point:** Depending on the type of outcome variable, classification and prediction are essentially the same process. Classification specifically refers to categorical outcomes, while prediction is the more general term.
 
 ---
+
+<br>
 
 ## 3. Classification Worked Example
 
@@ -75,6 +88,8 @@
 This example illustrates the full classification pipeline: training data with known labels produces a rule (model), which is then applied to classify a new, unseen instance.
 
 ---
+
+<br>
 
 ## 4. General Classification Process
 
@@ -123,6 +138,8 @@ Class Prediction
 
 ---
 
+<br>
+
 ## 5. Training Set and Test Set
 
 ### 5.1 Definitions
@@ -140,6 +157,8 @@ Class Prediction
 > **Key Point:** If data is used without distinguishing between training and test sets, the model will likely overfit — performing well on known data but poorly on new, unseen data.
 
 ---
+
+<br>
 
 ## 6. Overfitting
 
@@ -211,6 +230,8 @@ The point where training and test error curves **diverge** marks the onset of ov
 
 ---
 
+<br>
+
 ## 7. Validation Methods
 
 ### 7.1 Comparison of Methods
@@ -262,6 +283,8 @@ $$CV_{(K)} = \sum_{k=1}^{K} \frac{n_k}{n} MSE_k$$
 
 ---
 
+<br>
+
 ## 8. Measuring Model Performance
 
 ### 8.1 Hypothesis Testing Framing
@@ -309,6 +332,8 @@ Key connections:
 
 ---
 
+<br>
+
 ## 9. K-Nearest Neighbors (KNN)
 
 ### 9.1 Overview
@@ -347,6 +372,8 @@ KNN is called **instance-based** or **lazy learning** because:
 > **Key Point:** KNN is an instance-based (lazy) learning algorithm that makes no assumptions about the underlying data distribution. It simply stores training data and classifies new points by finding the nearest neighbors.
 
 ---
+
+<br>
 
 ## Summary
 

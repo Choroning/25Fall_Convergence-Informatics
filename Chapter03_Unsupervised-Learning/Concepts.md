@@ -1,6 +1,13 @@
 # Chapter 03 — Unsupervised Learning
 
-> **Last Updated:** 2026-03-23
+> **Last Updated:** 2026-04-01
+
+> **Prerequisites**: [Programming Language] R programming (Ch 1-2). [Statistics] Basic descriptive statistics.
+>
+> **Learning Objectives**:
+> 1. Explain the difference between supervised and unsupervised learning
+> 2. Apply clustering algorithms (k-means, hierarchical clustering)
+> 3. Evaluate clustering results and choose appropriate k values
 
 ---
 
@@ -17,6 +24,8 @@
 9. [Summary](#summary)
 
 ---
+
+<br>
 
 ## 1. Clustering vs. Classification
 
@@ -41,6 +50,8 @@ Clustering analysis is the process of grouping a set of objects (experimental su
 
 ---
 
+<br>
+
 ## 2. Similarity and Distance
 
 ### 2.1 Similarity Index
@@ -60,6 +71,8 @@ A numeric value that indicates how **different** objects are.
 > **Key Point:** The similarity measure is often more important than the clustering algorithm used. The choice of similarity/distance measure fundamentally shapes the clustering result.
 
 ---
+
+<br>
 
 ## 3. Distance Metrics
 
@@ -99,6 +112,8 @@ $$d_{euc}(\mathbf{x}, \mathbf{y}) = \sqrt{\sum_{i=1}^{n} (x_i - y_i)^2}$$
 > **Key Point:** L1-based methods are generally more robust to outliers than L2-based methods. A single outlier can significantly distort an L2-based distance matrix.
 
 ---
+
+<br>
 
 ## 4. Distance Matrix, Outlier Impact, and Normalization
 
@@ -162,6 +177,8 @@ Before computing distances, features should often be normalized to ensure compar
 > **Key Point:** Without normalization, features with larger magnitudes will disproportionately influence distance calculations.
 
 ---
+
+<br>
 
 ## 5. Correlation-Based Distance
 
@@ -282,6 +299,8 @@ $$D(X, Y) = 1 - |cor(X, Y)|$$
 
 ---
 
+<br>
+
 ## 6. Clustering Algorithms Overview
 
 ### 6.1 Categories
@@ -299,6 +318,8 @@ $$D(X, Y) = 1 - |cor(X, Y)|$$
   - Multi-Dimensional Scaling (MDS)
 
 ---
+
+<br>
 
 ## 7. Hierarchical Clustering (HC)
 
@@ -540,6 +561,8 @@ Cluster labels are **nominal categorical variables** with arbitrary names. The l
 
 ---
 
+<br>
+
 ## 8. K-Means Clustering
 
 ### 8.1 Overview
@@ -578,6 +601,8 @@ $$V(t) = \sum_{k=1}^{K} \sum_{i: C_i(t)=k} (z_i - m_k(t))^2$$
 > **Key Point:** K-means is efficient for large datasets but requires pre-specifying K and may converge to different solutions depending on initialization. Use multiple random starts to mitigate this.
 
 ---
+
+<br>
 
 ## Summary
 
