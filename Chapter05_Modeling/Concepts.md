@@ -1,6 +1,13 @@
 # Chapter 05 — Modeling
 
-> **Last Updated:** 2026-03-23
+> **Last Updated:** 2026-04-01
+
+> **Prerequisites**: [Programming Language] R programming (Ch 1-4). [Statistics] Regression basics.
+>
+> **Learning Objectives**:
+> 1. Build and evaluate predictive models in R
+> 2. Apply cross-validation for model selection
+> 3. Compare model performance using appropriate metrics
 
 ---
 
@@ -19,6 +26,8 @@
 
 ---
 
+<br>
+
 ## 1. Definition of a Model
 
 A model is a **representative (artificial) one which describes real phenomena**.
@@ -32,6 +41,8 @@ Model, modeling, or modelling may refer to:
 > **Key Point:** In this course, we focus on mathematical/statistical models that describe relationships between variables using equations and probability.
 
 ---
+
+<br>
 
 ## 2. Mathematical and Statistical Models
 
@@ -58,6 +69,8 @@ $$SBP = 6 \times age(d) + \varepsilon$$
 
 ---
 
+<br>
+
 ## 3. Types of Probabilistic Models
 
 Probabilistic models can be categorized into three types:
@@ -69,6 +82,8 @@ Probabilistic models can be categorized into three types:
 | **Other Models** | Additional probabilistic modeling approaches |
 
 ---
+
+<br>
 
 ## 4. Regression Models
 
@@ -102,6 +117,8 @@ Regression models are classified along two dimensions:
 > **Key Point:** Regression models require a numerical dependent (response) variable and one or more numerical or categorical independent (explanatory) variables.
 
 ---
+
+<br>
 
 ## 5. Linear Regression
 
@@ -151,6 +168,8 @@ This assumption is essential for statistical inference (hypothesis tests, confid
 > **Key Point:** The population model contains true (unknown) parameters, while the sample model uses estimated parameters (denoted with hat notation) derived from observed data.
 
 ---
+
+<br>
 
 ## 6. Least Squares Estimation
 
@@ -239,6 +258,8 @@ $$\implies (\mathbf{X}'\mathbf{X})\hat{\boldsymbol{\beta}} = \mathbf{X}'\mathbf{
 
 ---
 
+<br>
+
 ## 7. Correlation vs. Regression
 
 | Aspect | Correlation Analysis | Regression Analysis |
@@ -249,6 +270,8 @@ $$\implies (\mathbf{X}'\mathbf{X})\hat{\boldsymbol{\beta}} = \mathbf{X}'\mathbf{
 | Scope | Only two variables | Simple or multiple variables |
 
 ---
+
+<br>
 
 ## 8. Map of Analytical Methods
 
@@ -263,6 +286,8 @@ The appropriate analytical method depends on the outcome variable type and wheth
 
 ---
 
+<br>
+
 ## 9. Practical Prediction Example: Diet Journey
 
 The professor's diet journey illustrates how regression is used for real prediction:
@@ -276,6 +301,8 @@ The professor's diet journey illustrates how regression is used for real predict
 This example demonstrates that regression is not just abstract mathematics — it can answer practical "when" and "how much" questions using real data.
 
 ---
+
+<br>
 
 ## Summary
 

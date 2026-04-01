@@ -1,6 +1,13 @@
 # Chapter 02 — Introduction to Convergence Informatics
 
-> **Last Updated:** 2026-03-23
+> **Last Updated:** 2026-04-01
+
+> **Prerequisites**: [Programming Language] R basics (Ch 1). [Data Science] Basic data concepts.
+>
+> **Learning Objectives**:
+> 1. Understand the scope and applications of convergence informatics
+> 2. Identify key data science workflows and methodologies
+> 3. Describe the role of informatics in interdisciplinary research
 
 ---
 
@@ -14,6 +21,8 @@
 6. [Summary](#summary)
 
 ---
+
+<br>
 
 ## 1. What is Convergence Informatics
 
@@ -62,6 +71,8 @@ Data science involves interactions among many fields: Statistics, Pattern Recogn
 
 ---
 
+<br>
+
 ## 2. Basic Concepts in Statistics
 
 ### 2.1 Population and Sample
@@ -103,6 +114,8 @@ Data science involves interactions among many fields: Statistics, Pattern Recogn
 > **Key Point:** Sampling error is unavoidable random variation, while sampling bias is a systematic problem in the data collection process that must be identified and corrected.
 
 ---
+
+<br>
 
 ## 3. Data Types and Structures
 
@@ -215,6 +228,8 @@ This technique can be applied to images, video, sequences, and other unstructure
 
 ---
 
+<br>
+
 ## 4. Supervised vs Unsupervised Learning Overview
 
 ### 4.1 Comparison Table
@@ -261,6 +276,8 @@ Unsupervised learning is often compared to the **human brain's intelligence**, w
 > **Key Point:** Supervised learning requires labeled data and aims to predict a specific outcome (classification for categorical, regression for continuous), while unsupervised learning works with unlabeled data and aims to discover hidden patterns or groupings (clustering for groups, association for relationships).
 
 ---
+
+<br>
 
 ## 5. Applications of Informatics
 
@@ -318,6 +335,8 @@ Selection/Reconciliation --> Ordering --> Verification/Dispensing --> Administra
 > **Key Point:** Both Medical Informatics and Pharmacoinformatics exemplify how convergence of informatics with domain-specific fields creates powerful tools for data-driven decision making, from EMR systems to automated drug discovery pipelines.
 
 ---
+
+<br>
 
 ## Summary
 

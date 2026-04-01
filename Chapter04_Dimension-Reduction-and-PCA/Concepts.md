@@ -1,6 +1,13 @@
 # Chapter 04 — Dimension Reduction and PCA
 
-> **Last Updated:** 2026-03-23
+> **Last Updated:** 2026-04-01
+
+> **Prerequisites**: [Programming Language] R programming (Ch 1-3). [Linear Algebra] Basic matrix concepts. [Statistics] Variance and covariance.
+>
+> **Learning Objectives**:
+> 1. Explain the motivation for dimensionality reduction
+> 2. Perform Principal Component Analysis (PCA) in R
+> 3. Interpret principal components and explained variance ratios
 
 ---
 
@@ -19,6 +26,8 @@
 11. [Summary](#summary)
 
 ---
+
+<br>
 
 ## 1. Dimensionality Reduction
 
@@ -56,6 +65,8 @@ Dimensionality reduction is widely used in:
 
 ---
 
+<br>
+
 ## 2. Feature Selection vs. Dimensionality Reduction
 
 ### 2.1 Feature Selection
@@ -73,6 +84,8 @@ Dimensionality reduction is widely used in:
 > **Key Point:** Feature selection keeps original features (interpretable). Dimensionality reduction creates new combined features (more compact but less interpretable).
 
 ---
+
+<br>
 
 ## 3. Two Main Approaches
 
@@ -109,6 +122,8 @@ Dimensionality Reduction
 
 ---
 
+<br>
+
 ## 4. Linear Algebra Prerequisites
 
 ### 4.1 Vectors
@@ -134,6 +149,8 @@ When data is represented in a high-dimensional vector space, the covariance matr
 
 ---
 
+<br>
+
 ## 5. Principal Component Analysis (PCA)
 
 ### 5.1 Overview
@@ -158,6 +175,8 @@ PCA maintains the structure of the original data and reduces dimensions by proje
 > **Key Point:** PCA is only affected by covariance matrices. It finds the directions of maximum variance in the data and projects the data onto those directions.
 
 ---
+
+<br>
 
 ## 6. PCA Theory and Derivation
 
@@ -232,6 +251,8 @@ When the covariance matrix is used as a linear transformation on data, it stretc
 
 ---
 
+<br>
+
 ## 7. Geometric Rationale of PCA
 
 ### 7.1 Geometric View
@@ -261,6 +282,8 @@ For A = [[4, 2], [3, 5]]:
 > **Key Point:** Eigenvalues determine how much variance is captured along each eigenvector direction. Larger eigenvalues correspond to more important principal components.
 
 ---
+
+<br>
 
 ## 8. Mean, Variance, and Covariance
 
@@ -295,6 +318,8 @@ Because covariance is affected by the absolute scale of variables, we normalize:
 $$\rho = \frac{\text{Cov}(X, Y)}{\sqrt{\text{Var}(X) \cdot \text{Var}(Y)}}, \quad -1 \leq \rho \leq 1$$
 
 ---
+
+<br>
 
 ## 9. Other Dimensionality Reduction Methods
 
@@ -354,6 +379,8 @@ $$\rho = \frac{\text{Cov}(X, Y)}{\sqrt{\text{Var}(X) \cdot \text{Var}(Y)}}, \qua
 
 ---
 
+<br>
+
 ## 10. Practical Considerations
 
 ### 10.1 Scree Plot
@@ -385,6 +412,8 @@ A common rule of thumb is to retain enough components to explain 80-95% of the t
 > **Key Point:** Always center (and often scale) the data before applying PCA. The choice between methods depends on whether the data structure is linear or non-linear and whether the goal is analysis or visualization.
 
 ---
+
+<br>
 
 ## Summary
 
