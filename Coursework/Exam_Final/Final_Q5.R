@@ -23,7 +23,7 @@ for (p in pkg_list) {
 
 set.seed(2025)
 
-WORK_DIR <- "../data"
+WORK_DIR <- "../../data"
 if (dir.exists(WORK_DIR)) setwd(WORK_DIR)
 
 # 병렬 처리 설정

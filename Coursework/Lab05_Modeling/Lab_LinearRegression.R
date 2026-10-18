@@ -22,7 +22,7 @@ library(ggplot2)
 # =============================================================================
 
 ## Load data
-data <- data.frame(fread("../data/DietData_v1.csv"))
+data <- data.frame(fread("../../data/DietData_v1.csv"))
 # View(data)
 
 dim(data)

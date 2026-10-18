@@ -9,7 +9,7 @@ if (!require("readxl")) install.packages("readxl")
 library(readxl)
 
 # 2. 작업 경로 설정
-WORK_DIR <- file.path(dirname(sys.frame(1)$ofile %||% "."), "../../data")
+WORK_DIR <- file.path(dirname(sys.frame(1)$ofile %||% "."), "../../../data")
 setwd(WORK_DIR)
 
 # 3. 데이터 로드 및 모델 구축 (Q6와 동일)
