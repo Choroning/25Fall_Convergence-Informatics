@@ -28,7 +28,7 @@ This repository contains the lecture notes and the R code of a Convergence Infor
 - Every lecture note comes as an English file (`.md`) and a Korean file (`.ko.md`) with the same structure.
 - `Coursework/` holds the R solutions of assignments 2 and 3 (clustering, regression, classification, and DNA sequence analysis), lab code organized from the lecture demonstration code (unsupervised learning, dimension reduction, modeling, and supervised learning), and the answer R code of the final exam. Assignment 1 was answered with calculations and written explanations without R code and is not part of this repository.
 - The improved R code files carry **Doxygen-style headers** documenting purpose, usage, and structure.
-- The sample datasets (TSV, CSV, XLSX) used in the assignments and labs are in the root `data/` directory. The final exam data are restricted and not included, so the final exam code cannot be run as is.
+- The sample datasets (TSV, CSV, XLSX) used in the assignments and labs are in the `data/` folder of the `Coursework` item that uses them. The final exam data are restricted and not included, so the final exam code cannot be run as is.
 
 > **🤖 AI Agent Usage**
 > The final exam prohibited uploading the exam data directly to commercial LLMs and otherwise encouraged active use of AI tools. [Claude Code](https://claude.ai/download) was used to organize and translate the lecture notes and to restructure the repository.
@@ -69,7 +69,6 @@ An interdisciplinary major elective, taught in English, that gives a computer-or
 25Fall_Convergence-Informatics
 ├── Lecture-Notes               Lecture notes by slide chapter
 ├── Coursework                  Assignment solutions, lab code, final exam answer code
-├── data                        Data used in the assignments and labs (TSV, CSV, XLSX)
 ├── Course-Information.ko.md    Course operations
 ├── Course-Information.md
 ├── LICENSE                     Documentation license (CC BY-NC-SA 4.0)
