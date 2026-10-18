@@ -8,7 +8,7 @@ setRepositories(ind = 1:7)
 if (!require("readxl")) install.packages("readxl")
 library(readxl)
 
-WORK_DIR <- file.path(dirname(sys.frame(1)$ofile %||% "."), "../../../data")
+WORK_DIR <- file.path(dirname(sys.frame(1)$ofile %||% "."), "../data")
 
 if (!dir.exists(WORK_DIR)) {
   warning("경로 오류: WORK_DIR을 확인하세요.")

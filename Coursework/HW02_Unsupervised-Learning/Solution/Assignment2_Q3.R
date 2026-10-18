@@ -13,7 +13,7 @@ for (p in pkg_list) {
 }
 
 # 2. 작업 경로 설정
-WORK_DIR <- file.path(dirname(sys.frame(1)$ofile %||% "."), "../../../data")
+WORK_DIR <- file.path(dirname(sys.frame(1)$ofile %||% "."), "../data")
 if(dir.exists(WORK_DIR)) setwd(WORK_DIR) else warning("경로를 확인하세요.")
 
 # 3. 데이터 로드 및 전처리 (단독 실행 보장)

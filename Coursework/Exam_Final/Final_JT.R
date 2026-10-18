@@ -7,7 +7,7 @@ setRepositories(ind = 1:7)
 if (!require("data.table")) install.packages("data.table")
 library(data.table)
 
-WORK_DIR <- "../../data"
+WORK_DIR <- "data"
 if (dir.exists(WORK_DIR)) setwd(WORK_DIR)
 getwd()
 

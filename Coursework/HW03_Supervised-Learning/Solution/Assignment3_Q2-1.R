@@ -16,7 +16,7 @@ for (p in pkg_list) {
 
 
 ## 1. 작업 경로 설정
-WORK_DIR <- file.path(dirname(sys.frame(1)$ofile %||% "."), "../../../data")
+WORK_DIR <- file.path(dirname(sys.frame(1)$ofile %||% "."), "../data")
 if (dir.exists(WORK_DIR)) {
   setwd(WORK_DIR)
 } else {

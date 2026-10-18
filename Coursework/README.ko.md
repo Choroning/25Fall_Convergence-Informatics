@@ -13,4 +13,4 @@
 | [Lab05_Modeling](Lab05_Modeling/) | 12주차(11/19)의 선형 회귀 강의 시연 코드를 정리한 실습 코드. 다이어트 데이터(`DietData_v1.csv`)에 선형 회귀 모델을 적합하고 ggplot2 시각화와 진단 그림을 그리며, 5장(모델링)과 이어진다 | [Lab_LinearRegression.R](Lab05_Modeling/Lab_LinearRegression.R) |
 | [Lab06_Supervised-Learning](Lab06_Supervised-Learning/) | 14주차(12/3)의 지도 학습 강의 시연 코드를 정리한 실습 코드. `Lab_SupervisedLearning.R`은 결정 트리 분류, 교차 검증을 이용한 LDA, QDA, SVM 비교, KNN 직접 구현을, `Lab_KNN-CrossValidation.R`은 유클리드 거리 함수와 다수결 KNN 분류기를 직접 구현하고 층화 K-겹 교차 검증으로 폴드별 정확도를 평가하는 과정을 담았다. 6장(지도 학습)과 이어진다 | [Lab_SupervisedLearning.R](Lab06_Supervised-Learning/Lab_SupervisedLearning.R), [Lab_KNN-CrossValidation.R](Lab06_Supervised-Learning/Lab_KNN-CrossValidation.R) |
 
-과제와 실습의 데이터는 루트의 [`data`](../data/) 폴더에 있다.
+과제와 실습의 데이터는 각 항목 안의 `data/` 폴더에 있다. 과제 2는 [`HW02_Unsupervised-Learning/data`](HW02_Unsupervised-Learning/data/), 과제 3은 [`HW03_Supervised-Learning/data`](HW03_Supervised-Learning/data/), 선형 회귀 실습은 [`Lab05_Modeling/data`](Lab05_Modeling/data/)에 있다.
