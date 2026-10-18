@@ -23,7 +23,7 @@ for (p in req_pkgs) {
 
 
 ## 1. 작업 경로 설정
-WORK_DIR <- file.path(dirname(sys.frame(1)$ofile %||% "."), "../../data")
+WORK_DIR <- file.path(dirname(sys.frame(1)$ofile %||% "."), "../../../data")
 if (dir.exists(WORK_DIR)) {
   setwd(WORK_DIR)
 } else {

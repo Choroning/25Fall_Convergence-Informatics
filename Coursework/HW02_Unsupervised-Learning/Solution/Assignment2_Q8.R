@@ -13,7 +13,7 @@ library(readxl)
 library(ggplot2)
 
 # 2. 작업 경로 설정
-WORK_DIR <- file.path(dirname(sys.frame(1)$ofile %||% "."), "../../data")
+WORK_DIR <- file.path(dirname(sys.frame(1)$ofile %||% "."), "../../../data")
 
 if (!dir.exists(WORK_DIR)) {
   warning("경로가 존재하지 않습니다. WORK_DIR을 확인해주세요.")
