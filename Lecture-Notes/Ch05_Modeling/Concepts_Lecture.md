@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-10-18
+> **Last Updated:** 2026-10-26
 
 > **Learning Objectives:**
 > 1. Distinguish deterministic models from probabilistic models
@@ -196,6 +196,8 @@ This means the following.
 - Errors are **normally distributed** around the regression line.
 
 This assumption is essential for statistical inference (hypothesis tests, confidence intervals) on the regression coefficients. The residuals (observed errors) should be checked against this assumption when validating a model.
+
+> **[Probability and Statistics]** A hypothesis test uses the distribution of a statistic computed from the sample to decide whether to reject a hypothesis about a parameter (e.g., $\beta_1 = 0$), and a confidence interval is an interval that, when constructed repeatedly by the same method, contains the parameter in a set proportion of cases (the confidence level). When the errors are independent and follow $N(0, \sigma^2)$, the sampling distribution of $\hat{\beta}_1$ is determined, so both methods can be applied to the regression coefficients.
 
 ### 5.4 Population vs. Sample
 

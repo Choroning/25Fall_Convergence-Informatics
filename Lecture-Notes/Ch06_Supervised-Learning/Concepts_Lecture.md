@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-10-18
+> **Last Updated:** 2026-10-26
 
 > **Learning Objectives:**
 > 1. Explain how clustering differs from classification and how classification differs from prediction
@@ -319,7 +319,7 @@ In the table below, R is the number of data points (records).
 | **Test-set** | Variance: unreliable estimate of future performance | Cheap |
 | **Leave-one-out (LOOCV)** | Expensive; has some weird behavior | Does not waste data |
 | **10-fold** | Wastes 10% of data; 10 times more expensive than test set | Only wastes 10%; only 10 times more expensive instead of R times |
-| **3-fold** | Wastier than 10-fold; more expensive than test set | Slightly better than test-set |
+| **3-fold** | Wastes more data than 10-fold; more expensive than test set | Slightly better than test-set |
 | **R-fold** | Identical to Leave-one-out | - |
 
 *Table 8. Strengths and weaknesses of validation methods*
@@ -330,7 +330,7 @@ The algorithm is as follows.
 1. For k = 1 to R (number of data points), repeat the following.
    - Let $(x_k, y_k)$ be the k-th record.
    - Temporarily remove $(x_k, y_k)$ from the dataset.
-   - Train on the remaining R-1 datapoints.
+   - Train on the remaining R-1 data points.
    - Note the error for $(x_k, y_k)$.
 2. Report the mean error.
 
@@ -402,6 +402,8 @@ Key connections are as follows.
 - **TPF (True Positive Fraction) = Sensitivity = Power** = TP / (TP + FN), the probability of correctly detecting a true signal.
 - **FPF (False Positive Fraction) = 1 - Specificity** = FP / (FP + TN), the probability of falsely detecting a signal when none exists.
 
+> **[Probability and Statistics]** In hypothesis testing, a Type I error rejects a true null hypothesis, and the significance level $\alpha$ sets an upper bound on its probability. A Type II error fails to reject a false null hypothesis; if its probability is $\beta$, the power of the test is $1 - \beta$. In the confusion matrix, the FPF corresponds to this $\alpha$ and the sensitivity (TPF) to the power.
+
 ### 8.2 Primary Measures
 
 | Measure | Formula | Also Known As |
@@ -462,9 +464,9 @@ The algorithm computes the distance from the new point to every training point, 
 
 ### 9.3 Visual Intuition
 
-Consider classifying a green circle (?) into one of two classes: blue squares and red triangles.
-- **K = 3** (inner circle): If the 3 nearest neighbors are 2 red triangles and 1 blue square, the point is classified into the triangle class.
-- **K = 7** (outer circle): If the 7 nearest neighbors include 4 blue squares and 3 red triangles, the classification flips to the square class.
+Consider classifying a new point of unknown class (a green circle) into one of two classes: blue squares and red triangles. A circle centered at the new point that contains its K nearest neighbors grows larger as K increases.
+- **K = 3** (smaller circle): If the 3 nearest neighbors are 2 red triangles and 1 blue square, the point is classified into the triangle class.
+- **K = 7** (larger circle): If the 7 nearest neighbors include 4 blue squares and 3 red triangles, the classification flips to the square class.
 
 The choice of K fundamentally changes the decision boundary.
 

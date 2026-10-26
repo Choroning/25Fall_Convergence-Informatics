@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-10-18
+> **Last Updated:** 2026-10-26
 
 > **Learning Objectives:**
 > 1. Understand the scope and applications of convergence informatics
@@ -66,7 +66,7 @@ Convergence Informatics integrates knowledge from diverse fields to extract mean
 - R Programming
 - Statistical Skills for Informatics
 - Computational Technologies for Informatics
-- Bioinformatics and Computational Biology: a multidisciplinary intersection of Computer Science, Chemistry, Engineering, Mathematics, Biochemistry, Statistics, and Biology, and the main topic of the second half of the course.
+- Bioinformatics and Computational Biology: a multidisciplinary intersection of Computer Science, Chemistry, Engineering, Mathematics, Biochemistry, Statistics, and Biology.
 - Application of Informatics
 
 ### 1.3 Key Elements of Data Science
@@ -128,6 +128,8 @@ Data science involves interactions among many fields: Statistics, Pattern Recogn
 - **Standard Deviation:** The square root of variance.
 
 > **Key Point:** Sample variance divides by **n - 1** instead of the sample size n (Bessel's correction). The sum of squared deviations around the sample mean $\bar{x}$ tends to be smaller than that around the population mean $\mu$, so dividing by n systematically underestimates the population variance, while dividing by n - 1 gives an unbiased estimator of the population variance.
+
+> **[Probability and Statistics]** An estimator is unbiased when its expected value equals the parameter it estimates. Estimation theory in probability and statistics shows that the expected value of the sample variance divided by n - 1 equals the population variance $\sigma^2$, which is why the sample variance uses n - 1 as its denominator.
 
 ### 2.4 Sampling Concepts
 
@@ -410,7 +412,7 @@ flowchart LR
 | Class (Label) | Any R.V. can be a class, and whether a class exists depends on the analysis purpose, not on the data itself. |
 | Medical Informatics | Representative applications are EMR (4x faster data retrieval, reduced entry), decision support for diagnosis, and the da Vinci Surgical System. |
 | Pharmacoinformatics | Pharmacoinformatics is a multidisciplinary integration for drug discovery, the term was first referenced in 1993, and it covers the medication use process cycle. |
-| Bioinformatics | Bioinformatics is the intersection of CS, Chemistry, Engineering, Math, Biochemistry, Statistics, and Biology, and the main topic of the second half of the course. |
+| Bioinformatics | Bioinformatics is the intersection of CS, Chemistry, Engineering, Math, Biochemistry, Statistics, and Biology. |
 
 ---
 
