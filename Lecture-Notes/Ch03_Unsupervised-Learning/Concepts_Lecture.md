@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-10-18
+> **Last Updated:** 2026-10-26
 
 > **Learning Objectives:**
 > 1. Explain the difference between supervised and unsupervised learning and between clustering and classification
@@ -233,6 +233,8 @@ $$Cov(X, Y) = E[(X - E[X])(Y - E[Y])]$$
 - Covariance is **scale-dependent**. Its magnitude changes if either variable is rescaled.
 - Dividing covariance by the product of the two standard deviations yields **Pearson's correlation**, which is scale-invariant.
 
+> **[Probability and Statistics]** The expected value $E[X]$ is the average of the values a random variable $X$ can take, weighted by their probabilities, and the formulas for the discrete and continuous cases are in Section 8.1 of Chapter 4. Covariance and Pearson's correlation are defined with this expected value, and on sample data they are computed with sample means in place of expected values.
+
 ### 5.2 Pearson's Correlation
 
 $$r_{xy} = \frac{Cov(x, y)}{\sigma_x \cdot \sigma_y} = \frac{S_{xy}}{\sqrt{S_{xx} S_{yy}}}$$
@@ -400,8 +402,8 @@ The process of performing Hierarchical Clustering Analysis can be broken down in
 
 ### 7.3 Agglomerative HC Algorithm
 
-1. Let $q$ objects form $q$ clusters (each object is its own cluster).
-2. Join the two clusters that have the smallest distance (number of clusters = $q - 1$).
+1. Let $N$ objects form $N$ clusters (each object is its own cluster).
+2. Join the two clusters that have the smallest distance (number of clusters = $N - 1$).
 3. Iterate until all clusters are connected in one hierarchical tree (dendrogram).
 
 ### 7.4 Dendrogram Properties

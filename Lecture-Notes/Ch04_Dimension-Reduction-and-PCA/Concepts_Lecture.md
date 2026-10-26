@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-10-18
+> **Last Updated:** 2026-10-26
 
 > **Learning Objectives:**
 > 1. Explain the motivation for dimensionality reduction and the curse of dimensionality
@@ -119,7 +119,7 @@ Dimensionality reduction is widely used in many fields.
 
 ### 2.2 Dimensionality Reduction (Feature Extraction)
 
-- The new features are **combinations** of the original features (linear combinations for PCA and LDA).
+- The new features are **combinations** of the original features (linear combinations for PCA and linear discriminant analysis (LDA)).
 - It creates synthetic, composite variables.
 - The features are harder to interpret, but more information can be captured in fewer dimensions.
 
@@ -193,6 +193,8 @@ A linear combination combines constant multiples and sums of vectors; it describ
 
 When data is represented in a high-dimensional vector space, the covariance matrix acts as a linear transformation. Finding its eigenvectors reveals the directions in which the data is most spread out (principal components).
 
+> **[Linear Algebra]** By the spectral theorem of linear algebra, a real symmetric matrix has only real eigenvalues and is diagonalized by an orthogonal matrix made of mutually orthogonal unit eigenvectors. A covariance matrix is symmetric, so the theorem applies, and the principal components of PCA are mutually orthogonal because of this property.
+
 ---
 
 <br>
@@ -259,6 +261,8 @@ $$L = \sum_{i=M+1}^{N} \mathbf{u}_i^T \boldsymbol{\Sigma} \mathbf{u}_i - \sum_{i
 Setting the derivative to zero gives the following.
 
 $$\frac{\partial L}{\partial \mathbf{u}_i} = 2\boldsymbol{\Sigma}\mathbf{u}_i - 2\lambda_i\mathbf{u}_i = 0 \implies \boldsymbol{\Sigma}\mathbf{u}_i = \lambda_i\mathbf{u}_i$$
+
+> **[Calculus]** The method of Lagrange multipliers finds the extrema of a function $f(\mathbf{u})$ subject to a constraint $g(\mathbf{u}) = 0$ by setting the partial derivatives of $L = f - \lambda g$ to zero and solving the resulting equations. Here $f$ is the reconstruction error and $g$ is the unit-length condition $\mathbf{u}_i^T \mathbf{u}_i - 1$, so these equations are exactly the eigenvalue equation $\boldsymbol{\Sigma}\mathbf{u}_i = \lambda_i\mathbf{u}_i$.
 
 ### 6.4 Eigenvalue Interpretation
 
@@ -344,7 +348,7 @@ $$A = \begin{bmatrix} 4 & 2 \\ 3 & 5 \end{bmatrix}$$
 3. For $\lambda = 7$, $(A - 7I)\mathbf{x} = \mathbf{0}$ gives $-3x_1 + 2x_2 = 0$, so the eigenvector is $c(2, 3)$.
 4. For $\lambda = 2$, $(A - 2I)\mathbf{x} = \mathbf{0}$ gives $2x_1 + 2x_2 = 0$, so the eigenvector is $c(-1, 1)$.
 
-> **Note:** This matrix is not symmetric, so it is not an example of a covariance matrix, and its two eigenvectors $(2, 3)$ and $(-1, 1)$ are not orthogonal (dot product $= -2 + 3 = 1$). A covariance matrix is symmetric, so all its eigenvalues are non-negative real numbers, and eigenvectors corresponding to distinct eigenvalues are orthogonal.
+> **Note:** This matrix is not symmetric, so it is not an example of a covariance matrix, and its two eigenvectors $(2, 3)$ and $(-1, 1)$ are not orthogonal (dot product $= -2 + 3 = 1$). A covariance matrix is symmetric, so all its eigenvalues are real and eigenvectors corresponding to distinct eigenvalues are orthogonal; it is also positive semidefinite, so its eigenvalues are non-negative.
 
 > **Key Point:** Eigenvalues determine how much variance is captured along each eigenvector direction. Larger eigenvalues correspond to more important principal components.
 

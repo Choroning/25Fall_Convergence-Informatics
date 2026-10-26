@@ -2,7 +2,7 @@
 
 [Repository Guide](README.md) | [English](Course-Information.md) | [한국어](Course-Information.ko.md)
 
-> **Last Updated:** 2026-10-18
+> **Last Updated:** 2026-10-26
 
 ## Table of Contents
 
@@ -91,22 +91,22 @@
 
 | Week | Class Dates (Mon, Wed) | Planned Topic | Lecture Decks Covered |
 |:-----|:-----|:-----|:-----|
-| 1 | 9/1, 9/3 | Orientation (summarizing data), R installation | - |
-| 2 | 9/8, 9/10 | Introduction to informatics applied in various fields (applications in medicine, pharmacology, biology, agricultural science, smart farms, etc.) | Chap1.WarmUp_R_Programming<br>Chap2-1.Introduction_CI<br>Chap2-2.DataStructure_CI |
-| 3 | 9/15, 9/17 | Basic data analysis I, R basic grammar I | Chap3.Unsupervised_Learning |
-| 4 | 9/22, 9/24 | Basic data analysis II, R basic grammar II | - |
-| 5 | 9/29, 10/1 | Clustering analysis (unsupervised learning methods) with examples of clustering analytics in various fields | - |
-| 6 | 10/6, 10/8 | Algorithms of dimensionality reduction | Chuseok holidays, no class |
-| 7 | 10/13, 10/15 | Classification analysis (supervised learning methods) with examples of classification and prediction issues in various fields | Chap3-1_add.Dimension_Reduction_PCA<br>Chap3-2_add.Dimension_Reduction_PCA_handon<br>Chap3-3_add.Dimension_Reduction<br>HW1 |
-| 8 | 10/20, 10/22 | Midterm exam | Midterm exam |
-| 9 | 10/27, 10/29 | Introduction to bioinformatics and computational biology (with basic knowledge of biology and medicine) | - |
-| 10 | 11/3, 11/5 | Algorithms for DNA, RNA, and protein sequencing data analysis (text mining category) | Chap4.Modeling |
-| 11 | 11/10, 11/12 | Statistics in bioinformatics and other multidisciplinary fields | - |
-| 12 | 11/17, 11/19 | Discovery of significant biomarkers for personalized medicine or specific biological phenomena (feature selection and extraction category) | - |
-| 13 | 11/24, 11/26 | Gene expression profiling using clustering and network approaches (clustering category) | Chap5.Supervised_Learning<br>HW2 |
-| 14 | 12/1, 12/3 | Machine learning approaches for disease prediction (classification category) | HW3 |
-| 15 | 12/8, 12/10 | Role of software scientists in interdisciplinary work, course review | - |
-| 16 | 12/15, 12/17 | Final exam | Final exam |
+| W01 | 9/1, 9/3 | Orientation (summarizing data), R installation | - |
+| W02 | 9/8, 9/10 | Introduction to informatics applied in various fields (applications in medicine, pharmacology, biology, agricultural science, smart farms, etc.) | Chap1.WarmUp_R_Programming<br>Chap2-1.Introduction_CI<br>Chap2-2.DataStructure_CI |
+| W03 | 9/15, 9/17 | Basic data analysis I, R basic grammar I | Chap3.Unsupervised_Learning |
+| W04 | 9/22, 9/24 | Basic data analysis II, R basic grammar II | - |
+| W05 | 9/29, 10/1 | Clustering analysis (unsupervised learning methods) with examples of clustering analytics in various fields | - |
+| W06 | 10/6, 10/8 | Algorithms of dimensionality reduction | Chuseok holidays, no class |
+| W07 | 10/13, 10/15 | Classification analysis (supervised learning methods) with examples of classification and prediction issues in various fields | Chap3-1_add.Dimension_Reduction_PCA<br>Chap3-2_add.Dimension_Reduction_PCA_handon<br>Chap3-3_add.Dimension_Reduction<br>HW1 |
+| W08 | 10/20, 10/22 | Midterm exam | Midterm exam |
+| W09 | 10/27, 10/29 | Introduction to bioinformatics and computational biology (with basic knowledge of biology and medicine) | - |
+| W10 | 11/3, 11/5 | Algorithms for DNA, RNA, and protein sequencing data analysis (text mining category) | Chap4.Modeling |
+| W11 | 11/10, 11/12 | Statistics in bioinformatics and other multidisciplinary fields | - |
+| W12 | 11/17, 11/19 | Discovery of significant biomarkers for personalized medicine or specific biological phenomena (feature selection and extraction category) | - |
+| W13 | 11/24, 11/26 | Gene expression profiling using clustering and network approaches (clustering category) | Chap5.Supervised_Learning<br>HW2 |
+| W14 | 12/1, 12/3 | Machine learning approaches for disease prediction (classification category) | HW3 |
+| W15 | 12/8, 12/10 | Role of software scientists in interdisciplinary work, course review | - |
+| W16 | 12/15, 12/17 | Final exam | Final exam |
 
 - The planned topics follow the weekly study contents of the syllabus. The syllabus states that the plan for the second half of the semester could be modified depending on the students' learning achievement.
 - The lecture decks map to the lecture notes as follows. The chapter numbers of the lecture notes follow the order of the decks, so from Chapter 4 on they differ from the deck numbers.

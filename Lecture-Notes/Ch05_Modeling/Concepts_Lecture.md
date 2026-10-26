@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-10-18
+> **Last Updated:** 2026-10-26
 
 > **Learning Objectives:**
 > 1. Distinguish deterministic models from probabilistic models
@@ -197,6 +197,8 @@ This means the following.
 
 This assumption is essential for statistical inference (hypothesis tests, confidence intervals) on the regression coefficients. The residuals (observed errors) should be checked against this assumption when validating a model.
 
+> **[Probability and Statistics]** A hypothesis test uses the distribution of a statistic computed from the sample to decide whether to reject a hypothesis about a parameter (e.g., $\beta_1 = 0$), and a confidence interval is an interval that, when constructed repeatedly by the same method, contains the parameter in a set proportion of cases (the confidence level). When the errors are independent and follow $N(0, \sigma^2)$, the sampling distribution of $\hat{\beta}_1$ is determined, so both methods can be applied to the regression coefficients.
+
 ### 5.4 Population vs. Sample
 
 - **Population**: the unknown relationship $Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$.
@@ -336,7 +338,7 @@ The appropriate analytical method depends on the outcome variable type and wheth
 
 ## 9. Practical Prediction Example: Diet Journey
 
-The instructor's own diet journey illustrates how regression is used for real prediction.
+One person's diet journey illustrates how regression is used for real prediction.
 
 - **Background**: The weight was 72kg in 2017, rose to 91kg in 2018, and is currently 81kg in 2019.
 - **Question**: "How many days will it take to reach a target weight of 74kg if I diet now at 81kg?"

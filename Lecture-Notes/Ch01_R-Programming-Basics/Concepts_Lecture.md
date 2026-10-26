@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-10-18
+> **Last Updated:** 2026-10-26
 
 > **Learning Objectives:**
 > 1. Set up the R and RStudio environment and run basic commands
@@ -245,6 +245,8 @@ x[-2]         # All except the second: 10, 30, 40, 50
 ```
 
 Indices in R start at 1, and a negative index excludes the element at that position.
+
+> **[Computer Programming]** Arrays and lists in C and Python are indexed from 0, and the negative index `-1` in Python refers to the last element. R indexes from 1 and uses a negative index to exclude an element, so the same `x[-1]` returns the last element in Python but all elements except the first in R.
 
 ### 4.5 Vector Arithmetic
 
