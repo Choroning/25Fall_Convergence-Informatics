@@ -338,7 +338,7 @@ The appropriate analytical method depends on the outcome variable type and wheth
 
 ## 9. Practical Prediction Example: Diet Journey
 
-The instructor's own diet journey illustrates how regression is used for real prediction.
+One person's diet journey illustrates how regression is used for real prediction.
 
 - **Background**: The weight was 72kg in 2017, rose to 91kg in 2018, and is currently 81kg in 2019.
 - **Question**: "How many days will it take to reach a target weight of 74kg if I diet now at 81kg?"
