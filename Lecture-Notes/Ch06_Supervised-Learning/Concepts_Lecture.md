@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-10-26
+> **Last Updated:** 2026-11-04
 
 > **Learning Objectives:**
 > 1. Explain how clustering differs from classification and how classification differs from prediction
@@ -126,29 +126,13 @@ This example illustrates the full classification pipeline. Training data with kn
 
 The classification analysis follows a structured pipeline.
 
-```text
-Data
-  |
-  v
-Pre-processing
-  - Standardization
-  - Normalization
-  - Transformation
-  |
-  v
-Classifier Construction  <---->  Tuning Parameters (feedback loop)
-  - Feature selection
-  - Algorithm
-  - Training data
-  |
-  v
-Classifier Evaluation
-  - Error rate
-  - Testing data
-  |
-  v
-Class Prediction
-  - New case
+```mermaid
+flowchart TD
+    data["Data"] --> pre["Pre-processing<br>(standardization, normalization, transformation)"]
+    pre --> build["Classifier Construction<br>(feature selection, algorithm, training data)"]
+    build <-->|"feedback loop"| tune["Tuning Parameters"]
+    build --> eval["Classifier Evaluation<br>(error rate, testing data)"]
+    eval --> pred["Class Prediction<br>(new case)"]
 ```
 
 *Figure 1. General classification process*
