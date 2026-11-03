@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-10-26
+> **Last Updated:** 2026-11-04
 
 > **Learning Objectives:**
 > 1. Explain the motivation for dimensionality reduction and the curse of dimensionality
@@ -148,16 +148,16 @@ Project high-dimensional data onto a lower-dimensional subspace while preserving
 
 ### 3.3 Classification of Methods
 
-```text
-Dimensionality Reduction
-├── Linear
-│   └── PCA
-└── Non-linear
-    ├── Preserve global structure
-    │   ├── MDS
-    │   └── t-SNE
-    └── Preserve local structure
-        └── UMAP
+```mermaid
+graph TD
+    root["Dimensionality Reduction"] --> lin["Linear"]
+    root --> non["Non-linear"]
+    lin --> pca["PCA"]
+    non --> glob["Preserve global structure"]
+    non --> loc["Preserve local structure"]
+    glob --> mds["MDS"]
+    glob --> tsne["t-SNE"]
+    loc --> umap["UMAP"]
 ```
 
 *Figure 1. Classification of dimensionality reduction methods*

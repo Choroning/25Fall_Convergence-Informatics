@@ -2,7 +2,7 @@
 
 [레포지토리 안내](../../README.ko.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **최종 수정일:** 2026-10-26
+> **최종 수정일:** 2026-11-04
 
 > **학습 목표:**
 > 1. 군집화와 분류, 분류와 예측의 차이를 설명할 수 있다
@@ -126,29 +126,13 @@
 
 분류 분석은 구조화된 파이프라인을 따른다.
 
-```text
-Data
-  |
-  v
-Pre-processing
-  - Standardization
-  - Normalization
-  - Transformation
-  |
-  v
-Classifier Construction  <---->  Tuning Parameters (feedback loop)
-  - Feature selection
-  - Algorithm
-  - Training data
-  |
-  v
-Classifier Evaluation
-  - Error rate
-  - Testing data
-  |
-  v
-Class Prediction
-  - New case
+```mermaid
+flowchart TD
+    data["데이터"] --> pre["전처리<br>(표준화, 정규화, 변환)"]
+    pre --> build["분류기 구축<br>(특성 선택, 알고리즘, 훈련 데이터)"]
+    build <-->|"피드백 루프"| tune["매개변수 조정"]
+    build --> eval["분류기 평가<br>(오차율, 테스트 데이터)"]
+    eval --> pred["클래스 예측<br>(새로운 사례)"]
 ```
 
 *그림 1. 일반적인 분류 절차*
