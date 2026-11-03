@@ -2,7 +2,7 @@
 
 [레포지토리 안내](../../README.ko.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **최종 수정일:** 2026-10-26
+> **최종 수정일:** 2026-11-04
 
 > **학습 목표:**
 > 1. 차원 축소의 동기와 차원의 저주를 설명할 수 있다
@@ -148,16 +148,16 @@
 
 ### 3.3 방법 분류
 
-```text
-Dimensionality Reduction
-├── Linear
-│   └── PCA
-└── Non-linear
-    ├── Preserve global structure
-    │   ├── MDS
-    │   └── t-SNE
-    └── Preserve local structure
-        └── UMAP
+```mermaid
+graph TD
+    root["차원 축소"] --> lin["선형"]
+    root --> non["비선형"]
+    lin --> pca["PCA"]
+    non --> glob["전역 구조 보존"]
+    non --> loc["지역 구조 보존"]
+    glob --> mds["MDS"]
+    glob --> tsne["t-SNE"]
+    loc --> umap["UMAP"]
 ```
 
 *그림 1. 차원 축소 방법의 분류*
