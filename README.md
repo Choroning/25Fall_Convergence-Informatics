@@ -3,7 +3,7 @@
 ![Last Commit](https://img.shields.io/github/last-commit/Choroning/25Fall_Convergence-Informatics)
 ![Languages](https://img.shields.io/github/languages/top/Choroning/25Fall_Convergence-Informatics)
 
-This repository archives bilingual lecture notes and coursework for the Convergence Informatics course.
+This repository archives lecture notes and coursework for the Convergence Informatics course.
 
 *Author: Cheolwon Park (Korea University Sejong, CSE) - Year 2 (Sophomore) as of 2025*
 <br><br>
@@ -27,9 +27,8 @@ This repository archives bilingual lecture notes and coursework for the Converge
 - Every lecture note comes as an English (`.md`) and Korean (`.ko.md`) pair.
 - The R code files carry **Doxygen-style headers**.
 
-> **🤖 AI Agent Usage**
-> This course encouraged active use of AI tools.
-> [Claude Code](https://claude.ai/download) was used to organize and translate the notes and to restructure the repository.
+> **🤖 Use of Generative AI Tools**
+> This course encourages the use of generative AI tools; this repository uses [Claude Code](https://claude.ai/download) for documentation.
 
 <br><a name="course-information"></a>
 ## 📚 Course Information
