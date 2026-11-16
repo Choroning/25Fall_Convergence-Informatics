@@ -2,7 +2,7 @@
 
 [Repository Guide](README.md) | [English](Course-Information.md) | [한국어](Course-Information.ko.md)
 
-> **Last Updated:** 2026-10-26
+> **Last Updated:** 2026-11-16
 
 ## Table of Contents
 
@@ -117,7 +117,7 @@
   - `Chap4.Modeling`: [Ch05](Lecture-Notes/Ch05_Modeling/Concepts_Lecture.md)
   - `Chap5.Supervised_Learning`: [Ch06](Lecture-Notes/Ch06_Supervised-Learning/Concepts_Lecture.md)
 - The lecture demonstration R code was covered in the classes on unsupervised learning (11/5, 11/10, 11/12), linear regression (11/19), and supervised learning (12/3), and the lab code organized from it is in the [`Coursework` index](Coursework/README.md).
-- HW1 asked for calculations and written explanations of Minkowski distance matrices, hierarchical clustering, Silhouette scores, Rand indices, and related topics without R code, and HW2 and HW3 were assignments analyzing real data with R. The solutions of HW2 and HW3 are also in the `Coursework` index.
+- HW1 asked for calculations and written explanations of Minkowski distance matrices, hierarchical clustering, Silhouette scores, Rand indices, and related topics without R code, and HW2 and HW3 were assignments analyzing real data with R. The assignment handouts, explanations, and solution code of HW2 and HW3 are in the [`Coursework` index](Coursework/README.md).
 - The bioinformatics topics planned for weeks 9-15 in the syllabus are not part of the lecture notes as separate units.
 
 ---

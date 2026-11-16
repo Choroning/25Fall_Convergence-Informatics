@@ -23,7 +23,7 @@ This repository archives lecture notes and coursework for the Convergence Inform
 ## 📝 About This Repository
 
 - `Lecture-Notes/` holds lecture notes that follow the chapter order of the lecture slides (`Ch##`).
-- `Coursework/` holds the assignment solutions, the lecture demonstration code, and the final exam R code, with sample datasets in each item's `data/`.
+- `Coursework/` holds the assignment problems and solutions and the lecture demonstration code, with sample datasets in each item's `data/`.
 - Every lecture note comes as an English (`.md`) and Korean (`.ko.md`) pair.
 - The R code files carry **Doxygen-style headers**.
 
@@ -64,7 +64,8 @@ An interdisciplinary course that introduces informatics across academic and indu
 ```plaintext
 25Fall_Convergence-Informatics
 ├── Lecture-Notes               Lecture notes by slide chapter
-├── Coursework                  Assignment solutions, lab code, final exam answer code
+├── Coursework                  Assignment problems and solutions, lab code
+├── images                      Figures of the assignment explanations
 ├── Course-Information.ko.md    Course operations
 ├── Course-Information.md
 ├── LICENSE                     Documentation license (CC BY-NC-SA 4.0)
@@ -73,7 +74,7 @@ An interdisciplinary course that introduces informatics across academic and indu
 └── README.md
 ```
 
-The units are listed in the [`Lecture-Notes` index](Lecture-Notes/README.md), and the assignments, labs, and final exam materials in the [`Coursework` index](Coursework/README.md).
+The units are listed in the [`Lecture-Notes` index](Lecture-Notes/README.md), and the assignments and labs in the [`Coursework` index](Coursework/README.md).
 
 <br><a name="license"></a>
 ## 🤝 License
