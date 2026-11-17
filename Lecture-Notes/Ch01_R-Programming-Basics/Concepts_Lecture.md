@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-10-26
+> **Last Updated:** 2026-11-18
 
 > **Learning Objectives:**
 > 1. Set up the R and RStudio environment and run basic commands
@@ -14,8 +14,8 @@
 ## Table of Contents
 
 - [1. Introduction to R](#1-introduction-to-r)
-  - [1.1 What is R?](#11-what-is-r)
-  - [1.2 Why Use R for Data Science?](#12-why-use-r-for-data-science)
+  - [1.1 Introduction to R](#11-introduction-to-r)
+  - [1.2 Reasons to Use R for Data Science](#12-reasons-to-use-r-for-data-science)
   - [1.3 RStudio (IDE for R)](#13-rstudio-ide-for-r)
   - [1.4 R Console / User Prompt](#14-r-console--user-prompt)
   - [1.5 Good Programming Habits](#15-good-programming-habits)
@@ -54,11 +54,11 @@
 
 ## 1. Introduction to R
 
-### 1.1 What is R?
+### 1.1 Introduction to R
 
 R is a free, open-source programming language designed for statistical computing and data analysis. Along with Python, it is one of the two most representative languages for data science.
 
-### 1.2 Why Use R for Data Science?
+### 1.2 Reasons to Use R for Data Science
 
 - **Free and open-source:** It can be downloaded from [https://cran.r-project.org/](https://cran.r-project.org/).
 - Hands-on data analysis is **relatively easy** to learn in R.
@@ -108,7 +108,7 @@ RStudio has four main panes. In the default layout, the code editor is at the to
 
 RStudio provides built-in reference sheets accessible via **Help > Cheatsheets**. These cover the most widely used commands and shortcuts for the IDE, data transformation, visualization, and more.
 
-> **Note:** **Tip.** Memorizing the key bindings for the operations you use most frequently significantly speeds up your workflow.
+Memorizing the key bindings for the operations you use most frequently significantly speeds up your workflow.
 
 ### 1.7 R Workspace
 
@@ -169,7 +169,7 @@ Data frames are particularly useful because they can **combine different data ty
 # - Matrices require all elements to be the same type
 ```
 
-> **Key Point:** Use `data()` to load built-in datasets (e.g., `data(iris)`), and use `head()`, `tail()`, `dim()`, `nrow()`, `ncol()` to quickly inspect them.
+Use `data()` to load built-in datasets (e.g., `data(iris)`), and use `head()`, `tail()`, `dim()`, `nrow()`, `ncol()` to quickly inspect them.
 
 ---
 

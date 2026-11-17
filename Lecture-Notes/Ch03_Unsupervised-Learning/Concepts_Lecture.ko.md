@@ -2,7 +2,7 @@
 
 [레포지토리 안내](../../README.ko.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **최종 수정일:** 2026-11-17
+> **최종 수정일:** 2026-11-18
 
 > **학습 목표:**
 > 1. 지도 학습과 비지도 학습, 군집화와 분류의 차이를 설명할 수 있다
@@ -15,7 +15,7 @@
 ## 목차
 
 - [1. 군집화 vs. 분류](#1-군집화-vs-분류)
-  - [1.1 군집화(Clustering)란?](#11-군집화clustering란)
+  - [1.1 군집화(Clustering)의 개념](#11-군집화clustering의-개념)
   - [1.2 군집화 vs. 분류](#12-군집화-vs-분류)
 - [2. 유사도와 거리](#2-유사도와-거리)
   - [2.1 유사도 지수(Similarity Index)](#21-유사도-지수similarity-index)
@@ -60,7 +60,7 @@
 
 ## 1. 군집화 vs. 분류
 
-### 1.1 군집화(Clustering)란?
+### 1.1 군집화(Clustering)의 개념
 
 군집 분석(clustering analysis)은 객체들(실험 대상 또는 그 특성)의 집합을 **군집(cluster)** 이라 불리는 부분집합으로 그룹화하는 과정이다. 이는 사전에 정의된 레이블 없이 원시 데이터로부터 학습하는 **비지도 학습(Unsupervised Learning)** 의 가장 대표적인 형태이다.
 

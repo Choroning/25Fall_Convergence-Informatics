@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-11-17
+> **Last Updated:** 2026-11-18
 
 > **Learning Objectives:**
 > 1. Explain the motivation for dimensionality reduction and the curse of dimensionality
@@ -17,7 +17,7 @@
 
 - [1. Dimensionality Reduction](#1-dimensionality-reduction)
   - [1.1 Definition](#11-definition)
-  - [1.2 Why Dimensionality Reduction?](#12-why-dimensionality-reduction)
+  - [1.2 The Need for Dimensionality Reduction](#12-the-need-for-dimensionality-reduction)
   - [1.3 Curse of Dimensionality](#13-curse-of-dimensionality)
   - [1.4 Applications](#14-applications)
 - [2. Feature Selection vs. Dimensionality Reduction](#2-feature-selection-vs-dimensionality-reduction)
@@ -60,7 +60,7 @@
 - [10. Practical Considerations](#10-practical-considerations)
   - [10.1 Scree Plot](#101-scree-plot)
   - [10.2 Explained Variance Ratio](#102-explained-variance-ratio)
-  - [10.3 When to Use What](#103-when-to-use-what)
+  - [10.3 Choosing a Method by Situation](#103-choosing-a-method-by-situation)
 - [Summary](#summary)
 - [Self-Check Questions](#self-check-questions)
 - [References](#references)
@@ -75,7 +75,7 @@
 
 Dimensionality reduction is the process of choosing or constructing a small number of features that carry the most relevant information from thousands or millions of low-level features, in order to build **better**, **faster**, and **easier to understand** learning models. Dimensionality reduction in the broad sense includes both feature selection and feature extraction of Section 2.
 
-### 1.2 Why Dimensionality Reduction?
+### 1.2 The Need for Dimensionality Reduction
 
 - **Speed up training algorithms**: In high dimensions, non-critical variables can lead to poor performance, or the amount of data to process can become extremely large.
 - **Simpler and more stable models**: Models trained with too many dimensions are easy to overfit, and reducing dimensions makes them more robust.
@@ -417,7 +417,7 @@ $$\rho = \frac{\text{Cov}(X, Y)}{\sqrt{\text{Var}(X) \cdot \text{Var}(Y)}}, \qua
 
 - It is a **non-linear** vector visualization algorithm that preserves **global structure** (see the note box of Section 9.3).
 - It reduces dimensions so that the **similarity** between points in high dimensions is preserved in the embedding space.
-- **Why not just project?** Simple projection to 1D can destroy cluster separation. For example, two well-separated clusters in 2D may overlap when projected onto a single axis.
+- **Reason simple projection is not enough**: Simple projection to 1D can destroy cluster separation. For example, two well-separated clusters in 2D may overlap when projected onto a single axis.
 
 **Algorithm outline:**
 
@@ -486,7 +486,7 @@ $$\text{Explained Variance Ratio}_k = \frac{\lambda_k}{\sum_{i=1}^{N} \lambda_i}
 
 A common rule of thumb is to retain enough components to explain 80-95% of the total variance.
 
-### 10.3 When to Use What
+### 10.3 Choosing a Method by Situation
 
 | Scenario | Recommended Method |
 |----------|--------------------|

@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-10-26
+> **Last Updated:** 2026-11-18
 
 > **Learning Objectives:**
 > 1. Understand the scope and applications of convergence informatics
@@ -13,7 +13,7 @@
 
 ## Table of Contents
 
-- [1. What is Convergence Informatics](#1-what-is-convergence-informatics)
+- [1. Overview of Convergence Informatics](#1-overview-of-convergence-informatics)
   - [1.1 Definition of Informatics](#11-definition-of-informatics)
   - [1.2 Convergence (Multidisciplinary) Informatics](#12-convergence-multidisciplinary-informatics)
   - [1.3 Key Elements of Data Science](#13-key-elements-of-data-science)
@@ -46,7 +46,7 @@
 
 <br>
 
-## 1. What is Convergence Informatics
+## 1. Overview of Convergence Informatics
 
 ### 1.1 Definition of Informatics
 
@@ -301,9 +301,9 @@ Both supervised and unsupervised learning require **structured data**; the diffe
 
 A class goes by many names: **label, exact answer, ground truth, response variable, outcome variable, dependent variable**. Importantly, **any R.V. can be a class**, and which variable becomes the class depends on your analysis purpose.
 
-**Does a class always exist in structured data?**
+**Presence of a class in structured data**
 
-Not always. The existence of a class is determined by the **purpose of the analysis**. It is not an intrinsic property of the data itself; it depends on what you want. When you want to predict or infer a specific variable, you designate that variable as the class (doing SL). When you want to discover structures or patterns without prediction, you work without a class (doing USL).
+A class is not always present. The existence of a class is determined by the **purpose of the analysis**. It is not an intrinsic property of the data itself; it depends on what you want. When you want to predict or infer a specific variable, you designate that variable as the class (doing SL). When you want to discover structures or patterns without prediction, you work without a class (doing USL).
 
 ### 4.3 Classification and Regression (SL)
 

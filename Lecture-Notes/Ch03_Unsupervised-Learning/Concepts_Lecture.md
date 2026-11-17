@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-11-17
+> **Last Updated:** 2026-11-18
 
 > **Learning Objectives:**
 > 1. Explain the difference between supervised and unsupervised learning and between clustering and classification
@@ -15,7 +15,7 @@
 ## Table of Contents
 
 - [1. Clustering vs. Classification](#1-clustering-vs-classification)
-  - [1.1 What is Clustering?](#11-what-is-clustering)
+  - [1.1 The Concept of Clustering](#11-the-concept-of-clustering)
   - [1.2 Clustering vs. Classification](#12-clustering-vs-classification)
 - [2. Similarity and Distance](#2-similarity-and-distance)
   - [2.1 Similarity Index](#21-similarity-index)
@@ -60,7 +60,7 @@
 
 ## 1. Clustering vs. Classification
 
-### 1.1 What is Clustering?
+### 1.1 The Concept of Clustering
 
 Clustering analysis is the process of grouping a set of objects (experimental subjects or their features) into subsets called **clusters**. It is the most common form of **unsupervised learning**, which learns from raw data without predefined labels.
 
