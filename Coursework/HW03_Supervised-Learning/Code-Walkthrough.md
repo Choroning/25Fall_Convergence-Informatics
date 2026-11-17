@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Code-Walkthrough.md) | [한국어](Code-Walkthrough.ko.md)
 
-> **Last Updated:** 2026-11-16
+> **Last Updated:** 2026-11-17
 
 > **Learning Objectives:**
 > 1. Read code that performs limma feature selection, SMOTE, and PAMR training and prediction in turn inside a LOOCV loop, and explain the input and output of each step
@@ -56,7 +56,7 @@ The five R scripts in `Solution/` correspond one to one to the problems, and the
 
 *Table 1. Structure of the HW3 scripts*
 
-The run times were measured in a single run with R 4.5.1. The scripts find the data folder relative to their own folder, so run them with `source()`. If R was opened at the repository root, run them as follows; in RStudio, open a script and press the Source button.
+The run times are approximate values with R 4.5.1. The scripts find the data folder relative to their own folder, so run them with `source()`. If R was opened at the repository root, run them as follows; in RStudio, open a script and press the Source button.
 
 ```r
 source("Coursework/HW03_Supervised-Learning/Solution/Assignment3_Q1.R")
@@ -232,7 +232,7 @@ run_pamr_loocv <- function(X, y) {
     X_train_final <- data.matrix(X_train_smote)
 ```
 
-`smotefamily::SMOTE()` takes the feature data frame `X` and the labels `target` separately. `K = 1` makes each minority-class sample create synthetic samples between itself and its single nearest sample of the same class, and `dup_size = 0` makes the number to create be decided automatically from the size difference of the two classes. The `$data` of the result is a data frame combining the original and synthetic samples, and its last column is the label (`class`). In these data, a training set with 3 Asthma becomes 15 to 17, and one with 2 Asthma becomes 18 to 18.
+`smotefamily::SMOTE()` takes the feature data frame `X` and the labels `target` separately. `K = 1` makes each minority-class sample create synthetic samples between itself and its single nearest sample of the same class, and `dup_size = 0` makes the number to create be decided automatically from the size difference of the two classes. The `$data` of the result is a data frame combining the original and synthetic samples, and its last column is the label (`class`). Because `as.factor()` orders the levels of character labels alphabetically, the levels of `y_train_smote` are Asthma, Control, unlike `y` in Section 3.1. In these data, a training set with 3 Asthma becomes 15 to 17, and one with 2 Asthma becomes 18 to 18.
 
 ### 3.5 PAMR Training and Prediction
 

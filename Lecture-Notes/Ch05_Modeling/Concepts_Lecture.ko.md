@@ -2,7 +2,7 @@
 
 [레포지토리 안내](../../README.ko.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **최종 수정일:** 2026-10-26
+> **최종 수정일:** 2026-11-17
 
 > **학습 목표:**
 > 1. 결정적 모델과 확률적 모델을 구분할 수 있다
@@ -272,13 +272,15 @@ $$\sum x_i y_i - \bar{y} \sum x_i + \hat{\beta}_1 \bar{x} \sum x_i - \hat{\beta}
 
 $$\hat{\beta}_1 = \frac{\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n}(x_i - \bar{x})^2}$$
 
-> **참고:** 이 공식은 상관계수(Correlation coefficient) 공식과 유사한 구조를 가진다. 표본 상관계수를 $r$, $x$와 $y$의 표본 표준편차를 $s_x$, $s_y$라 하면 $\hat{\beta}_1 = r \, s_y / s_x$이다.
+> **참고:** 이 공식은 상관계수(Correlation coefficient) 공식과 유사한 구조를 가진다. 표본 상관계수를 $r$, $x$와 $y$의 표본 표준편차를 $s_x$, $s_y$라 하면 $`\hat{\beta}_1 = r \, s_y / s_x`$이다.
 
 ### 6.7 다중 선형 회귀 (Multiple Linear Regression, 행렬 형태)
 
 설명변수가 여러 개인 경우, 행렬 구성 요소를 다음과 같이 정의한다.
 
-$$\mathbf{y} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix}, \quad \mathbf{X} = \begin{bmatrix} 1 & x_{11} & x_{12} & \cdots & x_{1k} \\ 1 & x_{21} & x_{22} & \cdots & x_{2k} \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ 1 & x_{n1} & x_{n2} & \cdots & x_{nk} \end{bmatrix}, \quad \boldsymbol{\beta} = \begin{bmatrix} \beta_0 \\ \beta_1 \\ \vdots \\ \beta_k \end{bmatrix}, \quad \boldsymbol{\epsilon} = \begin{bmatrix} \epsilon_1 \\ \epsilon_2 \\ \vdots \\ \epsilon_n \end{bmatrix}$$
+```math
+\mathbf{y} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix}, \quad \mathbf{X} = \begin{bmatrix} 1 & x_{11} & x_{12} & \cdots & x_{1k} \\ 1 & x_{21} & x_{22} & \cdots & x_{2k} \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ 1 & x_{n1} & x_{n2} & \cdots & x_{nk} \end{bmatrix}, \quad \boldsymbol{\beta} = \begin{bmatrix} \beta_0 \\ \beta_1 \\ \vdots \\ \beta_k \end{bmatrix}, \quad \boldsymbol{\epsilon} = \begin{bmatrix} \epsilon_1 \\ \epsilon_2 \\ \vdots \\ \epsilon_n \end{bmatrix}
+```
 
 행렬 형태의 모델은 $\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}$이다.
 

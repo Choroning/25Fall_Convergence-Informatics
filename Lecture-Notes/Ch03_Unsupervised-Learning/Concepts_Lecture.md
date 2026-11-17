@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-10-26
+> **Last Updated:** 2026-11-17
 
 > **Learning Objectives:**
 > 1. Explain the difference between supervised and unsupervised learning and between clustering and classification
@@ -111,7 +111,9 @@ A numeric value that indicates how **different** objects are.
 
 ### 3.1 Manhattan Distance (L1 Norm)
 
-$$d_1(\mathbf{p}, \mathbf{q}) = \|\mathbf{p} - \mathbf{q}\|_1 = \sum_{i=1}^{n} |p_i - q_i|$$
+```math
+d_1(\mathbf{p}, \mathbf{q}) = \|\mathbf{p} - \mathbf{q}\|_1 = \sum_{i=1}^{n} |p_i - q_i|
+```
 
 **Properties:**
 - It is robust to outliers.
@@ -161,7 +163,7 @@ Given an $N \times P$ data matrix ($N$ samples, $P$ features), two distance matr
 - The **feature distance matrix** is a $P \times P$ matrix of distances between features.
 
 **Properties of a distance matrix:**
-- It is always a **symmetric matrix** ($d(A,B) = d(B,A)$).
+- It is always a **symmetric matrix** ($`d(A,B) = d(B,A)`$).
 - Its diagonal values are always **zero** ($d(A,A) = 0$).
 - The range of distance is $[0, \infty)$.
 
@@ -568,10 +570,10 @@ The smallest distance is $d(D,E) = 1$, so all three methods begin by merging {D,
 **Update rule:** The distance between the merged cluster and $X$ is the average of all pairwise distances between each member of the merged cluster and each member of $X$. In terms of the distances before the merge, $d(G \cup H, X) = \frac{n_G d(G, X) + n_H d(H, X)}{n_G + n_H}$.
 
 **Step 1:** Merge {D, E} (distance = 1). Update distances using the average.
-- $d(DE, A) = \operatorname{avg}[d(D,A), d(E,A)] = \operatorname{avg}[15, 16] = 15.5$
-- $d(DE, B) = \operatorname{avg}[d(D,B), d(E,B)] = \operatorname{avg}[10, 11] = 10.5$
-- $d(DE, C) = \operatorname{avg}[d(D,C), d(E,C)] = \operatorname{avg}[10, 11] = 10.5$
-- $d(DE, F) = \operatorname{avg}[d(D,F), d(E,F)] = \operatorname{avg}[4, 3] = 3.5$
+- $d(DE, A) = \mathrm{avg}[d(D,A), d(E,A)] = \mathrm{avg}[15, 16] = 15.5$
+- $d(DE, B) = \mathrm{avg}[d(D,B), d(E,B)] = \mathrm{avg}[10, 11] = 10.5$
+- $d(DE, C) = \mathrm{avg}[d(D,C), d(E,C)] = \mathrm{avg}[10, 11] = 10.5$
+- $d(DE, F) = \mathrm{avg}[d(D,F), d(E,F)] = \mathrm{avg}[4, 3] = 3.5$
 
 | Step 1 | A | B | C | DE | F |
 |--------|------|-----|-----|------|-----|
@@ -584,9 +586,9 @@ The smallest distance is $d(D,E) = 1$, so all three methods begin by merging {D,
 *Table 23. Distance matrix after Step 1 of Average Linkage*
 
 **Step 2:** Merge {F, DE} (distance = 3.5). Update distances using the average (now 3 members: D, E, F).
-- $d(DEF, A) = \operatorname{avg}[d(D,A), d(E,A), d(F,A)] = \operatorname{avg}[15, 16, 19] = 16.67$
-- $d(DEF, B) = \operatorname{avg}[d(D,B), d(E,B), d(F,B)] = \operatorname{avg}[10, 11, 14] = 11.67$
-- $d(DEF, C) = \operatorname{avg}[d(D,C), d(E,C), d(F,C)] = \operatorname{avg}[10, 11, 14] = 11.67$
+- $d(DEF, A) = \mathrm{avg}[d(D,A), d(E,A), d(F,A)] = \mathrm{avg}[15, 16, 19] = 16.67$
+- $d(DEF, B) = \mathrm{avg}[d(D,B), d(E,B), d(F,B)] = \mathrm{avg}[10, 11, 14] = 11.67$
+- $d(DEF, C) = \mathrm{avg}[d(D,C), d(E,C), d(F,C)] = \mathrm{avg}[10, 11, 14] = 11.67$
 
 | Step 2 | A | B | C | DEF |
 |--------|------|-----|-----|-------|
@@ -597,11 +599,11 @@ The smallest distance is $d(D,E) = 1$, so all three methods begin by merging {D,
 
 *Table 24. Distance matrix after Step 2 of Average Linkage*
 
-> **Caution:** The distance of a merged cluster must not be computed as a simple average of the previous distances. Computing $d(DEF, A)$ as $\operatorname{avg}[d(DE, A), d(F, A)] = \operatorname{avg}[15.5, 19] = 17.25$ is wrong; the average weighted by the numbers of members, $(2 \times 15.5 + 1 \times 19)/3 = 16.67$, is correct.
+> **Caution:** The distance of a merged cluster must not be computed as a simple average of the previous distances. Computing $d(DEF, A)$ as $\mathrm{avg}[d(DE, A), d(F, A)] = \mathrm{avg}[15.5, 19] = 17.25$ is wrong; the average weighted by the numbers of members, $(2 \times 15.5 + 1 \times 19)/3 = 16.67$, is correct.
 
 **Step 3:** Merge {B, C} (distance = 4).
-- $d(BC, A) = \operatorname{avg}[d(B,A), d(C,A)] = \operatorname{avg}[5, 5] = 5$
-- $d(BC, DEF) = \operatorname{avg}[d(B,DEF), d(C,DEF)] = \operatorname{avg}[11.67, 11.67] = 11.67$
+- $d(BC, A) = \mathrm{avg}[d(B,A), d(C,A)] = \mathrm{avg}[5, 5] = 5$
+- $d(BC, DEF) = \mathrm{avg}[d(B,DEF), d(C,DEF)] = \mathrm{avg}[11.67, 11.67] = 11.67$
 
 | Step 3 | A | BC | DEF |
 |--------|-----|------|-------|
@@ -705,7 +707,9 @@ Let $m_k(t)$ be the centroid of the $k$-th cluster at step $t$, and $C_i(t)$ the
 
 **Assignment step:**
 
-$$C_i(t) = \underset{1 \leq k \leq K}{\text{argmin}} \; d(z_i, m_k(t))$$
+```math
+C_i(t) = \underset{1 \leq k \leq K}{\text{argmin}} \; d(z_i, m_k(t))
+```
 
 **Convergence criterion** (total intra-cluster variance):
 

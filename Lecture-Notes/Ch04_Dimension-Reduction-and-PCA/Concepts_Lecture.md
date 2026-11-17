@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-11-04
+> **Last Updated:** 2026-11-17
 
 > **Learning Objectives:**
 > 1. Explain the motivation for dimensionality reduction and the curse of dimensionality
@@ -240,7 +240,9 @@ Let $\mathbf{U}$ be an $N \times N$ orthogonal matrix. Here $\mathbf{U}\mathbf{U
 
 ### 6.2 Reconstruction Error
 
-$$\varepsilon^2 = \mathbb{E}\{\|\mathbf{x} - \hat{\mathbf{x}}\|^2\} = \frac{1}{m} \sum_{j=1}^{m} \|\mathbf{x}_j - \hat{\mathbf{x}}_j\|^2$$
+```math
+\varepsilon^2 = \mathbb{E}\{\|\mathbf{x} - \hat{\mathbf{x}}\|^2\} = \frac{1}{m} \sum_{j=1}^{m} \|\mathbf{x}_j - \hat{\mathbf{x}}_j\|^2
+```
 
 **Goal:** Minimize the reconstruction error.
 
@@ -286,10 +288,12 @@ Here $\mathbf{X}$ is an $n \times p$ mean-centered data matrix whose rows are ob
 
 A 2D covariance matrix is as follows.
 
-$$\boldsymbol{\Sigma} = \begin{bmatrix} \sigma_x^2 & \text{Cov}(X,Y) \\ \text{Cov}(X,Y) & \sigma_y^2 \end{bmatrix}$$
+```math
+\boldsymbol{\Sigma} = \begin{bmatrix} \sigma_x^2 & \text{Cov}(X,Y) \\ \text{Cov}(X,Y) & \sigma_y^2 \end{bmatrix}
+```
 
 - The **diagonal entries** ($\sigma_x^2$, $\sigma_y^2$) are the **spread (variance) along each axis**, showing how much the data stretches along $X$ and $Y$ individually.
-- The **off-diagonal entries** ($\text{Cov}(X,Y)$) are the **joint spread** between the variables, showing how $X$ and $Y$ move together.
+- The **off-diagonal entries** ($`\text{Cov}(X,Y)`$) are the **joint spread** between the variables, showing how $X$ and $Y$ move together.
 
 **Why $\mathbf{X}^T \mathbf{X}$ captures covariance:**
 
@@ -341,7 +345,9 @@ This sample variance divides by $n - 1$, while the covariance matrix of Section 
 
 Find the eigenvalues and eigenvectors of the following matrix $A$.
 
-$$A = \begin{bmatrix} 4 & 2 \\ 3 & 5 \end{bmatrix}$$
+```math
+A = \begin{bmatrix} 4 & 2 \\ 3 & 5 \end{bmatrix}
+```
 
 1. Solve the characteristic equation $\det(A - \lambda I) = 0$.
 2. $(4 - \lambda)(5 - \lambda) - 2 \cdot 3 = \lambda^2 - 9\lambda + 14 = (\lambda - 7)(\lambda - 2) = 0$, so $\lambda = 7, 2$.

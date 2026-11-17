@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-10-26
+> **Last Updated:** 2026-11-17
 
 > **Learning Objectives:**
 > 1. Distinguish deterministic models from probabilistic models
@@ -272,13 +272,15 @@ Applying the identities $\sum x_i y_i - \bar{y} \sum x_i = \sum (x_i - \bar{x})(
 
 $$\hat{\beta}_1 = \frac{\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n}(x_i - \bar{x})^2}$$
 
-> **Note:** This formula has a structure similar to the correlation coefficient formula. If $r$ is the sample correlation coefficient and $s_x$, $s_y$ are the sample standard deviations of $x$ and $y$, then $\hat{\beta}_1 = r \, s_y / s_x$.
+> **Note:** This formula has a structure similar to the correlation coefficient formula. If $r$ is the sample correlation coefficient and $s_x$, $s_y$ are the sample standard deviations of $x$ and $y$, then $`\hat{\beta}_1 = r \, s_y / s_x`$.
 
 ### 6.7 Multiple Linear Regression (Matrix Form)
 
 For multiple explanatory variables, define the matrix components as follows.
 
-$$\mathbf{y} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix}, \quad \mathbf{X} = \begin{bmatrix} 1 & x_{11} & x_{12} & \cdots & x_{1k} \\ 1 & x_{21} & x_{22} & \cdots & x_{2k} \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ 1 & x_{n1} & x_{n2} & \cdots & x_{nk} \end{bmatrix}, \quad \boldsymbol{\beta} = \begin{bmatrix} \beta_0 \\ \beta_1 \\ \vdots \\ \beta_k \end{bmatrix}, \quad \boldsymbol{\epsilon} = \begin{bmatrix} \epsilon_1 \\ \epsilon_2 \\ \vdots \\ \epsilon_n \end{bmatrix}$$
+```math
+\mathbf{y} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix}, \quad \mathbf{X} = \begin{bmatrix} 1 & x_{11} & x_{12} & \cdots & x_{1k} \\ 1 & x_{21} & x_{22} & \cdots & x_{2k} \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ 1 & x_{n1} & x_{n2} & \cdots & x_{nk} \end{bmatrix}, \quad \boldsymbol{\beta} = \begin{bmatrix} \beta_0 \\ \beta_1 \\ \vdots \\ \beta_k \end{bmatrix}, \quad \boldsymbol{\epsilon} = \begin{bmatrix} \epsilon_1 \\ \epsilon_2 \\ \vdots \\ \epsilon_n \end{bmatrix}
+```
 
 The model in matrix form is $\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}$.
 

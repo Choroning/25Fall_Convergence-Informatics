@@ -2,7 +2,7 @@
 
 [레포지토리 안내](../../README.ko.md) | [English](Code-Walkthrough.md) | [한국어](Code-Walkthrough.ko.md)
 
-> **최종 수정일:** 2026-11-16
+> **최종 수정일:** 2026-11-17
 
 > **학습 목표:**
 > 1. LOOCV 반복문 안에서 limma 특징 선택, SMOTE, PAMR 학습과 예측을 차례로 수행하는 코드를 읽고 각 단계의 입력과 출력을 설명할 수 있다
@@ -56,7 +56,7 @@
 
 *표 1. HW3 스크립트의 구성*
 
-실행 시간은 R 4.5.1을 쓴 한 번의 실행에서 잰 값이다. 스크립트는 자신이 있는 폴더를 기준으로 데이터 폴더를 찾으므로 `source()`로 실행한다. 레포지토리 루트에서 R을 열었다면 다음과 같이 실행하고, RStudio에서는 스크립트를 연 뒤 Source 버튼을 누른다.
+실행 시간은 R 4.5.1 환경에서의 대략적인 값이다. 스크립트는 자신이 있는 폴더를 기준으로 데이터 폴더를 찾으므로 `source()`로 실행한다. 레포지토리 루트에서 R을 열었다면 다음과 같이 실행하고, RStudio에서는 스크립트를 연 뒤 Source 버튼을 누른다.
 
 ```r
 source("Coursework/HW03_Supervised-Learning/Solution/Assignment3_Q1.R")
@@ -232,7 +232,7 @@ run_pamr_loocv <- function(X, y) {
     X_train_final <- data.matrix(X_train_smote)
 ```
 
-`smotefamily::SMOTE()`는 특징 데이터 프레임 `X`와 라벨 `target`을 따로 받는다. `K = 1`은 소수 class의 각 샘플이 가장 가까운 같은 class 샘플 하나와의 사이에 합성 샘플을 만들게 하고, `dup_size = 0`은 만들 개수를 두 class의 크기 차이에서 자동으로 정하게 한다. 결과의 `$data`는 원래 샘플과 합성 샘플을 합친 데이터 프레임이고, 마지막 열이 라벨(`class`)이다. 이 데이터에서 Asthma가 3명인 훈련 세트는 15 대 17, 2명인 훈련 세트는 18 대 18이 된다.
+`smotefamily::SMOTE()`는 특징 데이터 프레임 `X`와 라벨 `target`을 따로 받는다. `K = 1`은 소수 class의 각 샘플이 가장 가까운 같은 class 샘플 하나와의 사이에 합성 샘플을 만들게 하고, `dup_size = 0`은 만들 개수를 두 class의 크기 차이에서 자동으로 정하게 한다. 결과의 `$data`는 원래 샘플과 합성 샘플을 합친 데이터 프레임이고, 마지막 열이 라벨(`class`)이다. `as.factor()`는 문자 라벨의 수준을 알파벳순으로 정하므로, `y_train_smote`의 수준은 3.1절의 `y`와 달리 Asthma, Control 순서이다. 이 데이터에서 Asthma가 3명인 훈련 세트는 15 대 17, 2명인 훈련 세트는 18 대 18이 된다.
 
 ### 3.5 PAMR 학습과 예측
 

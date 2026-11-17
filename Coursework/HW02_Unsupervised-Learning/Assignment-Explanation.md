@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Assignment-Explanation.md) | [한국어](Assignment-Explanation.ko.md)
 
-> **Last Updated:** 2026-11-16
+> **Last Updated:** 2026-11-17
 
 > **Learning Objectives:**
 > 1. Apply PCA, t-SNE, and UMAP to high-dimensional gene expression data and compare the two-dimensional visualizations of two datasets with different numbers of features
@@ -172,7 +172,7 @@ When $s(i)$ is close to 1, the sample fits its cluster well; near 0, it lies on 
 
 The average silhouette width is largest at K = 3 with 0.748, and the difference from 0.745 at K = 4 is 0.003. From K = 5 on, it drops to 0.45 or below. The Silhouette score therefore supports 3 and 4 clusters almost equally, and it does not support 7, the number of diseases. The value 0 at K = 1 in the figure appears because the Silhouette score is undefined for a single cluster and the function shows it as 0.
 
-> **Caution:** K-means clustering picks its initial centers at random, and the script has no `set.seed()`. The values in Table 4 can therefore change slightly from run to run. Table 4 is the result of a run that gave the same values as Figure 3.
+> **Caution:** K-means clustering picks its initial centers at random. The script has no `set.seed()`, but `fviz_nbclust()` calls `set.seed(123)` inside the function, so every run gives the same values as Table 4. However, the default `nstart = 1` of `kmeans()` picks the initial centers only once, so the result is more likely to stay at a local optimum as K grows. When the initial centers are picked 50 times and the best result is kept (`nstart = 50`), the average silhouette widths at K = 5 and 6 are 0.690 and 0.633, larger than in Table 4, but the largest values are still at K = 3 (0.748) and K = 4 (0.745).
 
 ---
 
@@ -235,12 +235,12 @@ Judging the weight loss effect by comparing the slopes of the two models, the ab
 
 [`Assignment2_Q7.R`](Solution/Assignment2_Q7.R) refits the same models as Problem 6 and predicts with `predict()`. There are 147 days from 2021-06-28 to 2021-11-22, so `Days` = 147 is substituted.
 
-$$
+```math
 \begin{aligned}
 \text{Professor:} \quad & 89.7492 - 0.093942 \times 147 = 75.94 \text{ kg} \\
 \text{Student:} \quad & 82.0794 - 0.154526 \times 147 = 59.36 \text{ kg}
 \end{aligned}
-$$
+```
 
 The submitted answer is 75.94 kg for the professor and 59.36 kg for the student. Since the last day of the observation period is `Days` = 64, this prediction is an extrapolation that extends the line to a point more than twice the observed range.
 
@@ -266,12 +266,12 @@ The student's points lie above the line for the first few days, fall below it in
 
 [`Assignment2_Q9.R`](Solution/Assignment2_Q9.R) substitutes the 513 days until 2022-11-23.
 
-$$
+```math
 \begin{aligned}
 \text{Professor:} \quad & 89.7492 - 0.093942 \times 513 = 41.56 \text{ kg} \\
 \text{Student:} \quad & 82.0794 - 0.154526 \times 513 = 2.81 \text{ kg}
 \end{aligned}
-$$
+```
 
 The submitted answer is 41.56 kg for the professor and 2.81 kg for the student, and the interpretation of the model is as follows.
 
@@ -329,7 +329,7 @@ Therefore, simple linear models should not be used for long-term prediction of d
    <details>
    <summary>Answer</summary>
 
-   $82.0794 - 0.154526 \times 64 = 72.19$ kg. Since `Days` = 64 lies within the observed range (0-64), it is an interpolation supported by actual data. The day-513 prediction is an extrapolation more than 8 times beyond the observed range, so it depends on the unverified assumption that the slope stays constant.
+   $82.0794 - 0.154526 \times 64 = 72.19$ kg. Since `Days` = 64 lies within the observed range (0-64), it is an interpolation supported by actual data. The day-513 prediction is an extrapolation that extends the line to a point more than 8 times the end of the observed range (day 64), so it depends on the unverified assumption that the slope stays constant.
 
    </details>
 

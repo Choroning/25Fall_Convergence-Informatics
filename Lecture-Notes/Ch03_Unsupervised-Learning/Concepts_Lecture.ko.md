@@ -2,7 +2,7 @@
 
 [레포지토리 안내](../../README.ko.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **최종 수정일:** 2026-10-26
+> **최종 수정일:** 2026-11-17
 
 > **학습 목표:**
 > 1. 지도 학습과 비지도 학습, 군집화와 분류의 차이를 설명할 수 있다
@@ -111,7 +111,9 @@
 
 ### 3.1 Manhattan Distance (맨해튼 거리, L1 Norm)
 
-$$d_1(\mathbf{p}, \mathbf{q}) = \|\mathbf{p} - \mathbf{q}\|_1 = \sum_{i=1}^{n} |p_i - q_i|$$
+```math
+d_1(\mathbf{p}, \mathbf{q}) = \|\mathbf{p} - \mathbf{q}\|_1 = \sum_{i=1}^{n} |p_i - q_i|
+```
 
 **특성:**
 - 이상치에 강건(robust)하다.
@@ -161,7 +163,7 @@ $N \times P$ 데이터 행렬($N$개 표본, $P$개 특성)이 주어지면 두 
 - **특성 거리 행렬**은 특성 간 거리를 담은 $P \times P$ 행렬이다.
 
 **거리 행렬의 특성:**
-- 항상 **대칭 행렬**이다($d(A,B) = d(B,A)$).
+- 항상 **대칭 행렬**이다($`d(A,B) = d(B,A)`$).
 - 대각 원소는 항상 **0**이다($d(A,A) = 0$).
 - 거리의 범위는 $[0, \infty)$이다.
 
@@ -568,10 +570,10 @@ HC는 여러 수준의 세분도(granularity)에서 데이터를 그룹화하는
 **갱신 규칙:** 병합된 군집과 $X$ 사이의 거리는 병합된 군집의 각 구성원과 $X$의 각 구성원 사이 모든 쌍별 거리의 평균이다. 병합 전 군집의 거리로 쓰면 $d(G \cup H, X) = \frac{n_G d(G, X) + n_H d(H, X)}{n_G + n_H}$이다.
 
 **단계 1:** {D, E}를 병합한다(거리 = 1). 평균을 사용하여 거리를 갱신한다.
-- $d(DE, A) = \operatorname{avg}[d(D,A), d(E,A)] = \operatorname{avg}[15, 16] = 15.5$
-- $d(DE, B) = \operatorname{avg}[d(D,B), d(E,B)] = \operatorname{avg}[10, 11] = 10.5$
-- $d(DE, C) = \operatorname{avg}[d(D,C), d(E,C)] = \operatorname{avg}[10, 11] = 10.5$
-- $d(DE, F) = \operatorname{avg}[d(D,F), d(E,F)] = \operatorname{avg}[4, 3] = 3.5$
+- $d(DE, A) = \mathrm{avg}[d(D,A), d(E,A)] = \mathrm{avg}[15, 16] = 15.5$
+- $d(DE, B) = \mathrm{avg}[d(D,B), d(E,B)] = \mathrm{avg}[10, 11] = 10.5$
+- $d(DE, C) = \mathrm{avg}[d(D,C), d(E,C)] = \mathrm{avg}[10, 11] = 10.5$
+- $d(DE, F) = \mathrm{avg}[d(D,F), d(E,F)] = \mathrm{avg}[4, 3] = 3.5$
 
 | 단계 1 | A | B | C | DE | F |
 |--------|------|-----|-----|------|-----|
@@ -584,9 +586,9 @@ HC는 여러 수준의 세분도(granularity)에서 데이터를 그룹화하는
 *표 23. Average Linkage 단계 1 이후의 거리 행렬*
 
 **단계 2:** {F, DE}를 병합한다(거리 = 3.5). 평균을 사용하여 거리를 갱신한다(현재 구성원 3개: D, E, F).
-- $d(DEF, A) = \operatorname{avg}[d(D,A), d(E,A), d(F,A)] = \operatorname{avg}[15, 16, 19] = 16.67$
-- $d(DEF, B) = \operatorname{avg}[d(D,B), d(E,B), d(F,B)] = \operatorname{avg}[10, 11, 14] = 11.67$
-- $d(DEF, C) = \operatorname{avg}[d(D,C), d(E,C), d(F,C)] = \operatorname{avg}[10, 11, 14] = 11.67$
+- $d(DEF, A) = \mathrm{avg}[d(D,A), d(E,A), d(F,A)] = \mathrm{avg}[15, 16, 19] = 16.67$
+- $d(DEF, B) = \mathrm{avg}[d(D,B), d(E,B), d(F,B)] = \mathrm{avg}[10, 11, 14] = 11.67$
+- $d(DEF, C) = \mathrm{avg}[d(D,C), d(E,C), d(F,C)] = \mathrm{avg}[10, 11, 14] = 11.67$
 
 | 단계 2 | A | B | C | DEF |
 |--------|------|-----|-----|-------|
@@ -597,11 +599,11 @@ HC는 여러 수준의 세분도(granularity)에서 데이터를 그룹화하는
 
 *표 24. Average Linkage 단계 2 이후의 거리 행렬*
 
-> **주의:** 병합된 군집의 거리를 이전 거리의 단순 평균으로 구하면 안 된다. $d(DEF, A)$를 $\operatorname{avg}[d(DE, A), d(F, A)] = \operatorname{avg}[15.5, 19] = 17.25$로 계산하면 틀리며, 구성원 수로 가중한 $(2 \times 15.5 + 1 \times 19)/3 = 16.67$이 맞다.
+> **주의:** 병합된 군집의 거리를 이전 거리의 단순 평균으로 구하면 안 된다. $d(DEF, A)$를 $\mathrm{avg}[d(DE, A), d(F, A)] = \mathrm{avg}[15.5, 19] = 17.25$로 계산하면 틀리며, 구성원 수로 가중한 $(2 \times 15.5 + 1 \times 19)/3 = 16.67$이 맞다.
 
 **단계 3:** {B, C}를 병합한다(거리 = 4).
-- $d(BC, A) = \operatorname{avg}[d(B,A), d(C,A)] = \operatorname{avg}[5, 5] = 5$
-- $d(BC, DEF) = \operatorname{avg}[d(B,DEF), d(C,DEF)] = \operatorname{avg}[11.67, 11.67] = 11.67$
+- $d(BC, A) = \mathrm{avg}[d(B,A), d(C,A)] = \mathrm{avg}[5, 5] = 5$
+- $d(BC, DEF) = \mathrm{avg}[d(B,DEF), d(C,DEF)] = \mathrm{avg}[11.67, 11.67] = 11.67$
 
 | 단계 3 | A | BC | DEF |
 |--------|-----|------|-------|
@@ -659,7 +661,7 @@ height
 
 | 장점 | 단점 |
 |------|------|
-| 모든 수준의 세분도 탐색 가능 (1~$N$개 군집) | $O(N^2)$ 계산 비용 |
+| 모든 수준의 세분도 탐색 가능 (1~$`N`$개 군집) | $O(N^2)$ 계산 비용 |
 | 군집 수를 사전 지정할 필요 없음 | 저장 요구량: $(N^2 - N)/2$ |
 | 해석 가능한 덴드로그램 생성 | 노이즈와 이상치에 민감 |
 
@@ -705,7 +707,9 @@ $m_k(t)$를 단계 $t$에서 $k$번째 군집의 중심점, $C_i(t)$를 단계 $
 
 **배정 단계:**
 
-$$C_i(t) = \underset{1 \leq k \leq K}{\text{argmin}} \; d(z_i, m_k(t))$$
+```math
+C_i(t) = \underset{1 \leq k \leq K}{\text{argmin}} \; d(z_i, m_k(t))
+```
 
 **수렴 기준** (총 군집 내 분산):
 

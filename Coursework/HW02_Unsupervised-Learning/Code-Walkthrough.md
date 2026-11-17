@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Code-Walkthrough.md) | [한국어](Code-Walkthrough.ko.md)
 
-> **Last Updated:** 2026-11-16
+> **Last Updated:** 2026-11-17
 
 > **Learning Objectives:**
 > 1. Install and load a list of packages with a loop and find the data folder relative to the location of the script
@@ -341,7 +341,7 @@ factoextra's `fviz_dend()` draws an `hclust` result as a ggplot2 dendrogram. `k 
   print(viz_silhouette)
 ```
 
-- `fviz_nbclust(data, clustering function, method = "silhouette", k.max = 10)` runs `kmeans()` for each K = 2, ..., 10, computes the average silhouette width with `silhouette()` of the cluster package, and draws it as a line plot. It draws a vertical dashed line at the K with the largest value and shows K = 1 as 0.
+- `fviz_nbclust(data, clustering function, method = "silhouette", k.max = 10)` runs `kmeans()` for each K = 2, ..., 10, computes the average silhouette width with `silhouette()` of the cluster package, and draws it as a line plot. It draws a vertical dashed line at the K with the largest value and shows K = 1 as 0. The function calls `set.seed(123)` first, so the random initialization of `kmeans()` is the same in every run.
 - The function name `kmeans` is passed as is as the second argument. In R, functions are values, so they can be arguments of other functions.
 - Since the result is a ggplot object, `labs()` changes the title and axis labels and `theme_minimal()` is applied. The computed values are in `viz_silhouette$data`.
 - The two `cat()` lines at the end of the script print a notice that the plot was created.

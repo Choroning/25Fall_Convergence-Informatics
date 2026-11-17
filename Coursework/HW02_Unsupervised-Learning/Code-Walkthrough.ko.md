@@ -2,7 +2,7 @@
 
 [레포지토리 안내](../../README.ko.md) | [English](Code-Walkthrough.md) | [한국어](Code-Walkthrough.ko.md)
 
-> **최종 수정일:** 2026-11-16
+> **최종 수정일:** 2026-11-17
 
 > **학습 목표:**
 > 1. 패키지 목록을 반복문으로 설치하고 불러오며, 스크립트의 위치를 기준으로 데이터 폴더를 찾을 수 있다
@@ -341,7 +341,7 @@ factoextra의 `fviz_dend()`는 `hclust` 결과를 ggplot2 덴드로그램으로 
   print(viz_silhouette)
 ```
 
-- `fviz_nbclust(데이터, 군집 함수, method = "silhouette", k.max = 10)`은 K = 2, ..., 10마다 `kmeans()`를 실행하고, cluster 패키지의 `silhouette()`로 평균 Silhouette 폭을 계산하여 선 그래프로 그린다. 가장 큰 K에는 세로 점선을 긋고, K = 1은 0으로 표시한다.
+- `fviz_nbclust(데이터, 군집 함수, method = "silhouette", k.max = 10)`은 K = 2, ..., 10마다 `kmeans()`를 실행하고, cluster 패키지의 `silhouette()`로 평균 Silhouette 폭을 계산하여 선 그래프로 그린다. 가장 큰 K에는 세로 점선을 긋고, K = 1은 0으로 표시한다. 함수 안에서 `set.seed(123)`을 먼저 호출하므로 `kmeans()`의 무작위 초기화가 실행마다 같다.
 - 두 번째 인자에 함수 이름 `kmeans`를 그대로 넘긴다. R에서 함수는 값이므로 다른 함수의 인자가 될 수 있다.
 - 결과가 ggplot 객체이므로 `labs()`로 제목과 축 이름을 바꾸고 `theme_minimal()`을 적용한다. 계산된 값은 `viz_silhouette$data`에 들어 있다.
 - 스크립트 끝의 `cat()` 두 줄은 그림이 만들어졌다는 안내를 출력한다.

@@ -2,7 +2,7 @@
 
 [레포지토리 안내](../../README.ko.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **최종 수정일:** 2026-11-04
+> **최종 수정일:** 2026-11-17
 
 > **학습 목표:**
 > 1. 차원 축소의 동기와 차원의 저주를 설명할 수 있다
@@ -240,7 +240,9 @@ $\mathbf{U}$를 $N \times N$ 직교 행렬이라 하자. 여기서 $\mathbf{U}\m
 
 ### 6.2 재구성 오차(Reconstruction Error)
 
-$$\varepsilon^2 = \mathbb{E}\{\|\mathbf{x} - \hat{\mathbf{x}}\|^2\} = \frac{1}{m} \sum_{j=1}^{m} \|\mathbf{x}_j - \hat{\mathbf{x}}_j\|^2$$
+```math
+\varepsilon^2 = \mathbb{E}\{\|\mathbf{x} - \hat{\mathbf{x}}\|^2\} = \frac{1}{m} \sum_{j=1}^{m} \|\mathbf{x}_j - \hat{\mathbf{x}}_j\|^2
+```
 
 **목표:** 재구성 오차를 최소화한다.
 
@@ -286,10 +288,12 @@ $$\boldsymbol{\Sigma} = \frac{1}{n} \mathbf{X}^T \mathbf{X}$$
 
 2차원 공분산 행렬은 다음과 같다.
 
-$$\boldsymbol{\Sigma} = \begin{bmatrix} \sigma_x^2 & \text{Cov}(X,Y) \\ \text{Cov}(X,Y) & \sigma_y^2 \end{bmatrix}$$
+```math
+\boldsymbol{\Sigma} = \begin{bmatrix} \sigma_x^2 & \text{Cov}(X,Y) \\ \text{Cov}(X,Y) & \sigma_y^2 \end{bmatrix}
+```
 
 - **대각 원소**($\sigma_x^2$, $\sigma_y^2$)는 **각 축을 따른 퍼짐(분산)** 으로, 데이터가 $X$와 $Y$를 따라 각각 얼마나 늘어나 있는지를 나타낸다.
-- **비대각 원소**($\text{Cov}(X,Y)$)는 변수 간의 **결합 퍼짐**으로, $X$와 $Y$가 함께 어떻게 변하는지를 나타낸다.
+- **비대각 원소**($`\text{Cov}(X,Y)`$)는 변수 간의 **결합 퍼짐**으로, $X$와 $Y$가 함께 어떻게 변하는지를 나타낸다.
 
 **$\mathbf{X}^T \mathbf{X}$가 공분산을 포착하는 이유:**
 
@@ -341,7 +345,9 @@ $$V_i = \frac{1}{n-1} \sum_{m=1}^{n} (X_{im} - \bar{X}_i)^2$$
 
 다음 행렬 $A$의 고유값과 고유벡터를 구한다.
 
-$$A = \begin{bmatrix} 4 & 2 \\ 3 & 5 \end{bmatrix}$$
+```math
+A = \begin{bmatrix} 4 & 2 \\ 3 & 5 \end{bmatrix}
+```
 
 1. 특성 방정식 $\det(A - \lambda I) = 0$을 푼다.
 2. $(4 - \lambda)(5 - \lambda) - 2 \cdot 3 = \lambda^2 - 9\lambda + 14 = (\lambda - 7)(\lambda - 2) = 0$이므로 $\lambda = 7, 2$이다.

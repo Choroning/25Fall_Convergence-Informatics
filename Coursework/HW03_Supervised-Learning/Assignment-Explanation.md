@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Assignment-Explanation.md) | [한국어](Assignment-Explanation.ko.md)
 
-> **Last Updated:** 2026-11-16
+> **Last Updated:** 2026-11-17
 
 > **Learning Objectives:**
 > 1. Design a procedure that performs feature selection and preprocessing only within the training set of each iteration when evaluating a classification model by LOOCV on data with far more features than samples
@@ -127,10 +127,10 @@ As the final classification model, the PAMR (Nearest Shrunken Centroids) algorit
 
 ### 3.4 Review of the Threshold Choice
 
-The submitted answer states that the smallest value of the threshold vector was used, but `pam_fit$threshold[length(pam_fit$threshold)]` in the code is the last value of the vector. `pamr.train(threshold = NULL)` builds 30 thresholds that start at 0 and increase up to the value at which the differences of all genes become 0, so the last value is the largest threshold. Rerunning the same code and checking the threshold of each iteration gives the following.
+The submitted answer states that the smallest value of the threshold vector was used, but `pam_fit$threshold[length(pam_fit$threshold)]` in the code is the last value of the vector. `pamr.train(threshold = NULL)` builds 30 thresholds that start at 0 and increase up to the value at which the differences of all genes become 0, so the last value is the largest threshold. What happens at the last threshold in each iteration is as follows.
 
 - **Number of remaining genes:** In all 21 iterations, 0 genes remain at the last threshold. All class means shrink to the overall mean, so the distance to the validation sample is the same regardless of class, and the prediction is decided only by the class ratio (prior probability) of the training set.
-- **Class ratio:** When the validation sample is Control, the training set has 3 Asthma and 17 Control, which becomes 15 to 17 after SMOTE, so Control is predicted. When the validation sample is Asthma, the training set has 2 Asthma and 18 Control, which becomes 18 to 18 after SMOTE, so the posterior probabilities tie at 0.5 and pamr picks the earlier level, Asthma.
+- **Class ratio:** When the validation sample is Control, the training set has 3 Asthma and 17 Control, which becomes 15 to 17 after SMOTE, so Control is predicted. When the validation sample is Asthma, the training set has 2 Asthma and 18 Control, which becomes 18 to 18 after SMOTE, so the posterior probabilities tie at 0.5 and pamr picks the earlier level, Asthma. The `as.factor()` call after SMOTE reorders the levels alphabetically, so Asthma is the first level.
 
 | Threshold Used for Prediction | Remaining Genes | Accuracy | Asthma Sensitivity |
 |:-----|-----:|-----:|-----:|
@@ -215,7 +215,7 @@ Using a total of 9 models, logistic regression, LDA, QDA, k-NN, Naive Bayes, lin
 
 *Table 6. Best sensitivity of each model by repeated 10-fold cross-validation*
 
-The parameters of the selected GBM are 300 trees, depth 3, learning rate 0.1, and a minimum of 20 samples in a leaf node, and with them the cross-validated area under the ROC curve is 0.9730, the sensitivity is 0.9107, and the specificity is 0.9272.
+The parameters of the selected GBM are 300 trees, depth 3, learning rate 0.1, and a minimum of 20 samples in a leaf node, and with them the cross-validated area under the ROC curve is 0.9730, the sensitivity is 0.9107, and the specificity is 0.9319.
 
 The submitted answer is as follows.
 
@@ -223,7 +223,7 @@ The best model by sensitivity is GBM. The evaluation criterion was changed to se
 
 Comparing the best sensitivity of the same 9 models gave, in order, GBM 0.9107, QDA 0.9093, Naive Bayes 0.9087, Random Forest 0.8920, SVM-RBF 0.8600, k-NN 0.7373, LDA 0.5847, Logistic Regression 0.5840, and SVM-Linear 0.5833. Naive Bayes ranked first by accuracy, but by sensitivity GBM recorded a slightly higher 0.9107 and was selected as the best model. The finally selected GBM model was tuned to n.trees = 300, interaction.depth = 3, shrinkage = 0.10, and n.minobsinnode = 20, and by cross-validation it showed an ROC of about 0.973, a Sensitivity of about 91%, and a Specificity of about 93%. That is, it correctly finds about 91% of COVID19-positive patients while maintaining high specificity for negatives, so it can be evaluated as the most appropriate classification model from the standpoint of not missing positive patients.
 
-> **Note:** With sensitivity as the only criterion, a model that classifies everyone as positive achieves a sensitivity of 1. When choosing a model by sensitivity, the specificity or the area under the ROC curve must therefore be checked as well, and the selected GBM maintains a specificity of 0.927. The sensitivities of ranks 1-3 differ by at most 0.002, so the ranking may change under different repeated splits.
+> **Note:** With sensitivity as the only criterion, a model that classifies everyone as positive achieves a sensitivity of 1. When choosing a model by sensitivity, the specificity or the area under the ROC curve must therefore be checked as well, and the selected GBM maintains a specificity of 0.932. The sensitivities of ranks 1-3 differ by at most 0.002, so the ranking may change under different repeated splits.
 
 ---
 
