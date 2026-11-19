@@ -2,7 +2,7 @@
 
 [레포지토리 안내](README.ko.md) | [English](Course-Information.md) | [한국어](Course-Information.ko.md)
 
-> **최종 수정일:** 2026-11-18
+> **최종 수정일:** 2026-11-19
 
 ## 목차
 
@@ -118,7 +118,7 @@
   - `Chap5.Supervised_Learning`: [Ch06](Lecture-Notes/Ch06_Supervised-Learning/Concepts_Lecture.ko.md)
 - 강의 시연 R 코드는 비지도 학습(11/5, 11/10, 11/12), 선형 회귀(11/19), 지도 학습(12/3) 수업에서 다뤘으며, 이를 정리한 실습 코드는 [`Coursework` 색인](Coursework/README.ko.md)에 있습니다.
 - HW1은 R 코드 없이 Minkowski 거리 행렬, 계층적 군집화, Silhouette 점수, Rand 지수 등을 계산하고 서술하는 과제였고, HW2와 HW3은 실제 데이터를 R로 분석하는 과제였습니다. HW2와 HW3의 과제 안내문, 해설, 풀이 코드는 [`Coursework` 색인](Coursework/README.ko.md)에 있습니다.
-- 강의계획서의 9~15주차에 계획된 생물정보학 주제는 강의 노트에 별도 단원으로 포함되어 있지 않습니다.
+- `Ch07`\~`Ch12`는 강의계획서의 9\~14주차 주제이지만 수업에서 진행하지 않아 보충한 단원이며, 9주차부터 한 주차에 한 단원씩 차례로 대응합니다([Ch07](Lecture-Notes/Ch07_Introduction-to-Bioinformatics/Concepts_Lecture.ko.md), [Ch08](Lecture-Notes/Ch08_Sequence-Analysis-Algorithms/Concepts_Lecture.ko.md), [Ch09](Lecture-Notes/Ch09_Statistics-for-High-Throughput-Data/Concepts_Lecture.ko.md), [Ch10](Lecture-Notes/Ch10_Biomarker-Discovery-and-Feature-Selection/Concepts_Lecture.ko.md), [Ch11](Lecture-Notes/Ch11_Gene-Expression-Profiling-with-Clustering-and-Networks/Concepts_Lecture.ko.md), [Ch12](Lecture-Notes/Ch12_Machine-Learning-for-Disease-Prediction/Concepts_Lecture.ko.md)). 15주차의 주제(학제 간 연구에서 소프트웨어 과학자의 역할, 과목 복습)는 학문 내용이 아니어서 단원을 두지 않았습니다.
 
 ---
 

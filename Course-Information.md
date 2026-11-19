@@ -2,7 +2,7 @@
 
 [Repository Guide](README.md) | [English](Course-Information.md) | [한국어](Course-Information.ko.md)
 
-> **Last Updated:** 2026-11-16
+> **Last Updated:** 2026-11-19
 
 ## Table of Contents
 
@@ -118,7 +118,7 @@
   - `Chap5.Supervised_Learning`: [Ch06](Lecture-Notes/Ch06_Supervised-Learning/Concepts_Lecture.md)
 - The lecture demonstration R code was covered in the classes on unsupervised learning (11/5, 11/10, 11/12), linear regression (11/19), and supervised learning (12/3), and the lab code organized from it is in the [`Coursework` index](Coursework/README.md).
 - HW1 asked for calculations and written explanations of Minkowski distance matrices, hierarchical clustering, Silhouette scores, Rand indices, and related topics without R code, and HW2 and HW3 were assignments analyzing real data with R. The assignment handouts, explanations, and solution code of HW2 and HW3 are in the [`Coursework` index](Coursework/README.md).
-- The bioinformatics topics planned for weeks 9-15 in the syllabus are not part of the lecture notes as separate units.
+- `Ch07`-`Ch12` are supplementary units on the topics of weeks 9-14 of the syllabus, which were not taught in class; starting from week 9, they correspond to those weeks in order, one unit per week ([Ch07](Lecture-Notes/Ch07_Introduction-to-Bioinformatics/Concepts_Lecture.md), [Ch08](Lecture-Notes/Ch08_Sequence-Analysis-Algorithms/Concepts_Lecture.md), [Ch09](Lecture-Notes/Ch09_Statistics-for-High-Throughput-Data/Concepts_Lecture.md), [Ch10](Lecture-Notes/Ch10_Biomarker-Discovery-and-Feature-Selection/Concepts_Lecture.md), [Ch11](Lecture-Notes/Ch11_Gene-Expression-Profiling-with-Clustering-and-Networks/Concepts_Lecture.md), [Ch12](Lecture-Notes/Ch12_Machine-Learning-for-Disease-Prediction/Concepts_Lecture.md)). The topics of week 15 (the role of software scientists in interdisciplinary research, and the course review) are not academic content, so they have no unit.
 
 ---
 

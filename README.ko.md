@@ -22,7 +22,7 @@
 <br><a name="about-this-repository"></a>
 ## 📝 레포지토리 소개
 
-- `Lecture-Notes/`에는 강의자료의 장 순서(`Ch##`)를 따른 강의 노트가 있습니다.
+- `Lecture-Notes/`에는 강의자료의 장 순서를 따른 강의 노트(`Ch01`\~`Ch06`)가 있고, `Ch07`\~`Ch12`는 강의계획서의 9\~14주차 생물정보학 주제이지만 수업에서 진행하지 않아 보충한 단원입니다.
 - `Coursework/`에는 과제의 문제와 풀이, 강의 시연 코드가 있으며, 샘플 데이터셋은 각 항목의 `data/`에 있습니다.
 - 모든 강의 노트는 영어(`.md`)와 한국어(`.ko.md`) 파일이 짝을 이룹니다.
 - R 코드 파일에는 **Doxygen 스타일 헤더**가 있습니다.
@@ -63,9 +63,9 @@
 
 ```plaintext
 25Fall_Convergence-Informatics
-├── Lecture-Notes               강의자료 장별 강의 노트
+├── Lecture-Notes               강의자료 장별 강의 노트와 보충 단원
 ├── Coursework                  과제의 문제와 풀이, 실습 코드
-├── images                      과제 해설의 그림
+├── images                      강의 노트와 과제 해설의 그림
 ├── Course-Information.ko.md    수업 운영 정보
 ├── Course-Information.md
 ├── LICENSE                     문서 라이선스 (CC BY-NC-SA 4.0)
