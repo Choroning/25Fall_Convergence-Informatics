@@ -644,7 +644,7 @@ Because GenBank keeps the sequences that researchers submit as they are, the sam
 
 ### 10.3 UniProt
 
-**UniProt** is a database of protein sequences and their functional information. Its core, the UniProt Knowledgebase (UniProtKB), is divided into **Swiss-Prot** (reviewed entries), whose functional information expert curators compile from the literature, and **TrEMBL** (unreviewed entries), annotated by automated systems [5]. As of the 2023 update paper, the number of sequences in UniProtKB had exceeded 227 million [5], most of them unreviewed entries predicted from genome sequences. When reliable functional information is needed, Swiss-Prot entries should be preferred.
+**UniProt** is a database of protein sequences and their functional information. Its core, the UniProt Knowledgebase (UniProtKB), is divided into **Swiss-Prot** (reviewed entries), whose functional information expert curators compile from the literature, and **TrEMBL** (unreviewed entries), annotated by automated systems [5]. Most UniProtKB entries are unreviewed entries predicted from genome sequences, so when reliable functional information is needed, Swiss-Prot entries should be preferred.
 
 ### 10.4 PDB
 

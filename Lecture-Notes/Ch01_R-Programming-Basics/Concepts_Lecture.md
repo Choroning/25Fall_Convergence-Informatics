@@ -157,7 +157,7 @@ There are two ways to save your work.
 
 R is installed in two steps. First, download the R installer for the operating system from CRAN. CRAN provides precompiled binary distributions of the base system and contributed packages for Windows and macOS users, and many Linux distributions also provide R through their own package management systems. Next, install RStudio Desktop (open source license), an IDE that makes R easier to use. RStudio is not a replacement for R but a working environment that calls an R installation, so R must be installed first.
 
-When RStudio is started for the first time, three panes appear. The left pane is the R console; the top right pane holds tabs such as Environment and History, and the bottom right pane holds the Files, Plots, Packages, Help, and Viewer tabs (the tabs may change between versions). Creating or opening a script file adds the code editor at the top left, giving the four-pane layout of Section 1.3. Clicking a tab moves to that feature.
+When RStudio is started for the first time, only the R console on the left and the two panes at the top right and bottom right appear, without the code editor. Creating or opening a script file adds the code editor at the top left, giving the four-pane layout of Section 1.3.
 
 ### 1.9 Case Sensitivity and Object Naming Rules
 
@@ -733,7 +733,7 @@ mean(x > 25)
 - `which()` returns the positions that are `TRUE`.
 - `sum()` and `mean()` compute after the coercion of Section 2.6 turns `TRUE` into 1 and `FALSE` into 0, giving the number (3) and the proportion (3/5 = 0.6) of elements that satisfy the condition.
 
-Several conditions are combined with the element-wise logical operators `&` (and), `|` (or), and `!` (not). For example, `x[x > 15 & x < 45]` is 20, 30, 40. The operators `&&` and `||` are meant only for values of length 1, and from R 4.3.0 on, using them with a vector condition of length 2 or more raises an error (the R 4.2 series gives a warning) [1].
+Several conditions are combined with the element-wise logical operators `&` (and), `|` (or), and `!` (not). For example, `x[x > 15 & x < 45]` is 20, 30, 40. The operators `&&` and `||` are meant only for values of length 1, and from R 4.3.0 on, using them with a vector condition of length 2 or more raises an error [1].
 
 ### 4.10 Handling Missing Values
 
