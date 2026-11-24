@@ -2,11 +2,11 @@
 
 [Repository Guide](../../../README.md) | [English](Assignment.md) | [한국어](Assignment.ko.md)
 
-> **Last Updated:** 2026-11-16
+> **Last Updated:** 2026-11-24
 
 This is the second assignment of Convergence Informatics. It implements convergence informatics with real biomedical data, produced by cutting-edge technology used in actual research, and unsupervised learning: it classifies people according to various diseases and infers the relationship between diseases through R programming. It also applies basic supervised learning with a linear model to real data, aiming to become familiar with linear modeling through R programming.
 
-- **Submission:** Compress and submit the report with the answers to the problems below and the entire R code (.R files) you wrote. The compressed file (.zip) must be named `HW2_YourID_Yourname.zip`.
+- **Deliverables:** The report with the answers to the problems below and the entire R code (.R files) you wrote.
 - **Execution:** The R code should be executable when the TA runs it.
 - **Collaboration:** You can consult with a friend, but copying the R code is absolutely prohibited, and the analysis method can never be the same.
 

@@ -2,7 +2,7 @@
 
 [Repository Guide](README.md) | [English](Course-Information.md) | [한국어](Course-Information.ko.md)
 
-> **Last Updated:** 2026-11-19
+> **Last Updated:** 2026-11-24
 
 ## Table of Contents
 
@@ -75,7 +75,7 @@
 ## 4. Course Policies
 
 - Assignments apply the theory to real data using R, a free tool. A student who can solve an assignment in another language may use a language they are comfortable with (e.g., Python with NumPy, SciPy, SymPy, StatsModels, and Pandas).
-- Assignment answers are written in Korean or English. The report (.docx) and the entire R code written (.R) are compressed under a name with the assignment number, such as `HW3_YourID_Yourname.zip`, and submitted to Blackboard, and the R code must run cleanly when the teaching assistant runs it.
+- Assignment answers are written in Korean or English. The deliverables are the report (.docx) and the entire R code written (.R), and the R code must run cleanly when the teaching assistant runs it.
 - Students may consult with friends, but copying R code is strictly prohibited, and the analysis methods must not be the same.
 - The final exam data were real research data that only the instructor was authorized to use for education, so uploading them directly to commercial LLMs such as ChatGPT or Gemini was prohibited, and the data other than the exam paper had to be deleted immediately after the exam. Apart from direct data uploads, students were encouraged to actively use AI tools.
 - In all processes of taking the course (attending lectures, writing and submitting assignments, exams, etc.), students must participate in learning with honesty and passion according to the purpose and educational philosophy of the university, devote themselves to creative learning based on moral sensitivity, faithfully carry out what they have promised the faculty and fellow students, and respect the character of the faculty and other students and observe basic manners.

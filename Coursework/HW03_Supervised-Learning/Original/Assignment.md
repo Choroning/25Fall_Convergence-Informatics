@@ -2,11 +2,11 @@
 
 [Repository Guide](../../../README.md) | [English](Assignment.md) | [한국어](Assignment.ko.md)
 
-> **Last Updated:** 2026-11-16
+> **Last Updated:** 2026-11-24
 
 This is the third assignment of Convergence Informatics. It consists of three problems: designing a model that predicts a specific disease from gene expression data, designing a model that predicts COVID-19 from 10 feature values, and identifying a serial killer in a DNA database. Read the questions and answer them carefully.
 
-- **Submission:** Compress this report (.docx) with your answers and the entire R code (.R files) used for the answers, and submit it to Blackboard by the designated time. The compressed file (.zip) must be named `HW3_YourID_Yourname.zip`.
+- **Deliverables:** The report (.docx) with your answers and the entire R code (.R files) used for the answers.
 - **Answer language:** Write your answers in Korean or English.
 - **Execution:** The R code should be executable when the TA runs it.
 - **Partial score:** There is a partial score, so even if you cannot resolve a problem completely, try it as far as you can.
