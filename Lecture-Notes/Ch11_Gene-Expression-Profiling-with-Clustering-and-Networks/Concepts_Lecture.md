@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-11-19
+> **Last Updated:** 2026-11-26
 
 > **Learning Objectives:**
 > 1. Explain the structure of an expression matrix and the purpose and order of log transformation, gene filtering, and scaling
@@ -63,7 +63,6 @@
   - [8.4 Testing Many Gene Sets](#84-testing-many-gene-sets)
   - [8.5 Assumptions and Limitations of Over-Representation Analysis](#85-assumptions-and-limitations-of-over-representation-analysis)
 - [Concept Applications](#concept-applications)
-- [Glossary](#glossary)
 - [Summary](#summary)
 - [Self-Check Questions](#self-check-questions)
 - [References](#references)
@@ -76,11 +75,15 @@
 
 ### 1.1 Expression Matrices and Expression Profiles
 
-As Chapter 7 showed, microarrays and RNA-seq measure the expression levels of tens of thousands of genes in one sample at once. Measurements of many samples are arranged into an **expression matrix** with genes as rows and samples as columns. With $`G`$ genes and $`n`$ samples, the expression matrix is $`G \times n`$. This chapter follows the biological convention of putting genes in rows; note that this is the opposite of the machine learning convention of Chapters 10 and 12, which put samples in rows. In R, `t()` transposes between the two conventions.
+As Chapter 7 showed, microarrays and RNA-seq measure the expression levels of tens of thousands of genes in one sample at once. Measurements of many samples are arranged into an expression matrix. With $`G`$ genes and $`n`$ samples, the expression matrix is $`G \times n`$. This chapter follows the biological convention of putting genes in rows; note that this is the opposite of the machine learning convention of Chapters 10 and 12, which put samples in rows. In R, `t()` transposes between the two conventions.
+
+> **Definition:** An **expression matrix** arranges the expression levels measured in many samples with genes as rows and samples as columns.
 
 > **Definition:** An **expression profile** is one row of the expression matrix: the vector of one gene's expression levels across all samples.
 
-A column is likewise the vector of all genes' expression in one sample, and it summarizes the molecular state of the sample. **Gene expression profiling** means analyzing these row and column patterns to find genes that move together and samples with similar molecular states.
+Each column of the matrix is the vector of all genes' expression in one sample, and it summarizes the molecular state of the sample.
+
+> **Definition:** **Gene expression profiling** is the analysis of the row and column patterns of an expression matrix to find genes that move together and samples with similar molecular states.
 
 ### 1.2 Clustering Genes and Clustering Samples
 
@@ -95,7 +98,9 @@ An expression matrix can be clustered in two directions, which answer different 
 
 Gene clustering rests on the idea that genes regulated by the same transcription factor or belonging to the same pathway have similar expression patterns. Eisen et al. presented a method that applies hierarchical clustering to genome-wide expression data and displays the result as a figure showing the cluster structure and the expression values together, and showed in yeast that it efficiently groups genes of known similar function [1]. A gene of unknown function that clusters with genes of known function therefore gives a lead to its function [1].
 
-Sample clustering looks for molecularly distinct subtypes hidden within one diagnosis. Golub et al. showed on acute leukemia data that a clustering procedure, given no prior knowledge of the classes, discovered by itself the distinction between acute myeloid leukemia (AML) and acute lymphoblastic leukemia (ALL), and called this **class discovery** [2]. Assigning new samples to already known classes, **class prediction**, is the subject of Chapter 12.
+Sample clustering looks for molecularly distinct subtypes hidden within one diagnosis. Golub et al. showed on acute leukemia data that a clustering procedure, given no prior knowledge of the classes, discovered by itself the distinction between acute myeloid leukemia (AML) and acute lymphoblastic leukemia (ALL), and called this class discovery [2]. Assigning new samples to already known classes, **class prediction**, is the subject of Chapter 12.
+
+> **Definition:** **Class discovery** is finding the subtypes (classes) hidden in data by clustering that is given no prior knowledge of the classes.
 
 ### 1.3 Workflow of the Analysis
 
@@ -118,6 +123,8 @@ flowchart TD
 *Figure 1. Workflow of gene expression profiling*
 
 ### 1.4 Simulated Expression Data
+
+> **Definition:** A **module** is a group of genes whose expression profiles are strongly correlated so that they move together; it appears as one block in clustering or a gene network.
 
 The R examples in this chapter use simulated data whose truth is known. Twenty-four samples belong to three subtypes S1, S2, and S3, eight each, and 140 of 400 genes belong to four modules A, B, C, and D.
 
@@ -173,6 +180,8 @@ Expression values on the original scale are hard to cluster directly, for three 
 
 Taking the base-2 logarithm turns ratios into differences. The values 10, 20, 40, and 80 become 3.32, 4.32, 5.32, and 6.32, so each doubling becomes the same step of 1. For count data that may contain zeros, a small value (a pseudocount) is added before taking the logarithm, as in $`\log_2(x + 1)`$.
 
+> **Definition:** A **pseudocount** is a small positive number (often 1) added to every value before a log transformation, so that count data containing zeros avoid the undefined $`\log 0`$.
+
 ```r
 m_raw <- rowMeans(raw); s_raw <- apply(raw, 1, sd)
 E <- log2(raw + 1)
@@ -219,19 +228,23 @@ Keeping the 200 genes with the largest log-scale variance retained all genes of 
 
 ### 2.3 Scaling Each Gene
 
-When clustering genes, the interest is not the absolute level of expression but the pattern of rises and falls across samples. So each row is centered by its mean and divided by its standard deviation, giving the **row z-score**.
+> **Definition:** The **row z-score** is the value obtained by subtracting each row (gene) mean of the expression matrix and dividing by the row standard deviation.
+
+When clustering genes, the interest is not the absolute level of expression but the pattern of rises and falls across samples. So the row z-score is used.
 
 ```math
 z_{gj} = \frac{x_{gj} - \bar x_{g\cdot}}{s_{g}}, \qquad \bar x_{g\cdot} = \frac{1}{n}\sum_{j=1}^{n} x_{gj}, \quad s_g^2 = \frac{1}{n-1}\sum_{j=1}^{n} (x_{gj} - \bar x_{g\cdot})^2
 ```
 
-A gene with values (2, 4, 6) has mean 4 and standard deviation 2, so its z-scores are (-1, 0, 1), and a gene with values (102, 104, 106) also has z-scores (-1, 0, 1). The two genes differ in level by about 50-fold but share the same pattern. `scale()` in the code above standardizes each column, so to standardize rows one transposes with `t()`, applies `scale()`, and transposes back. The first row of the result has mean 0 and standard deviation 1.
+A gene with values (2, 4, 6) has mean 4 and standard deviation 2, so its z-scores are (-1, 0, 1), and a gene with values (102, 104, 106) also has z-scores (-1, 0, 1). The two genes differ greatly in level (means 4 and 104) but share the same pattern. `scale()` in the code above standardizes each column, so to standardize rows one transposes with `t()`, applies `scale()`, and transposes back. The first row of the result has mean 0 and standard deviation 1.
 
 The z-score normalization of Section 4.3 in Chapter 3 standardized each feature (column) so that variables with different units would not dominate the distance. The row z-score performs the same computation along genes (rows), and its purpose is to remove level differences between genes and keep only the pattern. Applying row z-scores before clustering samples also keeps highly expressed or highly variable genes from dominating the distances between samples.
 
 ### 2.4 Normalization between Samples
 
-Samples differ in the amount of RNA measured, the sequencing depth, and the overall brightness of the microarray, so all genes in a sample can be higher or lower together. The step that removes such technical differences is called **normalization**.
+Samples differ in the amount of RNA measured, the sequencing depth, and the overall brightness of the microarray, so all genes in a sample can be higher or lower together.
+
+> **Definition:** **Normalization** is the step that removes technical differences among samples, such as the amount measured, the sequencing depth, or the brightness, so that their values become comparable.
 
 - In RNA-seq, samples have different total read counts, so counts are divided by a size factor. Estimation of size factors is covered in Chapter 9.
 - **Quantile normalization** makes the value distributions of all samples identical. The values of each sample are sorted, the values of the same rank are replaced by their average across samples, and the values are returned to their original order.
@@ -256,7 +269,13 @@ Section 5.5 of Chapter 3 introduced $`D = 1 - \lvert r \rvert`$ as a way to turn
 
 *Table 2. Three correlation-based distances*
 
+> **Definition:** The **signed correlation distance** is the distance $`1 - r`$, which treats negative correlation as farthest.
+
+> **Definition:** The **unsigned correlation distance** is the distance $`1 - \lvert r \rvert`$, which treats a strong negative correlation as close, just like a strong positive one.
+
 Which one to use depends on the biological question. To treat a relation in which one gene represses another, so that they move in opposite directions, as belonging to the same regulatory circuit, use an unsigned distance. To group only genes that rise together and separate genes that move oppositely, use the signed distance $`1 - r`$. If one cluster mixes genes of opposite directions, the interpretation "this cluster is highly expressed" breaks down, so heatmaps and cluster interpretation use $`1 - r`$ more often. The examples in this chapter also use $`1 - r`$.
+
+> **Definition:** A **heatmap** is a picture that shows the values of a matrix as colors.
 
 $`1 - r`$ does not satisfy the triangle inequality, so it is not a distance (metric) in the strict sense. The quantity $`\sqrt{2(1 - r)}`$ of Section 3.3 does satisfy it. Hierarchical clustering needs only a dissimilarity, so in practice $`1 - r`$ works without problems.
 
@@ -298,7 +317,9 @@ The Pearson correlation is swayed heavily by a single outlier. If a measurement 
 
 ### 4.1 Two-Way Clustering
 
-The agglomerative hierarchical clustering of Section 7 in Chapter 3 repeatedly merges the two closest clusters to build a dendrogram. For an expression matrix, genes and samples are clustered separately, and the rows and columns are reordered by the leaf orders of the two dendrograms. This is called **two-way clustering**.
+> **Definition:** **Two-way clustering** clusters the genes and the samples of an expression matrix separately by hierarchical clustering and reorders the rows and columns by the leaf orders of the two dendrograms.
+
+The agglomerative hierarchical clustering of Section 7 in Chapter 3 repeatedly merges the two closest clusters to build a dendrogram. Two-way clustering applies this method to genes and samples separately.
 
 ```r
 d_gene <- as.dist(1 - cor(t(Ef)))            # 1 - Pearson r between genes
@@ -332,7 +353,7 @@ On the gene side, the four clusters of size 8 or more matched modules A, B, C, a
 
 ### 4.2 Reading a Heatmap
 
-The result of two-way clustering is drawn as a **heatmap**. Row z-scores are shown as colors, rows and columns are ordered by the leaf orders of the dendrograms, and the two dendrograms are attached at the top and left.
+The result of two-way clustering is drawn as a heatmap. Row z-scores are shown as colors, rows and columns are ordered by the leaf orders of the dendrograms, and the two dendrograms are attached at the top and left.
 
 ![Figure 2. Heatmap of two-way clustering of 200 genes and 24 samples in the simulated data](../../images/Ch11_Expression-Heatmap.png)
 
@@ -353,11 +374,13 @@ Swapping the left and right branches at any merge of a dendrogram gives the same
 
 ### 4.4 Choice of Linkage and the Cophenetic Correlation
 
-The three linkages of Section 7.5 in Chapter 3 build different dendrograms from the same distance matrix. How well a dendrogram preserves the original distances can be measured by the **cophenetic correlation**.
+The three linkages of Section 7.5 in Chapter 3 build different dendrograms from the same distance matrix. How well a dendrogram preserves the original distances can be measured by the cophenetic correlation.
 
 > **Definition:** The **cophenetic distance** between two leaves is the merge height at which they first join the same cluster in a dendrogram.
 
-The cophenetic correlation is the Pearson correlation, over all pairs, between the original distances and the cophenetic distances. The closer it is to 1, the more faithfully the dendrogram represents the original distance structure.
+> **Definition:** The **cophenetic correlation** is the Pearson correlation, over all pairs of leaves, between the original distances and the cophenetic distances; it measures how well a dendrogram preserves the original distances.
+
+The closer the cophenetic correlation is to 1, the more faithfully the dendrogram represents the original distance structure.
 
 ```r
 sapply(c("single", "complete", "average"), function(m)
@@ -389,7 +412,9 @@ The K-means clustering of Section 8 in Chapter 3 finds $`K`$ clusters that minim
 
 ### 5.2 The Elbow Method
 
-The within-cluster sum of squares $`W_K`$ decreases as $`K`$ grows and reaches 0 at $`K = n`$. So one cannot choose the $`K`$ that minimizes $`W_K`$. The **elbow method** plots $`W_K`$ against $`K`$ and chooses the point where the decrease suddenly levels off (the elbow). Up to the true number of clusters, each increase of $`K`$ splits off a distinct cluster and $`W_K`$ drops sharply; beyond it, a cluster is split by force and $`W_K`$ drops only slightly. The weakness is that the elbow is often unclear and judging it is subjective.
+> **Definition:** The **elbow method** plots the within-cluster sum of squares $`W_K`$ against the number of clusters $`K`$ and chooses as the number of clusters the $`K`$ where the decrease suddenly levels off (the elbow).
+
+The within-cluster sum of squares $`W_K`$ decreases as $`K`$ grows and reaches 0 at $`K = n`$. So one cannot choose the $`K`$ that minimizes $`W_K`$. Up to the true number of clusters, each increase of $`K`$ splits off a distinct cluster and $`W_K`$ drops sharply; beyond it, a cluster is split by force and $`W_K`$ drops only slightly. The weakness is that the elbow is often unclear and judging it is subjective.
 
 ### 5.3 Average Silhouette Width
 
@@ -397,7 +422,9 @@ The **silhouette width** of Section 9.2 in Chapter 3, $`s(i) = \{b(i) - a(i)\} /
 
 ### 5.4 The Gap Statistic
 
-The **gap statistic** compares the decrease of $`W_K`$ with that for data from a reference distribution without cluster structure, to see whether the decrease exceeds chance. Proposed by Tibshirani, Walther, and Hastie, it is [4]
+> **Definition:** The **gap statistic** measures, for each number of clusters $`K`$, how much smaller $`\log W_K`$ of the data is than its expected value for data from a reference distribution without cluster structure, to see whether the decrease of $`W_K`$ exceeds chance.
+
+Proposed by Tibshirani, Walther, and Hastie, the gap statistic is [4]
 
 ```math
 \mathrm{Gap}(K) = E^{*}\!\left[\log W_K^{*}\right] - \log W_K
@@ -467,9 +494,13 @@ Two of the three criteria and the maximum of the gap pointed to the true number 
 
 ### 6.1 Co-Expression as a Graph
 
-Clustering divides genes into non-overlapping groups, but the relations among genes are entangled both within and across groups. A **co-expression network** is a graph whose nodes are genes and whose edges are gene pairs with strongly correlated expression profiles. Viewed as a network, questions such as which genes are central, connected to many others, and which genes link modules become accessible.
+Clustering divides genes into non-overlapping groups, but the relations among genes are entangled both within and across groups. Viewed as a network, questions such as which genes are central, connected to many others, and which genes link modules become accessible.
 
-> **[Discrete Mathematics]** A graph $`G = (V, E)`$ consists of a set of nodes $`V`$ and a set of edges $`E`$, which are pairs of nodes. A graph with $`p`$ nodes can be represented by a $`p \times p`$ **adjacency matrix** $`A`$, where $`a_{ij} = 1`$ if there is an edge between nodes $`i`$ and $`j`$ and 0 otherwise. The adjacency matrix of an undirected graph is symmetric. A graph whose edges carry weights between 0 and 1 is called a weighted graph.
+> **Definition:** A **co-expression network** is a graph whose nodes are genes and whose edges are gene pairs with strongly correlated expression profiles.
+
+> **[Discrete Mathematics]** A graph $`G = (V, E)`$ consists of a set of nodes $`V`$ and a set of edges $`E`$, which are pairs of nodes. A graph with $`p`$ nodes can be represented by an adjacency matrix. The adjacency matrix of an undirected graph is symmetric. A graph whose edges carry weights between 0 and 1 is called a weighted graph.
+
+> **Definition:** The **adjacency matrix** of a graph with $`p`$ nodes is the $`p \times p`$ matrix $`A`$ with $`a_{ij} = 1`$ if there is an edge between nodes $`i`$ and $`j`$ and 0 otherwise; for a weighted graph it holds the edge weights.
 
 ### 6.2 Networks from a Correlation Threshold
 
@@ -479,7 +510,9 @@ The simplest method connects pairs whose absolute correlation is at least a thre
 a_{ij} = \begin{cases} 1 & \text{if } \lvert r_{ij} \rvert \ge \tau \\ 0 & \text{otherwise} \end{cases} \qquad (i \ne j)
 ```
 
-This is called a **hard threshold**. Suppose five genes have the following correlation matrix.
+> **Definition:** A **hard threshold** connects only the gene pairs whose absolute correlation is at least a threshold $`\tau`$ and cuts all others, so that connections are only 0 or 1.
+
+Suppose five genes have the following correlation matrix.
 
 | | G1 | G2 | G3 | G4 | G5 |
 |:-----|-----:|-----:|-----:|-----:|-----:|
@@ -504,19 +537,29 @@ graph LR
 
 *Figure 4. Network from the correlation matrix of Table 4 with threshold 0.7*
 
-G4 and G5 are connected through a negative correlation. Such a network, which ignores the sign, is called an **unsigned network**, and a network that connects only positive correlations is called a **signed network**. This is the same issue as the choice of distance in Section 3.1.
+G4 and G5 are connected through a negative correlation. Because the sign is ignored, Figure 4 is an unsigned network; how to treat the sign of the correlation is the same issue as the choice of distance in Section 3.1.
+
+> **Definition:** A **signed network** is a co-expression network that counts only positive correlations as connections.
+
+> **Definition:** An **unsigned network** is a co-expression network that ignores the sign of the correlation and connects genes by its absolute value.
 
 ### 6.3 Degree and Hub Genes
 
-The **degree** of node $`i`$ is the number of edges attached to it, $`k_i = \sum_{j \ne i} a_{ij}`$. In Figure 4 the degrees are 2 for G1, 2 for G2, 3 for G3, 2 for G4, and 1 for G5.
+> **Definition:** The **degree** of a node is the number of edges attached to it, $`k_i = \sum_{j \ne i} a_{ij}`$; in a weighted network it is the sum of the connection weights.
+
+In Figure 4 the degrees are 2 for G1, 2 for G2, 3 for G3, 2 for G4, and 1 for G5.
 
 > **Definition:** A **hub gene** is a gene with a particularly large degree in a co-expression network.
 
-A hub gene moves together with many genes, so it represents the activity of its whole module and may also regulate that module. In real biological networks, most nodes often have few edges while a few nodes have very many. A network whose degree distribution follows a power law $`P(k) \propto k^{-\gamma}`$ is called a **scale-free network**, and the criterion of Section 7.2 uses this property.
+A hub gene moves together with many genes, so it represents the activity of its whole module and may also regulate that module. Real biological networks are often close to scale-free networks, and the criterion of Section 7.2 uses this property.
+
+> **Definition:** A **scale-free network** is a network whose degree distribution follows a power law $`P(k) \propto k^{-\gamma}`$, so that most nodes have few edges and a few nodes have very many.
 
 ### 6.4 Clustering Coefficient and Other Measures
 
-The **clustering coefficient** of node $`i`$ measures how connected its neighbors are to one another. With $`k_i`$ neighbors there are $`k_i(k_i - 1)/2`$ neighbor pairs, and the clustering coefficient is the proportion of them that are actually connected.
+> **Definition:** The **clustering coefficient** of a node is the proportion of its neighbor pairs that are actually connected by an edge; it measures how densely its neighbors are connected to one another.
+
+With $`k_i`$ neighbors there are $`k_i(k_i - 1)/2`$ neighbor pairs, so the clustering coefficient of node $`i`$ is
 
 ```math
 C_i = \frac{\text{number of neighbor pairs that are connected}}{k_i (k_i - 1) / 2} \qquad (k_i \ge 2)
@@ -578,7 +621,7 @@ Hard thresholds are simple but have the following problems.
 
 ### 7.1 Soft Thresholding
 
-Zhang and Horvath questioned whether encoding co-expression as binary information, connected (1) or unconnected (0), is biologically meaningful, and proposed a framework of **soft thresholding** that assigns a connection weight to each gene pair [6]. A network built this way is called a weighted gene co-expression network, and the analysis method based on it is called **WGCNA (weighted gene co-expression network analysis)** [6], [7]. The most widely used adjacency function is the power function.
+Zhang and Horvath questioned whether encoding co-expression as binary information, connected (1) or unconnected (0), is biologically meaningful, and proposed a framework of soft thresholding that assigns a connection weight to each gene pair [6]. A network built this way is called a weighted gene co-expression network, and the analysis method based on it is called WGCNA (weighted gene co-expression network analysis) [6], [7]. The most widely used adjacency function is the power function.
 
 ```math
 a_{ij} = \lvert r_{ij} \rvert^{\beta} \;\; (\text{unsigned network}), \qquad a_{ij} = \left( \frac{1 + r_{ij}}{2} \right)^{\beta} \;\; (\text{signed network}), \qquad \beta \ge 1
@@ -588,9 +631,15 @@ The power keeps strong correlations and pushes weak ones toward 0. With $`\beta 
 
 In a signed network, $`r = -0.81`$ becomes $`((1 - 0.81)/2)^6 = 0.095^6 \approx 7 \times 10^{-7}`$, which is effectively no connection. G4 and G5 of Table 4 are connected with weight $`0.81^6 = 0.282`$ in the unsigned network but disconnected in the signed network. The degree also generalizes to the sum of weights, $`k_i = \sum_{j \ne i} a_{ij}`$. Applying the unsigned $`\beta = 6`$ to the correlations of Table 4 gives G1 the degree $`0.606 + 0.377 + 0.028 + 0.004 = 1.015`$.
 
+> **Definition:** **Soft thresholding** assigns each gene pair a connection weight between 0 and 1 that depends on the size of the correlation (for example $`\lvert r_{ij} \rvert^{\beta}`$) instead of cutting correlations to 0 or 1.
+
+> **Definition:** **WGCNA (weighted gene co-expression network analysis)** is an analysis method that builds a weighted co-expression network by soft thresholding, applies hierarchical clustering to a similarity between genes that reflects both their direct connection and their shared neighbors to find modules of co-expressed genes, and then relates those modules to traits.
+
 ### 7.2 The Scale-Free Topology Criterion
 
-As a criterion for choosing $`\beta`$, Zhang and Horvath proposed the biologically motivated **scale-free topology criterion** [6]. Based on the observation that biological networks tend to be scale-free, one chooses a $`\beta`$ at which the degree distribution fits a power law well. The fit is measured by binning the degrees and computing the coefficient of determination $`R^2`$ of the regression of the log bin frequency $`p(k)`$ on the log mean degree $`k`$ of the bin. The slope must be negative to match the direction of a power law, so the fit index is the sign-adjusted $`-\mathrm{sign}(\text{slope}) \times R^2`$.
+As a criterion for choosing $`\beta`$, Zhang and Horvath proposed the biologically motivated scale-free topology criterion [6]. How well the degree distribution fits a power law is measured by binning the degrees and computing the coefficient of determination $`R^2`$ of the regression of the log bin frequency $`p(k)`$ on the log mean degree $`k`$ of the bin. The slope must be negative to match the direction of a power law, so the fit index is the sign-adjusted $`-\mathrm{sign}(\text{slope}) \times R^2`$.
+
+> **Definition:** The **scale-free topology criterion** chooses the exponent $`\beta`$ of soft thresholding at which the degree distribution fits a power law well, based on the observation that biological networks tend to be scale-free.
 
 As $`\beta`$ grows, the fit index generally rises, but the mean degree falls quickly and the network becomes too sparse. So one chooses the smallest $`\beta`$ at which the fit index is high enough. The example in this chapter uses a fit index of 0.8 as the cutoff.
 
@@ -635,13 +684,17 @@ At $`\beta = 1`$ the fit index is negative, because even weak correlations remai
 
 ### 7.3 Topological Overlap
 
-The adjacency $`a_{ij}`$ looks only at two genes. If two genes belong to the same module, they will not only be strongly connected directly but also share many neighbors. **Topological overlap** is a similarity that reflects both the direct connection and the shared neighbors.
+> **Definition:** **Topological overlap** is a similarity between two genes that reflects both their direct connection and their shared neighbors.
+
+The adjacency $`a_{ij}`$ looks only at two genes. If two genes belong to the same module, they will not only be strongly connected directly but also share many neighbors. Topological overlap measures both.
 
 ```math
 \omega_{ij} = \frac{l_{ij} + a_{ij}}{\min(k_i, k_j) + 1 - a_{ij}}, \qquad l_{ij} = \sum_{u \ne i, j} a_{iu} a_{uj}
 ```
 
-$`l_{ij}`$ sums the products of weights over the neighbors the two genes share; in a binary network it is the number of common neighbors. The denominator keeps $`\omega_{ij}`$ between 0 and 1, and $`\omega_{ij} = 1`$ when the two genes are connected and their neighbors overlap completely. The matrix of all $`\omega_{ij}`$ is called the **topological overlap matrix (TOM)**, and modules are found using $`1 - \omega_{ij}`$ as the dissimilarity. Zhang and Horvath gave theoretical and empirical evidence that modules defined by the weighted topological overlap are more cohesive than those defined by its unweighted counterpart [6].
+$`l_{ij}`$ sums the products of weights over the neighbors the two genes share; in a binary network it is the number of common neighbors. The denominator keeps $`\omega_{ij}`$ between 0 and 1, and $`\omega_{ij} = 1`$ when the two genes are connected and their neighbors overlap completely. Modules are found from the topological overlap matrix of all $`\omega_{ij}`$, using $`1 - \omega_{ij}`$ as the dissimilarity. Zhang and Horvath gave theoretical and empirical evidence that modules defined by the weighted topological overlap are more cohesive than those defined by its unweighted counterpart [6].
+
+> **Definition:** The **topological overlap matrix (TOM)** is the matrix of the topological overlaps $`\omega_{ij}`$ of all gene pairs.
 
 The topological overlap of G1 and G2 is computed by applying the unsigned $`\beta = 6`$ to the correlations of Table 4. The adjacencies are $`a_{12} = 0.606`$, $`a_{13} = 0.377`$, $`a_{23} = 0.225`$, $`a_{14} = 0.028`$, $`a_{24} = 0.012`$, $`a_{15} = 0.004`$, and $`a_{25} = 0.002`$.
 
@@ -723,20 +776,26 @@ The eigengenes of modules 1-3 correlate 0.91-0.96 with the indicators of S1, S2,
 
 ### 8.1 Interpreting a Gene List
 
-Clustering, network analysis, and the feature selection of Chapter 10 end with a list of tens to hundreds of genes. To learn what the list means biologically, it must be compared with existing knowledge of gene function. Such knowledge is organized in databases as **gene sets** that group genes by function. The representative example is the Gene Ontology, which describes the biological processes, molecular functions, and cellular locations of gene products in a controlled vocabulary [8]; databases of metabolic and signaling pathways are also used.
+Clustering, network analysis, and the feature selection of Chapter 10 end with a list of tens to hundreds of genes. To learn what the list means biologically, it must be compared with existing knowledge of gene function. Such knowledge is organized in databases as gene sets. The representative example is the Gene Ontology, which describes the biological processes, molecular functions, and cellular locations of gene products in a controlled vocabulary [8]; databases of metabolic and signaling pathways are also used.
+
+> **Definition:** A **gene set** is a group of genes collected by something they share, such as a function, a pathway, or a cellular location.
 
 The question is: does my list contain more genes of a particular function than chance would lead us to expect? An analysis that answers this question is called an **enrichment analysis**.
 
 ### 8.2 Over-Representation Analysis and the Hypergeometric Distribution
 
-The most basic enrichment analysis is **over-representation analysis (ORA)**. It is defined as follows.
+The most basic enrichment analysis is over-representation analysis (ORA). It is defined as follows.
 
 - $`N`$: the total number of genes that could have been selected (the background set, or universe)
 - $`K`$: the number of those genes that belong to the gene set (a GO term, for example)
 - $`n`$: the number of genes selected by the analysis (the size of a module, for example)
 - $`x`$: the number of selected genes that belong to the gene set
 
-The null hypothesis is that the selected genes were drawn without regard to the gene set. This is like drawing $`n`$ balls without replacement from an urn of $`N`$ balls of which $`K`$ are red, and the number of red balls drawn, $`X`$, follows the **hypergeometric distribution**.
+> **Definition:** The **hypergeometric distribution** is the distribution of the number of successes drawn when $`n`$ items are drawn without replacement from a finite population of size $`N`$ containing $`K`$ successes.
+
+> **Definition:** **Over-representation analysis (ORA)** is an enrichment analysis that tests, using the hypergeometric distribution, whether a selected gene list contains more genes of a given gene set than expected by chance.
+
+The null hypothesis is that the selected genes were drawn without regard to the gene set. This is like drawing $`n`$ balls without replacement from an urn of $`N`$ balls of which $`K`$ are red, and the number of red balls drawn, $`X`$, follows the hypergeometric distribution.
 
 ```math
 P(X = i) = \frac{\binom{K}{i}\binom{N - K}{n - i}}{\binom{N}{n}}, \qquad E[X] = \frac{nK}{N}
@@ -748,7 +807,7 @@ The p-value for over-representation is the probability of a value at least as la
 p = P(X \ge x) = \sum_{i = x}^{\min(n, K)} \frac{\binom{K}{i}\binom{N - K}{n - i}}{\binom{N}{n}}
 ```
 
-> **[Probability and Statistics]** The hypergeometric distribution is the distribution of the number of successes when $`n`$ items are drawn without replacement from a finite population of size $`N`$ containing $`K`$ successes. With replacement it would be the binomial distribution $`\mathrm{Bin}(n, K/N)`$, and when $`N`$ is much larger than $`n`$ the two are similar. The variance is $`n \frac{K}{N} \frac{N - K}{N} \frac{N - n}{N - 1}`$, the binomial variance multiplied by the finite population correction $`(N - n)/(N - 1)`$.
+> **[Probability and Statistics]** The hypergeometric distribution describes drawing without replacement. With replacement it would be the binomial distribution $`\mathrm{Bin}(n, K/N)`$, and when $`N`$ is much larger than $`n`$ the two are similar. The variance is $`n \frac{K}{N} \frac{N - K}{N} \frac{N - n}{N - 1}`$, the binomial variance multiplied by the finite population correction $`(N - n)/(N - 1)`$.
 
 For example, suppose that of $`N = 10{,}000`$ genes, $`K = 200`$ belong to a pathway, and of the $`n = 100`$ genes of a module, $`x = 8`$ belong to that pathway. The expected number is $`100 \times 200 / 10000 = 2`$, so the observed 8 is four times the expectation. The result can also be arranged as the following $`2 \times 2`$ contingency table.
 
@@ -851,47 +910,6 @@ A way to avoid the list-threshold problem is **gene set enrichment analysis (GSE
 | In a signed soft-threshold network, two genes with $`r = -0.9`$ are strongly connected. | **F.** $`((1 - 0.9)/2)^\beta`$ is near 0, so they are effectively unconnected (Section 7.1). |
 | Topological overlap can be greater than 0 for two genes without a direct connection. | **T.** If there are shared neighbors $`l_{ij}`$, then $`\omega_{ij} > 0`$ even when $`a_{ij} = 0`$ (Section 7.3). |
 | `phyper(x, K, N - K, n, lower.tail = FALSE)` is $`P(X \ge x)`$. | **F.** `lower.tail = FALSE` gives $`P(X > q)`$, so $`P(X \ge x)`$ requires `q = x - 1` (Section 8.3). |
-
----
-
-<br>
-
-## Glossary
-
-| English | Korean | One-Line Definition |
-|:-----|:-----|:-----|
-| expression matrix | 발현 행렬 | A matrix of expression levels with genes as rows and samples as columns |
-| gene expression profiling | 유전자 발현 프로파일링 | Analyzing the row and column patterns of an expression matrix |
-| class discovery / class prediction | 클래스 발견 / 클래스 예측 | Finding unknown subtypes / assigning new samples to known classes |
-| pseudocount | 유사 개수 | A small value added before log transformation to avoid the logarithm of 0 |
-| nonspecific filtering | 비특이적 거르기 | Filtering genes by expression level or variance without class labels |
-| row z-score | 행 z-점수 | A value centered by the gene's mean and divided by its standard deviation |
-| normalization, quantile normalization | 정규화, 분위수 정규화 | Removing technical differences between samples, and the method that makes all samples' value distributions identical |
-| signed / unsigned correlation distance | 부호 있는 / 부호 없는 상관 거리 | $`1 - r`$ / $`1 - \lvert r \rvert`$ |
-| two-way clustering | 이원 군집화 | Clustering genes and samples separately and reordering both |
-| heatmap | 히트맵 | A figure showing the values of a matrix as colors |
-| cophenetic correlation | 코페네틱 상관 | The Pearson correlation between the original distances and the cophenetic distances |
-| chaining | 사슬 효과 | Clusters stretching out like chains under single linkage |
-| elbow method | 팔꿈치 방법 | Choosing the number of clusters where the decrease in within-cluster sum of squares levels off |
-| gap statistic | 갭 통계량 | The decrease in log within-cluster sum of squares relative to a reference distribution |
-| co-expression network | 공발현 네트워크 | A graph with genes as nodes and strong co-expression as edges |
-| adjacency matrix | 인접 행렬 | A matrix holding the connection or weight of each pair of nodes |
-| hard / soft threshold | 하드 / 연성 임계값 | Cutting correlations to 0 or 1 / weighting them by a power |
-| signed / unsigned network | 부호 있는 / 부호 없는 네트워크 | A network connecting only positive correlations / one ignoring the sign of the correlation |
-| degree (connectivity) | 연결 정도 | The number of edges, or sum of edge weights, at a node |
-| scale-free network | 척도 없는 네트워크 | A network whose degree distribution follows a power law |
-| clustering coefficient | 군집 계수 | The proportion of neighbor pairs that are connected to each other |
-| betweenness centrality | 매개 중심성 | The extent to which a node lies on shortest paths between other pairs |
-| WGCNA | 가중 유전자 공발현 네트워크 분석 | An analysis method that finds modules with soft thresholds and topological overlap |
-| scale-free topology criterion | 척도 없는 위상 기준 | Choosing $`\beta`$ so that the degree distribution fits a power law |
-| topological overlap matrix (TOM) | 위상 중첩 행렬 | A similarity matrix reflecting both direct connections and shared neighbors |
-| module membership | 모듈 소속도 | The correlation between a gene's expression and the module eigengene |
-| gene set | 유전자 집합 | A collection of genes grouped by function, pathway, location, and so on |
-| over-representation analysis (ORA) | 과대표현 분석 | Testing with the hypergeometric distribution whether a list contains more genes of a set than expected |
-| hypergeometric distribution | 초기하 분포 | The distribution of the number of successes drawn without replacement from a finite population |
-| gene set enrichment analysis (GSEA) | 유전자 집합 농축 분석 | Checking whether a gene set concentrates at the top or bottom of a ranked list |
-
-*Table 6. Glossary*
 
 ---
 

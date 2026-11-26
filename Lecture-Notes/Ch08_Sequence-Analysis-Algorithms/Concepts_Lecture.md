@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-11-19
+> **Last Updated:** 2026-11-26
 
 > **Learning Objectives:**
 > 1. Find the positions of a pattern in a sequence with exact string matching and a k-mer index
@@ -67,7 +67,6 @@
   - [10.2 k-mer Frequency Vectors and Clustering](#102-k-mer-frequency-vectors-and-clustering)
   - [10.3 Strengths and Weaknesses of Alignment-Free Comparison](#103-strengths-and-weaknesses-of-alignment-free-comparison)
 - [Concept Applications](#concept-applications)
-- [Glossary](#glossary)
 - [Summary](#summary)
 - [Self-Check Questions](#self-check-questions)
 - [References](#references)
@@ -84,17 +83,23 @@ The most powerful way to learn the function of a newly obtained sequence is to c
 
 > **Definition:** **Homology** is the evolutionary relationship in which two sequences descend from a common ancestral sequence.
 
-**Similarity** expresses how alike two sequences are as a number such as an alignment score or a percent identity. Similarity is a measured quantity, and homology is a hypothesis inferred from that measurement. The phrase "the two sequences are 70% homologous" is therefore inaccurate; it should be "the two sequences are 70% identical, and similarity of this degree is hard to explain by chance, so they are likely homologous." The statistic that judges whether similarity can be explained by chance is the E-value of Section 8.3.
+> **Definition:** **Similarity** expresses how alike two sequences are as a number such as an alignment score or a percent identity.
+
+Similarity is a measured quantity, and homology is a hypothesis inferred from that measurement. The phrase "the two sequences are 70% homologous" is therefore inaccurate; it should be "the two sequences are 70% identical, and similarity of this degree is hard to explain by chance, so they are likely homologous." The statistic that judges whether similarity can be explained by chance is the E-value of Section 8.3.
 
 As seen in Chapter 7, evolution accumulates substitutions, insertions, and deletions in sequences. The computational problem of sequence comparison is to reconstruct most plausibly these changes between two sequences, and that reconstruction is an alignment.
 
 ### 1.2 String Terminology
 
-This chapter uses the following terms. For a string $`x = x_1 x_2 \cdots x_m`$ over an alphabet $`\Sigma`$,
+For a string $`x = x_1 x_2 \cdots x_m`$ over an alphabet $`\Sigma`$, this chapter uses the following terms.
 
-- **Substring:** Consecutive letters $`x_i x_{i+1} \cdots x_j`$. A k-mer is a substring of length $`k`$.
-- **Subsequence:** A string obtained by choosing some letters while keeping their order; they need not be consecutive. For example, `AGT` is a subsequence of `ACGT` but not a substring.
-- **Prefix and suffix:** $`x_1 \cdots x_i`$ and $`x_j \cdots x_m`$. Dynamic programming solves problems on pairs of prefixes of two sequences from the smallest up.
+> **Definition:** A **substring** is a part of a string made of consecutive letters, that is, a string of the form $`x_i x_{i+1} \cdots x_j`$. A substring of length $`k`$ is a k-mer.
+
+> **Definition:** A **subsequence** is a string obtained from a string by choosing some of its letters while keeping their order; the chosen letters need not be consecutive. For example, `AGT` is a subsequence of `ACGT` but not a substring.
+
+> **Definition:** A **prefix** is a substring $`x_1 \cdots x_i`$ that starts at the first letter.
+
+> **Definition:** A **suffix** is a substring $`x_j \cdots x_m`$ that ends at the last letter.
 
 > **Caution:** In biology "sequence" means a whole string, so to avoid confusion with the mathematical subsequence, this chapter always calls a consecutive stretch a "substring" or a "region."
 
@@ -173,6 +178,8 @@ $TTAC
 - Of the 18 4-mers in the text, 16 are distinct.
 - The three 4-mers of the query `GCTTAC` start at positions 14, 15, and 16 of the text. Because the positions increase by one, the whole query can be inferred to match the region of the text starting at position 14. This idea of finding short k-mer matches (seeds) and widening around them is the starting point of BLAST in Section 8.
 
+> **Definition:** A **seed** is a place where a short k-mer (word) of the query matches the text (in the protein search of Section 8, also a match of a word that differs from the query word but scores at least the threshold); it is the starting point from which a longer alignment is sought by extension.
+
 ### 2.3 Choosing k
 
 The performance of a k-mer index depends strongly on $`k`$.
@@ -222,6 +229,8 @@ The edit distance with this definition is also called the Levenshtein distance. 
 
 ### 3.3 Dynamic Programming for the Edit Distance
 
+> **Definition:** **Dynamic programming** is an algorithm design technique that splits a problem into overlapping smaller subproblems, stores the answer of each subproblem in a table so that each is computed only once, and combines these answers into the answer of the whole problem.
+
 The edit distance cannot be obtained by listing every edit sequence. Instead, the edit distances between prefixes of the two strings are computed from the smallest up and stored in a table. Let $`D(i, j)`$ be the edit distance between the first $`i`$ letters of $`x`$ and the first $`j`$ letters of $`y`$. Depending on how the last letters were handled, there are only three cases.
 
 - $`x_i`$ was paired with $`y_j`$: the cost is 0 if the letters are the same and a substitution cost of 1 otherwise, and the remaining problem is $`D(i-1, j-1)`$.
@@ -234,7 +243,7 @@ D(i, j) = \min \begin{cases} D(i-1, j-1) + [x_i \ne y_j] \\ D(i-1, j) + 1 \\ D(i
 
 Here $`[x_i \ne y_j]`$ is 1 if the two letters differ and 0 if they are the same. The edit distance between the empty string and a string of length $`i`$ is deleting all $`i`$ letters, so $`D(i, 0) = i`$.
 
-> **[Algorithms]** When an optimal solution of a large problem consists of optimal solutions of smaller subproblems (optimal substructure) and the same subproblems are used repeatedly (overlapping subproblems), dynamic programming can store the answers of subproblems in a table and compute each only once. The edit distance and every alignment algorithm in this chapter are two-dimensional dynamic programs whose subproblems are pairs of prefixes of two strings.
+> **[Algorithms]** When an optimal solution of a large problem consists of optimal solutions of smaller subproblems (optimal substructure) and the same subproblems are used repeatedly (overlapping subproblems), dynamic programming applies. The edit distance and every alignment algorithm in this chapter are two-dimensional dynamic programs whose subproblems are pairs of prefixes of two strings.
 
 The edit distance between `GCAT` and `GATC` is computed.
 
@@ -308,9 +317,11 @@ The edit distance gives every operation a cost of 1, but in biological sequences
 
 Each column of an alignment is one of three kinds.
 
-- **Match:** The same letter faces itself.
-- **Mismatch:** Different letters face each other. It is interpreted as a substitution in evolution.
-- **Gap:** A letter of one sequence faces a `-` in the other. It is interpreted as an insertion in one sequence or a deletion in the other; the alignment alone cannot tell which, so both are called indels.
+> **Definition:** A **match** is an alignment column in which the same letter faces itself.
+
+> **Definition:** A **mismatch** is an alignment column in which different letters face each other; it is interpreted as a substitution in evolution.
+
+> **Definition:** A **gap** is an alignment column in which a letter of one sequence faces a `-` in the other. It is interpreted as an insertion in one sequence or a deletion in the other; the alignment alone cannot tell which, so both are called indels. A run of $`k`$ consecutive gap columns in the same sequence is called a gap of length $`k`$.
 
 ```text
 A G T C C A
@@ -335,6 +346,8 @@ The quality of an alignment is judged by the **alignment score**, the sum of sco
 *Table 2. The scoring scheme used in the DNA examples of this chapter*
 
 The score of the alignment in Figure 1 is $`4 \times (+1) + 1 \times (-1) + 1 \times (-2) = 1`$. Setting the gap penalty larger than the mismatch penalty reflects the idea that indels are rarer than substitutions in evolution. Writing the score of each letter pair as $`s(a, b)`$ and the score of one gap position as $`-d`$ ($`d > 0`$), this scheme is $`s(a,a) = 1`$, $`s(a,b) = -1`$ ($`a \ne b`$), $`d = 2`$. Protein sequences use substitution matrices (Section 7) that give a different score to each amino acid pair.
+
+> **Definition:** A **substitution matrix** collects, for every pair of letters $`(a, b)`$ of the alphabet, the score $`s(a, b)`$ of an alignment column in which the two letters face each other.
 
 > **Note:** **Relation to the edit distance.** Finding the maximum-score alignment under the scheme match 0, mismatch -1, gap -1 and changing the sign of the score gives the edit distance. The edit distance is a special case of the alignment score, and minimizing a distance and maximizing a score are the same problem seen from opposite directions.
 
@@ -398,7 +411,9 @@ The optimal global alignment score is the value 1 in the bottom-right cell.
 
 ### 5.3 Traceback
 
-The score alone does not reveal the shape of the alignment. Starting at the bottom-right cell and following back to the top-left cell while checking which of the three candidates produced each value is called **traceback**. A diagonal step prepends a column pairing two letters, an upward step a letter of $`x`$ with a gap, and a leftward step a gap with a letter of $`y`$.
+> **Definition:** **Traceback** is the process that recovers an alignment by starting at the bottom-right cell of the DP table and following back to the top-left cell while checking which of the three candidates produced each value.
+
+The score alone does not reveal the shape of the alignment, so the alignment is recovered by traceback. A diagonal step prepends a column pairing two letters, an upward step a letter of $`x`$ with a gap, and a leftward step a gap with a letter of $`y`$.
 
 1. The 1 at $`(6,5)`$ is the 0 at the diagonal $`(5,4)`$ plus a match +1. Prepend the column A/A.
 2. The 0 at $`(5,4)`$ is the 1 at the diagonal $`(4,3)`$ plus a mismatch -1. Prepend the column C/G.
@@ -463,6 +478,8 @@ A -12 -9 -6 -3 -2   1
 - The three arguments of `max()` in the double loop are the diagonal, upper, and left candidates of the recurrence. R indices start at 1, so `F[i + 1, j + 1]` is $`F(i, j)`$ and `F[i, j]` is $`F(i-1, j-1)`$.
 - The `while` loop is the traceback. If the value of the current cell equals the diagonal candidate it moves diagonally, otherwise it checks the upper candidate, and if neither holds it moves left. When several candidates tie, it prefers diagonal, then up, then left, so it returns one of the optimal alignments.
 - The condition `i > 0 || j > 0` and the `i > 0` and `j > 0` checks in each branch make the remaining letters pair with gaps once the first row or first column is reached.
+
+> **Definition:** A **linear gap penalty** gives every gap position the same penalty $`d`$, so that a gap of length $`k`$ is penalized $`\gamma(k) = dk`$, in proportion to its length.
 
 The resulting table and alignment match Figure 2 and the hand computation of Section 5.3. The Bioconductor package pwalign provides `pairwiseAlignment()`, which implements the same computation in C. pwalign computes the penalty of a gap of length $`k`$ as `gapOpening + k * gapExtension`, so `gapOpening = 0` and `gapExtension = 2` give the linear gap penalty of Table 2.
 
@@ -636,7 +653,9 @@ The result matches Figures 3 and 4 and also the pwalign local alignment seen in 
 
 ### 6.5 Global, Local, and Semi-Global Alignment
 
-When a short read is mapped to a long reference sequence, the read should be aligned from start to end, while the parts of the reference left over at both ends should not be penalized. An alignment that does not penalize gaps at one or both ends in this way is called a **semi-global alignment**. The recurrence is the same as for global alignment, and only the boundary conditions and the cell from which the answer is read change. With the read on the rows and the reference on the columns, the first row is set to all 0 so that the start of the reference can be skipped without penalty, and the largest value in the last row is read as the answer so that the end of the reference can be left without penalty.
+> **Definition:** A **semi-global alignment** is an alignment that does not penalize gaps at one or both ends.
+
+When a short read is mapped to a long reference sequence, the read should be aligned from start to end, while the parts of the reference left over at both ends should not be penalized, so a semi-global alignment is used. The recurrence is the same as for global alignment, and only the boundary conditions and the cell from which the answer is read change. With the read on the rows and the reference on the columns, the first row is set to all 0 so that the start of the reference can be skipped without penalty, and the largest value in the last row is read as the answer so that the end of the reference can be left without penalty.
 
 ```r
 suppressPackageStartupMessages({library(Biostrings); library(pwalign)})
@@ -702,16 +721,20 @@ so the match and mismatch scores have similar magnitudes and opposite signs, res
 
 ### 7.2 PAM Matrices
 
-For proteins, target frequencies must be estimated for every pair of the twenty amino acids. The substitution matrices widely used early on were the **PAM (point accepted mutation)** matrices, based on Dayhoff's model of evolution [4].
+For proteins, target frequencies must be estimated for every pair of the twenty amino acids. The substitution matrices widely used early on were the PAM matrices, based on Dayhoff's model of evolution [4].
 
 - In alignments of very closely related proteins, substitutions in which an amino acid changed into another and survived natural selection (accepted) are counted.
 - From these counts a substitution probability matrix PAM1 is built for the evolutionary distance at which on average one amino acid per hundred changes.
 - Evolution is treated as a Markov chain, and powers of PAM1 give matrices for larger distances. PAM250 is PAM1 multiplied by itself 250 times, corresponding to a distance with on average 250 substitutions per hundred amino acids (the same site may change several times).
 - The substitution probabilities at each distance are converted into log-odds scores.
 
+> **Definition:** A **PAM (point accepted mutation) matrix** is a substitution matrix obtained by counting amino acid substitutions in alignments of very closely related proteins and extrapolating them to larger evolutionary distances by treating evolution as a Markov chain and taking matrix powers.
+
 ### 7.3 BLOSUM Matrices
 
-**BLOSUM (BLOcks SUbstitution Matrix)** matrices were built by Henikoff and Henikoff directly from alignments of short conserved regions (blocks) in protein families. Substitutions were counted in about 2,000 blocks representing more than 500 protein families, and these matrices markedly improved alignments and searches [4]. Within a block, sequences whose identity is at or above a chosen threshold are grouped together to reduce the influence of close sequences, and the percentage of that threshold appears in the name of the matrix. BLOSUM62 is the matrix built by grouping sequences that are at least 62% identical.
+> **Definition:** A **BLOSUM (BLOcks SUbstitution Matrix)** matrix is a substitution matrix built directly from alignments of short conserved regions (blocks) in protein families.
+
+Henikoff and Henikoff built these matrices by counting substitutions in about 2,000 blocks representing more than 500 protein families, and the matrices markedly improved alignments and searches [4]. Within a block, sequences whose identity is at or above a chosen threshold are grouped together to reduce the influence of close sequences, and the percentage of that threshold appears in the name of the matrix. BLOSUM62 is the matrix built by grouping sequences that are at least 62% identical.
 
 A part of BLOSUM62 shows high scores between amino acids with similar properties.
 
@@ -782,9 +805,9 @@ score: 36
 
 ### 7.5 Linear and Affine Gap Penalties
 
-So far every gap position received the same penalty $`d`$. This scheme, in which a gap of length $`k`$ is penalized $`\gamma(k) = dk`$, is called a **linear gap penalty**. In real evolution, however, a single event often inserts or deletes several bases at once. One gap of length 3 and three gaps of length 1 are equal under a linear penalty, but biologically the former is far more plausible.
+So far every gap position received the same penalty $`d`$ under the linear gap penalty (Section 5.4). In real evolution, however, a single event often inserts or deletes several bases at once. One gap of length 3 and three gaps of length 1 are equal under a linear penalty, but biologically the former is far more plausible.
 
-> **Definition:** An **affine gap penalty** penalizes a gap of length $`k`$ by $`\gamma(k) = o + ek`$, the sum of a penalty $`o`$ for opening a gap and an extension penalty $`e`$ proportional to its length.
+> **Definition:** An **affine gap penalty** penalizes a gap of length $`k`$ by $`\gamma(k) = o + ek`$, the sum of an opening penalty $`o`$ and an extension penalty $`e`$ per gap position.
 
 Usually $`o`$ is set larger than $`e`$, favoring alignments with fewer gaps and one long gap. Note that the definition of the penalty differs slightly between tools. pwalign charges $`o + ek`$ for a gap of length $`k`$, while other tools and textbooks sometimes write $`o + e(k-1)`$, in which case the same numbers give a penalty for one gap that differs by $`e`$.
 
@@ -894,10 +917,14 @@ flowchart LR
 *Figure 5. The search steps of BLAST*
 
 1. **Word list:** The query is split into overlapping words of length $`w`$. Protein searches usually use words of about 3 letters, and DNA searches much longer words.
-2. **Neighborhood words:** For proteins, not only words identical to a query word but every word whose score by the substitution matrix is at least the threshold $`T`$ counts as a neighbor. This catches as seeds the regions changed into similar amino acids.
+2. **Neighborhood words:** To catch as seeds the regions changed into similar amino acids, protein searches look not only for words identical to a query word but for all its neighborhood words.
 3. **Finding hits:** The database is indexed by words in advance (Section 2.2), so the positions of neighborhood words are found immediately.
-4. **Ungapped extension:** A hit is widened one letter at a time in both directions while adding scores. When the score falls a fixed amount below the best score so far, extension stops and the region up to the best point is kept. Among the ungapped alignment regions obtained this way, those scoring above a cutoff are called **high-scoring segment pairs (HSPs)**.
+4. **Ungapped extension:** A hit is widened one letter at a time in both directions while adding scores. When the score falls a fixed amount below the best score so far, extension stops and the region up to the best point is kept. Among the ungapped alignment regions obtained this way, those scoring above a cutoff are kept.
 5. **Gapped alignment:** Current BLAST implementations additionally perform a dynamic programming alignment that allows gaps around promising HSPs to obtain the final alignment.
+
+> **Definition:** A **neighborhood word** of a query word in a BLAST protein search is a word whose score with the query word by the substitution matrix is at least the threshold $`T`$; it need not be identical to the query word.
+
+> **Definition:** A **high-scoring segment pair (HSP)** is an ungapped alignment region between the query and a database sequence whose score is above a cutoff.
 
 As an example of neighborhood words, all words with a BLOSUM62 score of at least 17 against the query word `RDW` are found.
 
@@ -928,7 +955,9 @@ RDW KDW QDW REW RNW NDW EDW HDW
 
 ### 8.3 Score Statistics and the E-Value
 
-In a large database, unrelated sequences also produce alignments with high scores by chance. Rather than the score itself, the probability that such a score arises by chance should therefore be reported. The optimal local alignment score of a random sequence pair is the maximum of many segment scores, so it follows not a normal distribution but an **extreme value distribution** [3].
+In a large database, unrelated sequences also produce alignments with high scores by chance. Rather than the score itself, the probability that such a score arises by chance should therefore be reported. The optimal local alignment score of a random sequence pair is the maximum of many segment scores, so it follows not a normal distribution but an extreme value distribution [3].
+
+> **Definition:** An **extreme value distribution** is the limiting distribution of the suitably normalized maximum (or minimum) of many independent, identically distributed random variables; the form used for alignment score statistics is the Gumbel distribution.
 
 > **Definition:** The **E-value** is the expected number of HSPs with score at least $`S`$ that would appear by chance in a search of a random sequence database of the same size.
 
@@ -990,7 +1019,9 @@ The same score 20 is very rare for one pair of sequences, but in a database of a
 The following relations are used in interpreting E-values.
 
 - Treating the number of HSPs as Poisson with mean $`E`$, the probability that at least one HSP with score at least $`S`$ appears is $`P = 1 - e^{-E}`$. When $`E`$ is below 0.01, $`P`$ and $`E`$ are nearly identical [3].
-- Raw scores $`S`$ have different units for each scoring scheme, so the **bit score** $`S' = (\lambda S - \ln K)/\ln 2`$ is reported as well. Then $`E = mn \, 2^{-S'}`$ can be interpreted independently of the scoring scheme [3]. In the example above, score 20 is a bit score of about 34.2, and $`250000 \times 2^{-34.2} \approx 1.25 \times 10^{-5}`$ gives the same E-value.
+- Raw scores $`S`$ have different units for each scoring scheme, so the bit score $`S'`$ is reported as well. Then $`E = mn \, 2^{-S'}`$ can be interpreted independently of the scoring scheme [3]. In the example above, score 20 is a bit score of about 34.2, and $`250000 \times 2^{-34.2} \approx 1.25 \times 10^{-5}`$ gives the same E-value.
+
+> **Definition:** The **bit score** is the alignment score normalized so that it can be compared independently of the scoring scheme, obtained from the raw score $`S`$ as $`S' = (\lambda S - \ln K)/\ln 2`$.
 
 > **Caution:** The E-value is not a p-value and need not lie between 0 and 1. E = 25 means "about 25 chance matches of this score are expected." The E-value is also computed under the assumption that sequences are random, so for sequences that depart from the random model, such as low-complexity regions repeating the same letters, the E-value can come out too small. This is why BLAST offers the option of masking such regions.
 
@@ -1036,17 +1067,23 @@ A multiple alignment gives more information than pairwise alignments. Columns co
 
 ### 9.2 The SP Score and Computational Difficulty
 
-A commonly used score for multiple alignments is the **sum-of-pairs (SP) score**. In each column the scores of all possible sequence pairs are added, and this is summed over all columns. With $`k`$ sequences each column has $`k(k-1)/2`$ pairs.
+> **Definition:** The **sum-of-pairs (SP) score** of a multiple alignment adds the scores of all possible sequence pairs in each column and sums this over all columns.
+
+The SP score is the score commonly used for multiple alignments. With $`k`$ sequences each column has $`k(k-1)/2`$ pairs.
 
 Extending pairwise dynamic programming directly to $`k`$ sequences of length $`n`$ requires filling $`n^k`$ cells of a $`k`$-dimensional table, each examining $`2^k - 1`$ previous cells, which takes $`O(2^k n^k)`$ time. Even ten sequences of length 300 give $`300^{10} \approx 5.9 \times 10^{24}`$ cells. The problem of finding the optimal SP alignment is known to be intractable (NP-hard) as the number of sequences grows, so heuristics are used in practice.
 
 ### 9.3 Progressive Alignment
 
-The most widely used heuristic is **progressive alignment**.
+The most widely used heuristic is progressive alignment.
 
 1. Every pair of sequences is aligned pairwise to build a distance matrix.
-2. Hierarchical clustering (Chapter 3) of the distance matrix builds a **guide tree**.
+2. Hierarchical clustering (Chapter 3) of the distance matrix builds a guide tree.
 3. From the leaves of the tree toward the root, the closest sequences are aligned first, and the next sequence or another profile is aligned in turn to that alignment (profile).
+
+> **Definition:** A **guide tree** is a tree built by hierarchical clustering of the distance matrix of sequence pairs; it sets the order in which sequences are aligned in a multiple alignment.
+
+> **Definition:** **Progressive alignment** is a heuristic for multiple alignment that follows a guide tree, aligning the closest sequences first and then adding the next sequence or another alignment to that alignment in turn.
 
 ```mermaid
 flowchart BT
@@ -1126,6 +1163,8 @@ Alignment is a precise method that finds the correspondence of each letter, but 
 | Document clustering and classification | Sequence clustering and classification |
 
 *Table 7. Correspondence between text mining and sequence analysis*
+
+> **Definition:** A **k-mer profile** is the vector that holds, for each of the $`4^k`$ possible k-mers, its relative frequency in a sequence (its count divided by the total number of k-mers in the sequence); it is also called a k-mer frequency vector.
 
 This representation is the same idea as the feature extraction of Chapter 2. Unstructured sequences of different lengths become rows of structured data with the same columns, so the distances and clustering of Chapter 3, the dimension reduction of Chapter 4, and the classification of Chapter 6 apply directly.
 
@@ -1213,36 +1252,6 @@ k-mer-based comparison is used to classify or cluster huge numbers of sequences 
 | BLOSUM45 is better suited than BLOSUM80 to comparing distantly related sequences. | **T.** The BLOSUM number is the identity threshold for grouping sequences, and a smaller number reflects substitutions from more distantly related sequences. |
 | Under an affine gap penalty, one gap of length 3 is penalized less than three gaps of length 1. | **T.** If $`o > 0`$, then $`o + 3e < 3(o + e)`$, so the single gap has the smaller penalty. |
 | A BLAST result with E-value 0.001 means that the probability that the alignment is due to chance is 0.1%. | **F.** The E-value is the expected number of matches with at least that score in a random search of the same size. When E is small it nearly equals the probability $`1 - e^{-E}`$ of at least one such match, but it is not the posterior probability that the alignment is due to chance. |
-
----
-
-<br>
-
-## Glossary
-
-| English | Korean | One-Line Definition |
-|:-----|:-----|:-----|
-| similarity | 유사성 | A number expressing how alike two sequences are |
-| substring / subsequence | 부분 문자열 / 부분 서열 | Consecutive letters, and letters chosen while keeping their order |
-| dynamic programming | 동적 계획법 | A design technique that stores subproblem answers in a table and computes each once |
-| match / mismatch / gap | 일치 / 불일치 / 갭 | Alignment columns with the same letter, different letters, and a letter facing a gap |
-| traceback | 역추적 | Recovering an alignment by following back the cells that gave the maxima in a DP table |
-| semi-global alignment | 반전역 정렬 | An alignment that does not penalize end gaps |
-| substitution matrix | 치환 행렬 | A matrix collecting the alignment score of each letter pair |
-| PAM | PAM 행렬 | A substitution matrix extrapolating substitutions of close proteins by evolutionary distance |
-| BLOSUM | BLOSUM 행렬 | A substitution matrix built directly from alignments of conserved blocks |
-| linear gap penalty | 선형 갭 벌점 | A penalty proportional to the gap length |
-| neighborhood word | 이웃 단어 | A word whose substitution score against a query word is at least the threshold |
-| high-scoring segment pair (HSP) | 고득점 구간 쌍 | An ungapped alignment region scoring above a cutoff |
-| extreme value distribution | 극단값 분포 | The distribution followed by the maximum of many random variables |
-| bit score | 비트 점수 | An alignment score normalized for comparison independent of the scoring scheme |
-| sum-of-pairs score | SP 점수 | A multiple alignment score adding the scores of all sequence pairs in each column |
-| progressive alignment | 점진적 정렬 | A method that aligns sequences in turn from the closest following a guide tree |
-| guide tree | 안내 트리 | A hierarchical clustering tree that sets the order of progressive alignment |
-| consensus sequence | 합의 서열 | The sequence joining the most common letter of each column of a multiple alignment |
-| k-mer profile | k-mer 프로파일 | The vector of relative k-mer frequencies of a sequence |
-
-*Table 9. Glossary*
 
 ---
 

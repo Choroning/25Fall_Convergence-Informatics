@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-11-19
+> **Last Updated:** 2026-11-26
 
 > **Learning Objectives:**
 > 1. Describe count data with binomial, Poisson, multinomial, and negative binomial generative models and estimate parameters by maximum likelihood
@@ -57,7 +57,6 @@
   - [7.4 Variance-Stabilizing Transformations](#74-variance-stabilizing-transformations)
   - [7.5 The Workflow of Differential Expression Analysis](#75-the-workflow-of-differential-expression-analysis)
 - [Concept Applications](#concept-applications)
-- [Glossary](#glossary)
 - [Summary](#summary)
 - [Self-Check Questions](#self-check-questions)
 - [References](#references)
@@ -70,7 +69,9 @@
 
 ### 1.1 Characteristics of High-Throughput Data
 
-**High-throughput** experiments measure thousands to millions of variables at once. RNA-seq produces the expression of every gene, genotyping hundreds of thousands of SNPs, and sequencing hundreds of millions of reads in one run (Chapter 7). There are three reasons why statistics is needed to analyze such data.
+> **Definition:** A **high-throughput experiment** measures thousands to millions of variables at once.
+
+RNA-seq produces the expression of every gene, genotyping hundreds of thousands of SNPs, and sequencing hundreds of millions of reads in one run (Chapter 7). There are three reasons why statistics is needed to analyze such data.
 
 - **The measurements are counts.** Many measurements, such as numbers of reads, numbers of reads supporting a variant, and numbers of a particular base, are nonnegative integers. Counts have variances that grow with their means, so methods that assume a normal distribution are hard to apply directly. The count distributions of Section 2 handle this property.
 - **There is noise.** Measurements differ even among replicate experiments under the same conditions. Hypothesis tests (Section 4) are needed to judge whether an observed difference is a real effect or chance.
@@ -106,7 +107,11 @@ The two directions share the same model. Statistical inference reverses the prob
 
 ### 2.1 Bernoulli Trials and the Binomial Distribution
 
-A trial with only two outcomes, success and failure, is called a **Bernoulli trial**. When a Bernoulli trial with success probability $`p`$ is repeated independently $`n`$ times, the number of successes $`K`$ follows the **binomial distribution** $`\mathrm{Bin}(n, p)`$.
+> **Definition:** A **Bernoulli trial** is a trial with only two outcomes, success and failure.
+
+> **Definition:** The **binomial distribution** $`\mathrm{Bin}(n, p)`$ is the distribution of the number of successes $`K`$ when a Bernoulli trial with success probability $`p`$ is repeated independently $`n`$ times.
+
+For the binomial distribution $`\mathrm{Bin}(n, p)`$, the probabilities, mean, and variance of the number of successes $`K`$ are as follows.
 
 ```math
 P(K = k) = \binom{n}{k} p^k (1-p)^{n-k}, \qquad E[K] = np, \qquad \mathrm{Var}(K) = np(1-p)
@@ -151,7 +156,9 @@ The Poisson distribution is widely used for counts of "rare events among many op
 
 ### 2.3 The Multinomial Distribution
 
-When a trial with $`r`$ outcomes rather than two is repeated $`n`$ times, the counts of the outcomes $`(K_1, \ldots, K_r)`$ follow the **multinomial distribution**. If outcome $`i`$ has probability $`p_i`$ ($`\sum p_i = 1`$), then
+> **Definition:** The **multinomial distribution** is the distribution of the counts $`(K_1, \ldots, K_r)`$ of the outcomes when a trial with $`r`$ outcomes is repeated independently $`n`$ times.
+
+If outcome $`i`$ has probability $`p_i`$ ($`\sum p_i = 1`$), then
 
 ```math
 P(K_1 = k_1, \ldots, K_r = k_r) = \frac{n!}{k_1! \cdots k_r!} p_1^{k_1} \cdots p_r^{k_r}, \qquad \sum_{i} k_i = n
@@ -178,7 +185,9 @@ This independence model ignores dependence between neighboring bases. Section 3.
 
 ### 2.4 Maximum Likelihood Estimation
 
-When data $`y_1, \ldots, y_n`$ are observed and the parameter is unknown, the **likelihood** of a parameter $`\theta`$ is the probability of the observed data under that parameter, viewed as a function of the parameter.
+> **Definition:** The **likelihood** of a parameter $`\theta`$, given observed data $`y_1, \ldots, y_n`$, is the probability of the data under $`\theta`$, viewed as a function of $`\theta`$.
+
+If the observations are independent, the likelihood and its logarithm are
 
 ```math
 L(\theta) = \prod_{i=1}^{n} P(y_i \mid \theta), \qquad \ell(\theta) = \log L(\theta) = \sum_{i=1}^{n} \log P(y_i \mid \theta)
@@ -227,7 +236,9 @@ y
 
 ### 2.5 The Negative Binomial Distribution and Overdispersion
 
-The variance of real count data is often larger than the Poisson model predicts (equal to the mean). This is called **overdispersion**. A typical cause is that the rate $`\lambda`$ producing the counts itself varies from sample to sample. In RNA-seq, even replicate samples under the same condition differ slightly in cell state, so the true expression of a gene differs, and the Poisson variation of drawing reads is added on top.
+> **Definition:** **Overdispersion** is the phenomenon in which the variance of count data exceeds what the Poisson model predicts, namely the mean.
+
+Overdispersion is common in real count data. A typical cause is that the rate $`\lambda`$ producing the counts itself varies from sample to sample. In RNA-seq, even replicate samples under the same condition differ slightly in cell state, so the true expression of a gene differs, and the Poisson variation of drawing reads is added on top.
 
 Turning this two-stage process directly into a model gives a **gamma-Poisson mixture**.
 
@@ -239,7 +250,9 @@ flowchart LR
 
 *Figure 1. The negative binomial distribution as a gamma-Poisson mixture*
 
-> **Definition:** The **negative binomial distribution** is a count distribution with mean $`\mu`$ and dispersion parameter $`\alpha`$ whose variance is $`\mu + \alpha \mu^2`$; it equals a Poisson distribution whose rate follows a gamma distribution.
+> **Definition:** The **negative binomial distribution** is a count distribution with mean $`\mu`$ and parameter $`\alpha`$ whose variance is $`\mu + \alpha \mu^2`$; it equals a Poisson distribution whose rate follows a gamma distribution.
+
+> **Definition:** The **dispersion parameter** is the parameter $`\alpha`$ of the negative binomial distribution that sets the size of the overdispersion beyond the Poisson variance $`\mu`$ in the variance $`\mu + \alpha \mu^2`$; as $`\alpha \to 0`$ the negative binomial returns to the Poisson.
 
 The variance follows from the law of total variance. If $`\lambda`$ has mean $`\mu`$ and variance $`\mu^2/r`$,
 
@@ -300,6 +313,10 @@ X^2 = \sum_{i=1}^{r} \frac{(O_i - E_i)^2}{E_i}
 ```
 
 and when the null hypothesis is true and the expected counts are large enough, it approximately follows a chi-squared distribution with $`r - 1`$ degrees of freedom. Since all the probabilities are fixed in advance, the degrees of freedom are the number of categories minus the one constraint that they sum to $`n`$, $`4 - 1 = 3`$.
+
+> **Definition:** The **null hypothesis** is the hypothesis in a test that the effect or difference of interest is absent; it is the reference under which the distribution of the test statistic is computed.
+
+> **Definition:** A **goodness-of-fit test** judges whether the observed frequencies of the categories agree with the expected frequencies predicted by a probability model; its null hypothesis is that the data follow that model.
 
 First the test is applied to the whole of yeast chromosome I.
 
@@ -371,6 +388,8 @@ The chi-squared distribution is an approximation, so the null distribution can b
 - `colSums((sim - 50)^2 / 50)` computes the same statistic for each column, that is, for each simulated sequence.
 - The proportion of simulated statistics at or above the observed 8.44, 0.0356, is the simulated p-value. It is close to the chi-squared approximation of 0.0377.
 
+> **Definition:** The **null distribution** is the distribution that the test statistic follows when the null hypothesis is true.
+
 The simulation method has the advantage of applying directly to statistics whose approximate distribution is unknown. As long as there is a generative model that can produce data under the null hypothesis, the null distribution of any statistic can be obtained. This is why Section 1.2 sets up the generative model first.
 
 ### 3.3 Dinucleotide Frequencies and the CpG Observed-to-Expected Ratio
@@ -383,7 +402,9 @@ If the independence model of Section 2.3 were right, the probability of two neig
 \mathrm{O/E}(\mathrm{CpG}) = \frac{n_{CG} / (N - 1)}{(n_C / N)(n_G / N)}
 ```
 
-$`N`$ is the sequence length, and $`n_{CG}`$ is the number of CG among the $`N - 1`$ overlapping dinucleotides. A value of 1 means that G follows C as often as the independence model expects. In vertebrate genomes as a whole, CpG is much rarer than expected. The widely accepted explanation is that the cytosine of CpG is readily methylated, and methylated cytosine frequently mutates to thymine by deamination, so CpG has declined over evolution. Near the promoters of genes there are regions that are not methylated and keep CpG at the expected level, called **CpG islands**.
+$`N`$ is the sequence length, and $`n_{CG}`$ is the number of CG among the $`N - 1`$ overlapping dinucleotides. A value of 1 means that G follows C as often as the independence model expects. In vertebrate genomes as a whole, CpG is much rarer than expected. The widely accepted explanation is that the cytosine of CpG is readily methylated, and methylated cytosine frequently mutates to thymine by deamination, so CpG has declined over evolution. Near the promoters of genes there are regions that escaped this decline.
+
+> **Definition:** A **CpG island** is a genomic region, typically near the promoter of a gene, that is not methylated and keeps CpG dinucleotides at the expected level.
 
 The ratio is computed for four sequences included in Bioconductor packages.
 
@@ -427,7 +448,9 @@ The simplest way to put dependence between neighboring bases into a model is to 
 
 > **Definition:** A **first-order Markov chain** is a stochastic process in which the probability of the next state depends only on the immediately preceding state and not on earlier states.
 
-In a DNA sequence the states are the four bases, and the model is defined by a 4 × 4 **transition matrix** $`a_{st} = P(x_i = t \mid x_{i-1} = s)`$. Each row sums to 1. The probability of a whole sequence is
+> **Definition:** A **transition matrix** collects the probabilities $`a_{st} = P(x_i = t \mid x_{i-1} = s)`$ of moving from a state $`s`$ to the next state $`t`$ in a Markov chain; each row sums to 1.
+
+In a DNA sequence the states are the four bases, and the model is defined by a 4 × 4 transition matrix. The probability of a whole sequence is
 
 ```math
 P(x_1, \ldots, x_N) = P(x_1) \prod_{i=2}^{N} a_{x_{i-1} x_i}
@@ -496,7 +519,9 @@ background     island
 
 ### 3.5 Classifying Sequences by Log-Likelihood Ratio
 
-Given two models, whether a new sequence more likely came from one or the other can be judged by the **log-likelihood ratio**. Ignoring the term for the first base,
+> **Definition:** The **log-likelihood ratio** is the logarithm of the ratio of the likelihoods of the same data under two models; a positive value means the model in the numerator explains the data better.
+
+Given two models, whether a new sequence more likely came from one or the other can be judged by the log-likelihood ratio. Ignoring the term for the first base,
 
 ```math
 S(x) = \log_2 \frac{P(x \mid M^{+})}{P(x \mid M^{-})} = \sum_{i=2}^{N} \log_2 \frac{a^{+}_{x_{i-1} x_i}}{a^{-}_{x_{i-1} x_i}}
@@ -548,10 +573,12 @@ The two distributions in Figure 2 are mostly separated but overlap near 0. The s
 Chapter 6, Section 8.1 covered how a test decision falls into one of the four cells of a confusion matrix, along with type I errors, type II errors, and power. This section summarizes the procedure for actually carrying out one test. A hypothesis test consists of the following five steps [1, Ch. 6].
 
 1. **Choose the effect of interest and the test statistic.** Example: the difference in mean expression between two conditions, the number of reads supporting one allele.
-2. **State the null hypothesis and obtain the distribution of the test statistic under it (the null distribution).** The null hypothesis states that there is no effect and must be specific enough for the null distribution to be computed.
-3. **Choose the rejection region.** It is the region of values extreme in the direction of the effect whose probability under the null hypothesis is at most the significance level $`\alpha`$.
+2. **State the null hypothesis and obtain the distribution of the test statistic under it (the null distribution).** The null hypothesis must be specific enough for the null distribution to be computed.
+3. **Choose the rejection region.**
 4. **Collect the data and compute the test statistic.**
 5. **Reject the null hypothesis if the statistic falls in the rejection region.**
+
+> **Definition:** The **rejection region** is the region of test statistic values, extreme in the direction of the effect, chosen so that its probability under the null hypothesis is at most the significance level $`\alpha`$; the null hypothesis is rejected when the statistic falls in it.
 
 > **Definition:** The **p-value** is the probability, when the null hypothesis is true, of a test statistic as extreme as or more extreme than the one observed.
 
@@ -612,7 +639,9 @@ By hand, the treatment mean is 5.9 and the control mean 5.125, a difference of 0
 
 ### 4.4 The Permutation Test
 
-The t-test depends on the assumption that the data are normally distributed. With only four observations per group, this assumption is hard to check. A **permutation test** builds the null distribution without distributional assumptions. If the null hypothesis is true, the group labels are unrelated to the data, so every reassignment of the labels to the eight values is equally plausible.
+> **Definition:** A **permutation test** builds the null distribution without distributional assumptions from the test statistics of many reassignments of the group labels, using the fact that under the null hypothesis the labels are unrelated to the data.
+
+The t-test depends on the assumption that the data are normally distributed. With only four observations per group, this assumption is hard to check. If the null hypothesis is true, the group labels are unrelated to the data, so every reassignment of the labels to the eight values is equally plausible.
 
 ```r
 x <- c(trt, ctrl)
@@ -754,13 +783,17 @@ This has the same structure as the confusion matrix of Chapter 6, Section 8.1, a
 
 > **Definition:** The **family-wise error rate (FWER)** is the probability $`P(V \ge 1)`$ of at least one false positive among all the tests.
 
-The **Bonferroni correction** lowers the per-test significance level to $`\alpha / m`$ and controls the FWER at or below $`\alpha`$. It is proved by the union bound on probabilities.
+> **Definition:** The **Bonferroni correction** lowers the per-test significance level to $`\alpha / m`$ to control the FWER at or below $`\alpha`$.
+
+That the Bonferroni correction controls the FWER at or below $`\alpha`$ is proved by the union bound on probabilities.
 
 ```math
 P(V \ge 1) = P\left( \bigcup_{i \in H_0} \left\lbrace p_i \le \frac{\alpha}{m} \right\rbrace \right) \le \sum_{i \in H_0} P\left( p_i \le \frac{\alpha}{m} \right) = m_0 \frac{\alpha}{m} \le \alpha
 ```
 
-Here $`H_0`$ is the set of tests whose null hypothesis is true. The union bound holds regardless of the dependence among the events, so the Bonferroni correction is valid whatever the correlation among the tests. The **adjusted p-value** expressing the same decision on the p-value scale is $`\tilde{p}_i = \min(1, m p_i)`$, and a test is rejected if $`\tilde{p}_i \le \alpha`$.
+Here $`H_0`$ is the set of tests whose null hypothesis is true. The union bound holds regardless of the dependence among the events, so the Bonferroni correction is valid whatever the correlation among the tests. The adjusted p-value expressing the same decision on the p-value scale is $`\tilde{p}_i = \min(1, m p_i)`$, and a test is rejected if $`\tilde{p}_i \le \alpha`$.
+
+> **Definition:** An **adjusted p-value** expresses a multiple testing correction's decision on the p-value scale; a test is rejected when its adjusted p-value is at or below the target level.
 
 The price of the Bonferroni correction is power. With $`m = 10000`$ and $`\alpha = 0.05`$, the per-test criterion becomes $`5 \times 10^{-6}`$, and an experiment with few samples finds almost none of the real effects. A criterion that allows not even one false positive is too strict for exploratory studies that choose genes from tens of thousands of candidates for follow-up experiments.
 
@@ -825,9 +858,11 @@ sum(p.adjust(pv, "BH") <= q)
 ```
 
 - **Comparison with the criteria:** The first four p-values lie below their criteria, and the fifth, 0.026, exceeds its criterion 0.025. The sixth, 0.029, however, lies below its criterion 0.030.
-- **The largest k:** The procedure does not stop where a p-value first exceeds its criterion; it finds the largest rank below its criterion. Since $`k = 6`$, all six are rejected, including the fifth, which exceeded its own criterion. Because of this property the BH procedure is called a **step-up** procedure.
+- **The largest k:** The procedure does not stop where a p-value first exceeds its criterion; it finds the largest rank below its criterion. Since $`k = 6`$, all six are rejected, including the fifth, which exceeded its own criterion. This property is what makes the BH procedure a step-up procedure.
 - **BH-adjusted p-values:** The decision expressed on the p-value scale is $`\tilde{p}_{(i)} = \min_{j \ge i} \min\left(1, \frac{m}{j} p_{(j)}\right)`$. The `rev(cummin(rev(...)))` in the code computes the cumulative minimum from the end. The fifth value is $`10 \times 0.026 / 5 = 0.052`$, but it cannot exceed the sixth value $`10 \times 0.029 / 6 = 0.0483`$, so it becomes 0.0483. The hand-computed values equal `p.adjust(pv, "BH")`.
 - **Comparison of the two methods:** Six tests have BH-adjusted p-values at or below 0.05, and three have Bonferroni-adjusted p-values at or below 0.05. The Bonferroni-adjusted p-value is $`10 p_i`$ truncated at 1.
+
+> **Definition:** A **step-up procedure** is a multiple testing procedure that finds the largest rank whose sorted p-value lies below its criterion and rejects all tests up to that rank.
 
 > **Caution:** The BH-adjusted p-value $`\tilde{p}_i`$ is not the probability that the test is a false positive. $`\tilde{p}_i \le q`$ means "had the target FDR been set to $`q`$, this test would be on the rejection list," and the FDR is an average property of the whole list. The values returned by R's `p.adjust(..., "BH")` and reported as `padj` by DESeq2 in Section 7.5 are these adjusted p-values.
 
@@ -910,7 +945,9 @@ Benjamini and Hochberg proved that when the test statistics are independent, the
 
 ### 7.1 The Count Matrix and Library Size
 
-The quantification step of RNA-seq (Chapter 7, Section 8.5) counts the reads mapped to each gene to build a gene × sample **count matrix**. The pasilla data serve as the example. They are RNA-seq data from an experiment that reduced the expression of the splicing factor Pasilla by RNAi in fruit fly cells, together with control experiments [5], and are included as a gene-level count matrix in the Bioconductor package pasilla [1, Ch. 8].
+> **Definition:** A **count matrix** has genes as rows and samples as columns, and each cell holds the number of reads of that sample mapped to that gene.
+
+The quantification step of RNA-seq (Chapter 7, Section 8.5) counts the reads mapped to each gene to build a count matrix. The pasilla data serve as the example. They are RNA-seq data from an experiment that reduced the expression of the splicing factor Pasilla by RNAi in fruit fly cells, together with control experiments [5], and are included as a gene-level count matrix in the Bioconductor package pasilla [1, Ch. 8].
 
 ```r
 suppressPackageStartupMessages(library(DESeq2))
@@ -949,8 +986,10 @@ untreated1 untreated2 untreated3 untreated4   treated1   treated2   treated3
 ```
 
 - The count matrix has 14,599 genes and 7 samples (4 control, 3 treated). The row names `FBgn...` are FlyBase gene identifiers (Chapter 7, Section 10.2).
-- `colSums(counts)` gives the total number of reads per sample, the **library size**. untreated2 has about 21.9 million reads and untreated3 about 8.4 million, a 2.6-fold difference. Counts of the same gene would differ by this ratio, so raw counts cannot be compared directly.
+- `colSums(counts)` gives the library size of each sample. untreated2 has about 21.9 million reads and untreated3 about 8.4 million, a 2.6-fold difference. Counts of the same gene would differ by this ratio, so raw counts cannot be compared directly.
 - 15.3% of the genes have count 0 in every sample. Such genes are not expressed, or are expressed too weakly, in these cells.
+
+> **Definition:** The **library size** of an RNA-seq sample is its total number of reads.
 
 Count data present the following difficulties [1, Ch. 8].
 
@@ -961,11 +1000,13 @@ Count data present the following difficulties [1, Ch. 8].
 
 ### 7.2 Size Factors and Median-of-Ratios Normalization
 
-Suppose the counts of sample $`j`$ are systematically $`s_j`$ times larger than those of other samples; this $`s_j`$ is called the **size factor**. The normalized count is $`K_{ij} / s_j`$. The simplest size factor is the ratio of library sizes, but this method has a weakness. If a few genes are very highly expressed under one condition, the total read count of that sample increases, and after normalization the remaining genes appear to decrease even though they did not actually change.
+> **Definition:** The **size factor** $`s_j`$ of sample $`j`$ is the factor by which its counts are systematically larger than those of other samples; the normalized count is $`K_{ij} / s_j`$.
 
-The DESeq method sets the size factor by the median of per-gene ratios, under the assumption that most genes do not change between conditions [6].
+The simplest size factor is the ratio of library sizes, but this method has a weakness. If a few genes are very highly expressed under one condition, the total read count of that sample increases, and after normalization the remaining genes appear to decrease even though they did not actually change.
 
 > **Definition:** **Median-of-ratios normalization** divides each gene's count by its geometric mean across all samples and takes the median of these ratios in each sample as the size factor.
+
+The DESeq method sets the size factor by the median of per-gene ratios, under the assumption that most genes do not change between conditions [6].
 
 ```math
 s_j = \mathrm{median}_{i} \frac{K_{ij}}{\left( \prod_{v=1}^{n} K_{iv} \right)^{1/n}}
@@ -1028,8 +1069,10 @@ In the log-log plot of Figure 5, the points follow the Poisson line (variance = 
 When the variance depends on the mean, genes with large counts dominate methods that use distances (the clustering of Chapter 3, the PCA of Chapter 4). Before clustering or visualization, the data are therefore transformed so that the variance becomes independent of the mean [1, Ch. 8].
 
 - **Log transformation:** A small number is added before taking logs, as in $`\log_2(K/s + 1)`$. It reduces the variance well for large counts but actually increases it for counts near 0.
-- **Variance-stabilizing transformation:** A function under which the variance after transformation is nearly constant is derived from the estimated mean-variance relationship and applied. It gives finite values even near 0.
-- **Regularized logarithm (rlog):** A log transformation that shrinks each gene's log fold changes toward 0. Because it accounts for the size factors directly, it is advantageous over the variance-stabilizing transformation when size factors differ greatly among samples [7].
+- **Variance-stabilizing transformation:** Unlike the log transformation, gives finite values even near 0.
+- **Regularized logarithm (rlog):** A log transformation that shrinks, for each gene, the deviation of each sample's log count from the gene's average level toward 0. Because it accounts for the size factors directly, it is advantageous over the variance-stabilizing transformation when size factors differ greatly among samples [7].
+
+> **Definition:** A **variance-stabilizing transformation** transforms the data by a function derived from the estimated mean-variance relationship so that the variance after transformation is nearly constant regardless of the mean.
 
 > **[Machine Learning]** Distance-based learning methods are sensitive to the scale of variables, so preprocessing that equalizes the variance of each variable, such as the Z-score normalization of Chapter 3, is applied. The variance-stabilizing transformation achieves the same goal in a way suited to the mean-variance relationship of count data. Such transformations are also applied first when RNA-seq data are fed into the feature selection, clustering, and classification models of Chapters 10-12.
 
@@ -1043,7 +1086,11 @@ DESeq2 combines the material so far into one analysis [7].
 2. **Model:** The count of gene $`i`$ in sample $`j`$ is modeled as negative binomial with mean $`s_j q_{ij}`$ and dispersion $`\alpha_i`$, and $`\log_2 q_{ij}`$ is set as a linear model in the condition (control, treated). The coefficient of the condition is the log2 fold change.
 3. **Sharing dispersion:** Replicates are few, so estimating $`\alpha_i`$ separately for each gene is unstable; the dispersion information of genes with similar means is used together to stabilize the estimates.
 4. **Testing:** For each gene the null hypothesis that the log2 fold change is 0 is tested with a Wald test to obtain a p-value.
-5. **Multiple testing correction:** Adjusted p-values are obtained with the BH procedure. At this point **independent filtering** removes in advance the genes whose mean counts are too low to have any power.
+5. **Multiple testing correction:** Adjusted p-values are obtained with the BH procedure. At this point independent filtering removes in advance the genes whose mean counts are too low to have any power.
+
+> **Definition:** The **log2 fold change** of a gene is the base-2 logarithm of the ratio of its expression levels in two conditions (for example treated over control); a value of 1 means the expression doubled and -1 that it halved.
+
+> **Definition:** **Independent filtering** removes, before the multiple testing correction, the tests that have almost no power by a criterion that is independent of the p-values under the null hypothesis (for example the mean count computed without the condition labels), so that fewer tests enter the correction.
 
 ```r
 suppressPackageStartupMessages(library(DESeq2))
@@ -1116,41 +1163,6 @@ For independent filtering not to harm FDR control, the filtering criterion must 
 | If 20 tests are each performed independently at α = 0.05 and all null hypotheses are true, the probability of one or more false positives is 0.64. | **T.** $`1 - 0.95^{20} \approx 0.64`$. |
 | The BH procedure stops at the first p-value that exceeds its criterion and rejects only those before it. | **F.** BH is a step-up procedure that rejects up to the largest $`k`$ satisfying $`p_{(k)} \le kq/m`$, so a p-value that exceeded its criterion along the way can still be rejected. |
 | Normalizing by library size and median-of-ratios normalization always give the same result. | **F.** If a few genes change greatly, the total read count is affected by them, so the two methods differ. For treated1 in pasilla the difference is about 9%. |
-
----
-
-<br>
-
-## Glossary
-
-| English | Korean | One-Line Definition |
-|:-----|:-----|:-----|
-| high-throughput experiment | 고처리량 실험 | An experiment that measures thousands to millions of variables at once |
-| Bernoulli trial | 베르누이 시행 | A trial with only two outcomes, success and failure |
-| binomial distribution | 이항 분포 | The distribution of the number of successes in $`n`$ independent Bernoulli trials |
-| multinomial distribution | 다항 분포 | The distribution of the count vector of $`n`$ repetitions of a trial with $`r`$ outcomes |
-| likelihood | 가능도 | The probability of the observed data viewed as a function of the parameter |
-| overdispersion | 과대 산포 | A variance larger than the Poisson prediction (the mean) |
-| dispersion parameter | 산포 모수 | The $`\alpha`$ that sets the size of overdispersion in the negative binomial distribution |
-| goodness-of-fit test | 적합도 검정 | A test of whether observed frequencies match the expected frequencies of a model |
-| CpG island | CpG 섬 | A genomic region that keeps CpG at the expected level |
-| transition matrix | 전이 행렬 | A matrix of the probabilities of moving from a preceding state to the next state |
-| log-likelihood ratio | 로그 가능도 비 | The logarithm of the ratio of the likelihoods under two models |
-| null hypothesis / null distribution | 귀무가설 / 귀무 분포 | The hypothesis of no effect, and the distribution of the test statistic under it |
-| rejection region | 기각역 | The region of the test statistic in which the null hypothesis is rejected |
-| permutation test | 순열 검정 | A test that builds the null distribution by reassigning group labels |
-| p-value hacking | p값 해킹 | The practice of trying many analyses and reporting only the smallest p-value |
-| two-groups model | 두 집단 모형 | A model viewing the p-value distribution as a mixture of null and alternative components |
-| Bonferroni correction | Bonferroni 보정 | An FWER control method that lowers the per-test criterion to $`\alpha/m`$ |
-| step-up procedure | 단계 상승 절차 | A procedure that rejects up to the largest rank below its criterion |
-| count matrix | 개수 행렬 | A gene × sample table of read counts |
-| library size | 라이브러리 크기 | The total number of reads in a sample |
-| size factor | 크기 인자 | A value expressing how many times larger a sample's counts are systematically |
-| variance-stabilizing transformation | 분산 안정화 변환 | A transformation that makes the variance independent of the mean |
-| log2 fold change | 로그 배수 변화 | The base-2 logarithm of the ratio of expression levels in two conditions |
-| independent filtering | 독립 필터링 | Removing low-power tests in advance by a criterion independent of the p-values |
-
-*Table 5. Glossary*
 
 ---
 

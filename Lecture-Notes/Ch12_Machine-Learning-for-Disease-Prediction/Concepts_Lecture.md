@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-11-19
+> **Last Updated:** 2026-11-26
 
 > **Learning Objectives:**
 > 1. Formulate diagnosis and prognosis as classification problems that predict probabilities, and set the decision threshold from misclassification costs
@@ -62,7 +62,6 @@
   - [8.3 Recalibration](#83-recalibration)
   - [8.4 Practices for Reproducibility](#84-practices-for-reproducibility)
 - [Concept Applications](#concept-applications)
-- [Glossary](#glossary)
 - [Summary](#summary)
 - [Self-Check Questions](#self-check-questions)
 - [References](#references)
@@ -75,7 +74,11 @@
 
 ### 1.1 Diagnostic and Prognostic Prediction
 
-Clinical prediction models come in two broad kinds. The TRIPOD reporting guideline divides prediction models into **diagnostic models**, which estimate the probability that a specific disease or condition is present, and **prognostic models**, which estimate the probability that a specific event will occur in the future [1]. In both cases the model takes a patient's information as input and outputs a probability, so it is a classification problem in the sense of Chapter 6.
+> **Definition:** A **diagnostic model** is a prediction model that estimates the probability that a specific disease or condition is present now.
+
+> **Definition:** A **prognostic model** is a prediction model that estimates the probability that a specific event will occur in the future.
+
+Clinical prediction models come in two broad kinds. The TRIPOD reporting guideline divides prediction models into diagnostic and prognostic models [1]. In both cases the model takes a patient's information as input and outputs a probability, so it is a classification problem in the sense of Chapter 6.
 
 | Kind | Target | Example Response | Caveat |
 |:-----|:-----|:-----|:-----|
@@ -86,7 +89,9 @@ Clinical prediction models come in two broad kinds. The TRIPOD reporting guideli
 
 An early example of diagnostic prediction from expression data is the acute leukemia study of Golub et al. It showed that a class predictor derived automatically from expression data could determine the class (AML or ALL) of new leukemia cases, demonstrating that cancer can be classified by gene expression monitoring alone [2]. Whereas the class discovery of Chapter 11 finds unknown subtypes, the class prediction of this chapter assigns new patients to known classes.
 
-> **Note:** If "relapse within 5 years" is made a binary response in prognostic prediction, it is unknown whether patients whose follow-up stopped before 5 years relapsed. Such observations are called censored, and dropping censored patients or treating them as non-relapsed introduces bias. Survival analysis (the Cox proportional hazards model and others), which models the time to the event directly, is the standard method for such data.
+> **Note:** If "relapse within 5 years" is made a binary response in prognostic prediction, it is unknown whether patients whose follow-up stopped before 5 years relapsed. Dropping such censored patients or treating them as non-relapsed introduces bias. Survival analysis (the Cox proportional hazards model and others), which models the time to the event directly, is the standard method for such data.
+
+> **Definition:** **Censoring** occurs when follow-up ends or is interrupted before the event is observed (end of the study, loss to follow-up, and so on), so that it is unknown whether the event happened after observation stopped.
 
 ### 1.2 Components of a Prediction Model
 
@@ -95,6 +100,12 @@ Let $`x_i \in \mathbb{R}^p`$ be the expression vector of patient $`i`$ and $`y_i
 1. **Risk score:** compute the probability $`\hat\pi(x) = \hat P(Y = 1 \mid X = x)`$ or a score $`s(x)`$ with the same ordering.
 2. **Decision rule:** fix a threshold $`t`$ and call the patient positive (diseased) if $`\hat\pi(x) \ge t`$.
 3. **Evaluation:** on patients not used for training, measure whether the ordering of scores is right (discrimination), whether the probability values themselves are right (calibration), and whether the calls are right (sensitivity, specificity).
+
+> **Definition:** The **decision threshold** is the cutoff $`t`$ that turns a model's predicted probability or score into a positive or negative call; a patient whose predicted probability is at least $`t`$ is called positive.
+
+> **Definition:** **Discrimination** is the degree to which a prediction model gives higher scores to people with the event than to those without, that is, how well the ordering of its scores is right.
+
+> **Definition:** **Calibration** is the degree to which predicted probabilities match the frequencies of events actually observed. A model is well calibrated if about 30% of the patients with predicted probability 0.3 actually have the disease.
 
 The confusion-matrix metrics of Chapter 6 evaluate the calls of step 3, so their values change with the threshold $`t`$. The ROC curve and AUC of Section 5 look at all thresholds at once to evaluate the discrimination of the score, and calibration evaluates the accuracy of the probability values. A good clinical prediction model needs both discrimination and calibration.
 
@@ -208,9 +219,13 @@ Sample-level cross-validation estimated the misclassification rate at 0.058, bec
 
 ### 2.4 Batch Effects and Confounding
 
-High-throughput measurements vary with laboratory conditions, reagent lots, and personnel, and such variation is called a **batch effect**. Leek et al. pointed out that batch effects become a major problem leading to incorrect conclusions when they are correlated with an outcome of interest, and argued that batch effects and other technical and biological artifacts are widespread and critical to address [3].
+> **Definition:** A **batch effect** is systematic variation in measurements caused by technical factors such as laboratory conditions, reagent lots, and personnel.
 
-The most dangerous case for a prediction model is a design in which batch is **confounded** with class. If all case samples are measured in January and all control samples in March, differences due to measurement date cannot be distinguished from differences due to disease. The model can separate the classes perfectly from traces of the measurement date alone, and cross-validation does not catch the problem, because every fold carries the same confounding. Such a model is useless for new patients measured on other dates. Confounding is hard to fix at the analysis stage, so it must be prevented at the design stage: mix cases and controls evenly in each measurement batch and randomize the measurement order.
+Leek et al. pointed out that batch effects become a major problem leading to incorrect conclusions when they are correlated with an outcome of interest, and argued that batch effects and other technical and biological artifacts are widespread and critical to address [3].
+
+The most dangerous case for a prediction model is a design in which batch is confounded with class. If all case samples are measured in January and all control samples in March, differences due to measurement date cannot be distinguished from differences due to disease. The model can separate the classes perfectly from traces of the measurement date alone, and cross-validation does not catch the problem, because every fold carries the same confounding. Such a model is useless for new patients measured on other dates. Confounding is hard to fix at the analysis stage, so it must be prevented at the design stage: mix cases and controls evenly in each measurement batch and randomize the measurement order.
+
+> **Definition:** **Confounding** occurs when a factor of interest (for example disease) and another factor (for example measurement batch) vary together, so that their effects cannot be distinguished.
 
 ### 2.5 Small Samples and Uncertainty of Estimates
 
@@ -230,7 +245,9 @@ The K-fold cross-validation of Section 7 in Chapter 6 splits the data into $`K`$
 
 ### 3.2 Stratified Cross-Validation
 
-If data with 30 cases and 120 controls are split at random into 5 folds, one fold may get only 2 cases and another 10. Sensitivity cannot be measured stably in a fold with few cases, and differing class proportions across folds increase the variance of the error estimate. **Stratified cross-validation** assigns each class to folds separately so that every fold has the same class proportions as the whole. In the example, each fold gets 6 cases and 24 controls.
+If data with 30 cases and 120 controls are split at random into 5 folds, one fold may get only 2 cases and another 10. Sensitivity cannot be measured stably in a fold with few cases, and differing class proportions across folds increase the variance of the error estimate. Stratified cross-validation prevents this. In the example, each fold gets 6 cases and 24 controls.
+
+> **Definition:** **Stratified cross-validation** is cross-validation that assigns the samples of each class to the folds separately, so that every fold keeps the class proportions of the whole data.
 
 ### 3.3 Separating Model Selection from Performance Estimation
 
@@ -258,6 +275,8 @@ flowchart TD
 With 5 outer folds, 5 inner folds, and 100 hyperparameter candidates, the number of fits is $`5 \times (5 \times 100 + 1) = 2{,}505`$. The cost is high, but for omics data with few samples it is almost the only way to obtain an honest performance estimate. The hyperparameters chosen inside may differ from outer fold to outer fold, and this variation itself shows the instability of the selection.
 
 ### 3.5 Simulation: Data with No Signal
+
+> **Definition:** **Logistic regression** is a regression method that models the logit (log-odds) of the probability of a binary response, such as disease status, as a linear combination of the features.
 
 The $`\lambda`$ of elastic-net logistic regression ($`\alpha = 0.5`$) is chosen on normal random data with 60 samples (30 per class) and 1,000 genes. The non-nested approach reports the minimum cross-validation misclassification rate reported by `cv.glmnet()` as the performance, and the nested approach chooses $`\lambda`$ with an inner `cv.glmnet()` within each of 5 outer folds. The true misclassification rate is 0.5. The experiment is repeated 20 times.
 
@@ -317,11 +336,15 @@ After estimating performance by nested cross-validation, the model actually used
 
 ### 4.1 The Accuracy Paradox
 
-Most diseases are rare. As Section 8.5 of Chapter 6 showed, in a population with 1% prevalence even a classifier that calls everyone negative has accuracy 0.99. With imbalanced classes, a model with high accuracy may find not a single patient, which is called the **accuracy paradox**. For imbalanced data, sensitivity and specificity are reported separately, or their mean, the **balanced accuracy**, is used. A classifier that calls everyone negative has sensitivity 0 and specificity 1, so its balanced accuracy is 0.5, the same as a classifier that calls at random.
+Most diseases are rare. As Section 8.5 of Chapter 6 showed, in a population with 1% prevalence even a classifier that calls everyone negative has accuracy 0.99. With imbalanced classes, a model with high accuracy may find not a single patient, which is called the **accuracy paradox**. For imbalanced data, sensitivity and specificity are reported separately, or the balanced accuracy is used. A classifier that calls everyone negative has sensitivity 0 and specificity 1, so its balanced accuracy is 0.5, the same as a classifier that calls at random.
+
+> **Definition:** The **balanced accuracy** is the mean of sensitivity and specificity, used instead of accuracy for imbalanced data.
 
 ### 4.2 Study Prevalence and Real Prevalence
 
-Section 8.5 of Chapter 6 showed that, with the same sensitivity and specificity, the positive predictive value changes greatly with prevalence: the same test has a PPV of 0.947 at 50% prevalence but 0.154 at 1%. This difference matters in omics prediction studies because the prevalence of the study data often differs from that of the real population. Studies of rare diseases often use a **case-control design**, which first collects cases and then a similar number of controls. The prevalence of such data is near 50%, so the PPV or accuracy computed on them must not be carried over directly to a real screening population with much lower prevalence.
+Section 8.5 of Chapter 6 showed that, with the same sensitivity and specificity, the positive predictive value changes greatly with prevalence: the same test has a PPV of 0.947 at 50% prevalence but 0.154 at 1%. This difference matters in omics prediction studies because the prevalence of the study data often differs from that of the real population. Studies of rare diseases often use a case-control design, which first collects cases and then a similar number of controls. The prevalence of such data is near 50%, so the PPV or accuracy computed on them must not be carried over directly to a real screening population with much lower prevalence.
+
+> **Definition:** A **case-control design** is a study design that first collects cases and then separately collects controls for comparison; the prevalence of its data follows the group sizes the researcher chose, not the real population.
 
 Predicted probabilities are affected in the same way. The intercept of a logistic regression reflects the prevalence of the training data, so a model trained on data with 50% prevalence produces probabilities higher than the true risk. If samples were drawn at random within each class (so that the expression distribution within each class is the same), predicted probabilities can be corrected to the real prevalence as follows.
 
@@ -333,9 +356,11 @@ $`\rho_{\text{old}}`$ is the prevalence of the training data and $`\rho_{\text{n
 
 ### 4.3 Remedies
 
-- **Class weights:** give errors on minority-class samples a larger weight in the loss function. Using the number of majority-class samples divided by the number of minority-class samples as the minority weight equalizes the total weight of the two classes.
+- **Class weights:** give errors on minority-class samples a larger class weight. Using the number of majority-class samples divided by the number of minority-class samples as the minority weight equalizes the total weight of the two classes.
 - **Threshold adjustment:** keep the model and lower the decision threshold. If the probability model is well calibrated, the cost-based threshold of Section 1.3 or the training prevalence can serve as the threshold.
-- **Resampling:** enlarge the minority class by duplication (oversampling) or shrink the majority class (undersampling). SMOTE, proposed by Chawla et al., enlarges the minority class by creating synthetic samples rather than simply duplicating, and they reported that combining it with undersampling of the majority class performed better than undersampling alone [5]. Each synthetic sample is placed at a random point on the line segment joining a minority-class sample and one neighbor chosen at random from its $`k`$ nearest neighbors within the minority class [5].
+- **Resampling:** enlarge the minority class by duplication (oversampling) or shrink the majority class (undersampling). **SMOTE (synthetic minority over-sampling technique)**, proposed by Chawla et al., enlarges the minority class by creating synthetic samples rather than simply duplicating, and they reported that combining it with undersampling of the majority class performed better than undersampling alone [5]. Each synthetic sample is placed at a random point on the line segment joining a minority-class sample and one neighbor chosen at random from its $`k`$ nearest neighbors within the minority class [5].
+
+> **Definition:** A **class weight** is the weight that the loss function gives to errors on the samples of a class; giving the minority class a larger weight reduces the effect of imbalance.
 
 > **Caution:** Resampling must be done only on the training part, inside each fold of cross-validation. Oversampling first and cross-validating afterwards puts duplicates of the same sample, or synthetic samples made from it, into both training and test folds, causing the same leakage as the repeated samples of Section 2.3. Moreover, the predicted probabilities of a model trained with class weights or resampling do not reflect the real prevalence, so calibration breaks.
 
@@ -387,7 +412,9 @@ Calling everyone negative gives accuracy 0.863. The unweighted model at threshol
 
 ### 5.1 Properties of the AUC
 
-The ROC curve defined in Section 8.6 of Chapter 6 plots the false positive rate (1 - specificity) on the horizontal axis against the true positive rate (sensitivity) on the vertical axis as the threshold changes, and the AUC is the area under it. The AUC is the probability that the score $`S_{+}`$ of a randomly chosen patient exceeds the score $`S_{-}`$ of a randomly chosen control, with tied pairs counted as one half.
+> **Definition:** The **AUC (area under the curve)** is the area under the ROC curve; it equals the probability that the score of a randomly chosen patient exceeds the score of a randomly chosen control.
+
+The ROC curve defined in Section 8.6 of Chapter 6 plots the false positive rate (1 - specificity) on the horizontal axis against the true positive rate (sensitivity) on the vertical axis as the threshold changes. Writing $`S_{+}`$ for the score of a random patient and $`S_{-}`$ for that of a random control, and counting tied pairs as one half, the AUC is
 
 ```math
 \mathrm{AUC} = P(S_{+} > S_{-}) + \frac{1}{2} P(S_{+} = S_{-})
@@ -430,27 +457,35 @@ In `roc()`, `levels = c(0, 1)` designates 0 as control and 1 as patient, and `di
 
 ### 5.2 Precision-Recall Curves and Average Precision
 
-A **precision-recall curve** plots recall (sensitivity) on the horizontal axis against precision (PPV) on the vertical axis as the threshold changes. The code above sorted the scores in decreasing order and computed, when the top $`k`$ are called positive, the precision $`\mathrm{TP}_k / k`$ and the recall $`\mathrm{TP}_k / P`$. For example, calling the top 3 positive includes 2 patients and 1 control, so the precision is 2/3 = 0.667 and the recall is 2/4 = 0.5.
+> **Definition:** A **precision-recall curve** plots recall (sensitivity) on the horizontal axis against precision (PPV) on the vertical axis as the decision threshold changes.
 
-To summarize the curve by one number, the **average precision (AP)** is used: the mean of the precision at each rank where a patient appears. In the example, patients are at ranks 1, 2, 4, and 5, so AP = $`(1 + 1 + 0.75 + 0.8) / 4 = 0.8875`$. A random score has expected precision equal to the prevalence at every threshold, so the baseline of a precision-recall curve is not the diagonal but a horizontal line at the height of the prevalence.
+The code above sorted the scores in decreasing order and computed, when the top $`k`$ are called positive, the precision $`\mathrm{TP}_k / k`$ and the recall $`\mathrm{TP}_k / P`$. For example, calling the top 3 positive includes 2 patients and 1 control, so the precision is 2/3 = 0.667 and the recall is 2/4 = 0.5.
+
+To summarize the curve by one number, the average precision is used. In the example, patients are at ranks 1, 2, 4, and 5, so AP = $`(1 + 1 + 0.75 + 0.8) / 4 = 0.8875`$. A random score has expected precision equal to the prevalence at every threshold, so the baseline of a precision-recall curve is not the diagonal but a horizontal line at the height of the prevalence.
+
+> **Definition:** The **average precision (AP)** is the mean of the precision at each rank where a patient (positive) appears when the scores are sorted in decreasing order; it summarizes the precision-recall curve by one number.
 
 The false positive rate of the ROC curve is divided by the number of controls, so when controls are very numerous the false positive rate looks small even with many false positives. Saito and Rehmsmeier reported that, on imbalanced data in which negatives far outnumber positives, the visual interpretation of ROC plots can be deceptive about the reliability of classification performance because of an intuitive but wrong interpretation of specificity, whereas precision-recall plots, which evaluate the fraction of true positives among positive calls, can accurately show future classification performance [7]. In a screening test with 1% prevalence, a false positive rate of 5% looks small, but as Section 8.5 of Chapter 6 showed, 85% of positive calls are false positives.
 
 ### 5.3 Calibration and the Brier Score
 
-> **Definition:** **Calibration** is the degree to which predicted probabilities match the frequencies of events actually observed. A model is well calibrated if about 30% of the patients with predicted probability 0.3 actually have the disease.
+> **Definition:** A **calibration plot** splits patients into several bins by predicted probability and plots, for each bin, the mean predicted probability on the horizontal axis against the actual proportion of patients on the vertical axis; if the points lie on the diagonal, calibration is right.
 
-The most intuitive way to examine calibration is the **calibration plot**. Patients are split into several bins by predicted probability (quintiles, for example), and for each bin the mean predicted probability is plotted on the horizontal axis against the actual proportion of patients on the vertical axis. If the points lie on the diagonal, calibration is right. If the points lie steeper than the diagonal (below at the low end, above at the high end), the predictions are pulled too far toward the mean; if they lie flatter, the predictions are too extreme.
+The most intuitive way to examine calibration is the calibration plot. The bins are, for example, the quintiles of the predicted probability. If the points lie steeper than the diagonal (below at the low end, above at the high end), the predictions are pulled too far toward the mean; if they lie flatter, the predictions are too extreme.
 
-To summarize calibration numerically, the observed response is regressed by logistic regression on the logit of the predicted probability, and the slope is examined. A slope of 1 means calibration is right; a slope above 1 means the predictions are not extreme enough (underconfidence); a slope below 1 means they are too extreme (overconfidence, typical of an overfitted model).
+To summarize calibration numerically, the calibration slope is examined. A slope of 1 means calibration is right; a slope above 1 means the predictions are not extreme enough (underconfidence); a slope below 1 means they are too extreme (overconfidence, typical of an overfitted model).
 
-The **Brier score** is the mean squared difference between the predicted probability and the actual response (0 or 1).
+> **Definition:** The **calibration slope** is the slope obtained by a logistic regression of the observed response (0 or 1) on the logit of the model's predicted probability; it equals 1 when the predicted probabilities are well calibrated.
+
+> **Definition:** The **Brier score** is the mean squared difference between the predicted probability and the actual response (0 or 1); smaller values mean more accurate probability predictions.
+
+In formula form, the Brier score is
 
 ```math
 \mathrm{BS} = \frac{1}{n} \sum_{i=1}^{n} (\hat\pi_i - y_i)^2
 ```
 
-Zero is best, and it reflects both discrimination and calibration. Treating the scores of the eight samples in Section 5.1 as probabilities gives $`\mathrm{BS} = \{(0.9 - 1)^2 + (0.8 - 1)^2 + (0.7 - 0)^2 + (0.55 - 1)^2 + (0.4 - 1)^2 + 0.35^2 + 0.2^2 + 0.1^2\} / 8 = 1.275 / 8 = 0.159`$. As a reference, predicting the prevalence $`\bar y`$ for every patient gives $`\mathrm{BS} = \bar y (1 - \bar y)`$. With prevalence 0.293 this is 0.207, so an informative model must have a Brier score below that.
+Zero is best, and it reflects both discrimination and calibration. Treating the scores of the eight samples in Section 5.1 as probabilities gives $`\mathrm{BS} = \{(0.9 - 1)^2 + (0.8 - 1)^2 + (0.7 - 0)^2 + (0.55 - 1)^2 + (0.4 - 1)^2 + 0.35^2 + 0.2^2 + 0.1^2\} / 8 = 1.275 / 8 = 0.159`$. As a reference, predicting the prevalence $`\bar y`$ for every patient gives $`\mathrm{BS} = \bar y (1 - \bar y)`$. With a prevalence of 0.293, as in the test set of Section 6.5, this is 0.207, so an informative model must have a Brier score below that.
 
 ### 5.4 Choosing Metrics
 
@@ -474,30 +509,38 @@ No model is judged by one metric. Reports of clinical prediction models should i
 
 ### 6.1 Regularized Logistic Regression
 
-**Logistic regression** models the logit (log-odds) of the disease probability as a linear combination of the features.
+Written as a formula, the logistic regression of Section 3.5 is
 
 ```math
 \log \frac{\pi(x)}{1 - \pi(x)} = \beta_0 + x^\top \beta, \qquad \pi(x) = \frac{1}{1 + e^{-(\beta_0 + x^\top \beta)}}
 ```
 
-The coefficients are estimated by maximizing the log-likelihood $`\ell(\beta) = \sum_i \{ y_i \log \pi(x_i) + (1 - y_i) \log(1 - \pi(x_i)) \}`$. When $`p > n`$, the maximum likelihood estimate is not unique, as in Section 2.2 of Chapter 10, and if the classes are perfectly separated the coefficients diverge to infinity. So **regularized logistic regression** is used, minimizing $`-\ell(\beta) + \lambda P(\beta)`$ with the penalty of Section 5 in Chapter 10. The examples in this chapter use the elastic-net penalty ($`\alpha = 0.5`$) and choose $`\lambda`$ by cross-validation.
+The coefficients are estimated by maximizing the log-likelihood $`\ell(\beta) = \sum_i \{ y_i \log \pi(x_i) + (1 - y_i) \log(1 - \pi(x_i)) \}`$. When $`p > n`$, the maximum likelihood estimate is not unique, as in Section 2.2 of Chapter 10, and if the classes are perfectly separated the coefficients diverge to infinity. So regularized logistic regression is used, minimizing $`-\ell(\beta) + \lambda P(\beta)`$ with the penalty of Section 5 in Chapter 10. The examples in this chapter use the elastic-net penalty ($`\alpha = 0.5`$) and choose $`\lambda`$ by cross-validation.
+
+> **Definition:** **Regularized logistic regression** is logistic regression whose coefficients are estimated by minimizing the negative log-likelihood plus a penalty $`\lambda P(\beta)`$ on the coefficients.
 
 Interpreting the coefficients is simple. $`\beta_j`$ means that, with the other variables held fixed, an increase of 1 in $`x_j`$ raises the log odds by $`\beta_j`$, and $`e^{\beta_j}`$ is the odds ratio. Because the penalty shrinks the coefficients toward 0, however, reading their size directly as effect size underestimates the effect.
 
 ### 6.2 Random Forests
 
-A **random forest** is an ensemble method proposed by Breiman that averages the predictions of many decision trees [8]. A single decision tree has high variance: a slight change in the training data can change the first split and thereby the whole tree. A random forest reduces variance by averaging many trees that two kinds of randomization make less alike.
+> **Definition:** A **random forest** is an ensemble method that averages the predictions of many decision trees, each built from a bootstrap sample with a random subset of variables considered at each node.
+
+Random forests were proposed by Breiman [8]. A single decision tree has high variance: a slight change in the training data can change the first split and thereby the whole tree. A random forest reduces variance by averaging many trees that two kinds of randomization make less alike.
 
 1. **Bootstrap samples:** each tree is trained on a sample drawn with replacement from the training samples (bagging).
 2. **Random subsets of variables:** at each node the split variable is searched among $`m`$ randomly chosen variables rather than all of them. R's randomForest package uses $`\sqrt{p}`$ as the default $`m`$ for classification [9]. For 500 genes that is 22.
 
 > **[Machine Learning]** A decision tree repeatedly splits the feature space with axis-parallel splits, choosing at each node the variable and split point that most reduce the Gini impurity or entropy. A deep tree has low bias and high variance, and bagging reduces the variance by averaging many trees.
 
-About 36.8% ($`(1 - 1/n)^n \approx e^{-1}`$) of the original samples are left out of a bootstrap sample. These **out-of-bag (OOB)** samples were not used to train that tree, so computing each sample's error from the predictions of the trees that did not use it estimates the generalization error without separate cross-validation. Random forests can find interactions and nonlinear relations among variables by themselves, but when the signal consists of a few linear effects they can be less efficient than regularized linear models.
+About 36.8% ($`(1 - 1/n)^n \approx e^{-1}`$) of the original samples are left out of a bootstrap sample. These OOB samples were not used to train that tree, so computing each sample's error from the predictions of the trees that did not use it estimates the generalization error without separate cross-validation. Random forests can find interactions and nonlinear relations among variables by themselves, but when the signal consists of a few linear effects they can be less efficient than regularized linear models.
+
+> **Definition:** An **out-of-bag (OOB) sample** is an original sample that was not drawn into a tree's bootstrap sample and so was not used to train that tree.
 
 ### 6.3 Support Vector Machines
 
-A **support vector machine (SVM)** is a classifier proposed by Cortes and Vapnik that finds the hyperplane maximizing the margin between two classes [10]. For classes that are not perfectly separable, samples may violate the margin, but the sum of violations is penalized by the cost parameter $`C`$. A small $`C`$ allows many violations and gives a wide margin and a simple boundary; a large $`C`$ tries to fit the training samples as closely as possible and raises the risk of overfitting. Kernels allow nonlinear boundaries, but expression data with $`p \gg n`$ are easily separable by a linear boundary, so a linear kernel is common.
+> **Definition:** A **support vector machine (SVM)** is a classifier that finds the hyperplane maximizing the margin between two classes.
+
+The SVM was proposed by Cortes and Vapnik [10]. For classes that are not perfectly separable, samples may violate the margin, but the sum of violations is penalized by the cost parameter $`C`$. A small $`C`$ allows many violations and gives a wide margin and a simple boundary; a large $`C`$ tries to fit the training samples as closely as possible and raises the risk of overfitting. Kernels allow nonlinear boundaries, but expression data with $`p \gg n`$ are easily separable by a linear boundary, so a linear kernel is common.
 
 The output of an SVM is not a probability but a decision value (a signed distance to the hyperplane). When trained with `probability = TRUE`, R's e1071 package computes posterior class probabilities by fitting a logistic distribution to the decision values by maximum likelihood [11]. These probabilities are a monotone transformation of the decision values, so the AUC is the same as that computed from the decision values.
 
@@ -663,7 +706,9 @@ In the results above, the top 8 of the random forest's mean decrease in accuracy
 
 ### 7.3 Permutation Importance
 
-The idea of the mean decrease in accuracy applies to any model. **Permutation importance** fixes a trained model and measures a variable's importance by how much performance (the AUC, for example) falls when the values of that variable in the evaluation data are permuted at random. Permuting breaks the relation between the variable and the response, so the drop in performance is the model's dependence on that variable.
+> **Definition:** **Permutation importance** measures a variable's importance, with a trained model held fixed, by how much performance (the AUC, for example) falls when the values of that variable in the evaluation data are permuted at random.
+
+The idea of the mean decrease in accuracy applies to any model, and permutation importance is that idea. Permuting a variable's values breaks the relation between the variable and the response, so the drop in performance is the model's dependence on that variable.
 
 In the SVM's permutation importance, the genes with the largest AUC drops are `g003` (0.019), `g002`, and `g001` (0.018), followed by the proxy genes `g008` and `g012`. The true cause `g011` is not in the top 8. The SVM's small $`C`$ (0.01) spreads the weights widely over correlated genes, so in block 2 the model depends more on neighbors such as `g012` than on `g011` alone. For the same reason all drops are small, at most 0.02: when one gene is permuted, the other genes of its block supply the same information.
 
@@ -685,15 +730,21 @@ The importance measures of all three models failed alike to distinguish causal g
 
 ### 8.1 Internal and External Validation
 
-**Internal validation** estimates performance within the data used to build the model, by cross-validation or the bootstrap. **External validation** measures the performance of the fixed model on data never used in building it, ideally patients from other institutions, other periods, or other measurement platforms. Internal validation estimates performance on new samples from the same population, but in real clinical use the population itself changes, so external validation is necessary.
+> **Definition:** **Internal validation** estimates performance within the data used to build the model, by cross-validation or the bootstrap.
+
+> **Definition:** **External validation** measures the performance of the fixed model on independent data never used in building it, ideally patients from other institutions, other periods, or other measurement platforms.
+
+Internal validation estimates performance on new samples from the same population, but in real clinical use the population itself changes, so external validation is necessary.
 
 ### 8.2 Why Performance Changes in an External Cohort
 
 In an external cohort, performance changes for the following reasons.
 
-- **Differences in case mix:** the distribution of disease severity, the prevalence, and the age composition differ. The same model gives a high AUC in a population with many easily distinguished patients and a low AUC in one with many borderline patients.
+- **Differences in case mix:** the same model gives a high AUC in a population with many easily distinguished patients and a low AUC in one with many borderline patients.
 - **Differences in measurement:** different platforms, reagents, and processing procedures shift the values of the same gene systematically (the batch effects of Section 2.4).
 - **Differences in prevalence:** the model's intercept reflects the prevalence of the training data, so in a population with a different prevalence the probabilities are systematically too high or too low.
+
+> **Definition:** The **case mix** of a population is its composition, such as the distribution of disease severity, the prevalence, and the age structure.
 
 The code below applies the elastic net of Section 6.4 to a cohort of 1,000 patients from another hospital. This hospital has a higher proportion of patients (intercept -1.0), and because of a new measurement platform the 10 genes of block 1 are measured 0.5 lower. The true risk is determined by the true values without the measurement offset. Half of the cohort is used for the recalibration of Section 8.3 and the other half for evaluation.
 
@@ -730,7 +781,9 @@ In the external cohort the AUC fell from 0.924 to 0.841. Yet even the true risk 
 
 ### 8.3 Recalibration
 
-When calibration fails in an external cohort, **recalibration** can keep the model's structure (the selected genes and the relative sizes of the coefficients) and adjust only the scale of the probabilities to the new population. The simplest method fits the following logistic regression on part of the new population's data.
+> **Definition:** **Recalibration** keeps a model's structure (the selected genes and the relative sizes of the coefficients) and adjusts only the scale of its predicted probabilities to a new population.
+
+When calibration fails in an external cohort, recalibration can be applied. The simplest method fits the following logistic regression on part of the new population's data.
 
 ```math
 \mathrm{logit} \, P(Y = 1) = a + b \cdot \mathrm{logit}(\hat\pi_{\text{old}})
@@ -769,41 +822,6 @@ For reproducibility, the following practices are observed.
 | The predicted probabilities of a logistic regression trained on case-control data with 50% prevalence can be used as they are in a population with 5% prevalence. | **F.** The intercept reflects the training prevalence, so probabilities are overestimated, and the logit must be corrected by the difference in prior odds (Section 4.2). |
 | A model with a high AUC also has accurate predicted probabilities. | **F.** The AUC looks only at the ordering. The elastic net had an AUC of 0.924 but a calibration slope of 3.483 (Section 6.6). |
 | A constant measurement offset in some genes of an external cohort lowers the AUC of a linear model. | **F.** Every patient's linear predictor shifts by the same amount, so the ordering is unchanged; it is calibration that breaks (Section 8.2). |
-
----
-
-<br>
-
-## Glossary
-
-| English | Korean | One-Line Definition |
-|:-----|:-----|:-----|
-| diagnostic / prognostic model | 진단 / 예후 모형 | A model estimating the probability that a disease is present now / that an event will occur in the future |
-| censoring | 중도 절단 | Loss of observation before follow-up ends, leaving the event status unknown |
-| decision threshold | 결정 임계값 | The cutoff that turns predicted probabilities into positive and negative calls |
-| batch effect | 일괄 효과 | Variation in measurements due to technical factors such as laboratory conditions, reagent lots, and personnel |
-| confounding | 교란 | A factor of interest varying together with another so that their effects cannot be separated |
-| stratified cross-validation | 층화 교차 검증 | Cross-validation in which each fold keeps the class proportions of the whole |
-| accuracy paradox | 정확도의 역설 | High accuracy of a useless model on imbalanced data |
-| balanced accuracy | 균형 정확도 | The mean of sensitivity and specificity |
-| case-control design | 환자-대조군 설계 | A study design that collects cases and controls separately for comparison |
-| class weight | 클래스 가중치 | The weight given to errors of each class in the loss function |
-| SMOTE | SMOTE | An oversampling method that enlarges the minority class with synthetic samples |
-| AUC | AUC | The area under the ROC curve, the probability that a patient scores higher than a control |
-| precision-recall curve | 정밀도-재현율 곡선 | The curve of recall against precision as the threshold varies |
-| average precision (AP) | 평균 정밀도 | The mean of the precision at each rank where a positive sample appears |
-| calibration plot / slope | 보정 그림 / 보정 기울기 | A plot of binned predicted probabilities against observed proportions / the slope of the response regressed on the predicted logit |
-| Brier score | Brier 점수 | The mean squared difference between predicted probabilities and actual responses |
-| logistic regression | 로지스틱 회귀 | Modeling the logit of the disease probability as a linear combination of features |
-| random forest | 랜덤 포레스트 | An ensemble of decision trees built from bootstrap samples and random subsets of variables |
-| out-of-bag (OOB) sample | OOB 표본 | A sample left out of a bootstrap sample and thus not used to train that tree |
-| support vector machine (SVM) | 서포트 벡터 머신 | A classifier that finds the hyperplane maximizing the margin between two classes |
-| permutation importance | 순열 중요도 | Importance measured by the drop in performance when a variable's values are permuted |
-| internal / external validation | 내부 / 외부 검증 | Performance estimation within the development data / evaluation on independent data not used in development |
-| case mix | 환자 구성 | The composition of an evaluation population, such as severity, prevalence, and age |
-| recalibration | 재보정 | Adjusting only the scale of probabilities to a new population while keeping the model's structure |
-
-*Table 4. Glossary*
 
 ---
 

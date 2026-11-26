@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-11-19
+> **Last Updated:** 2026-11-26
 
 > **Learning Objectives:**
 > 1. Define a biomarker and distinguish diagnostic, prognostic, and predictive biomarkers
@@ -61,7 +61,6 @@
   - [8.3 Stages of Validation](#83-stages-of-validation)
   - [8.4 Common Mistakes](#84-common-mistakes)
 - [Concept Applications](#concept-applications)
-- [Glossary](#glossary)
 - [Summary](#summary)
 - [Self-Check Questions](#self-check-questions)
 - [References](#references)
@@ -80,7 +79,11 @@ Blood glucose is used to diagnose diabetes, and blood cholesterol is used to gau
 
 The U.S. Food and Drug Administration (FDA) follows this definition and explains that molecular, histologic, radiographic, and physiologic characteristics can all be biomarkers [1]. The same explanation states that a biomarker is not a measure that directly assesses how a patient feels, functions, or survives [1]. A biomarker is therefore not itself an outcome of health, but a measurement that stands in for a biological state related to the outcome.
 
-The biomarkers in this chapter are mainly **molecular biomarkers**: gene expression levels, DNA variants, and concentrations of proteins or metabolites. As Chapter 7 showed, a transcriptome measurement records the expression of tens of thousands of genes at once, so finding the few genes related to a disease is a feature selection problem. When several genes are combined into a single score, the gene set is called a **gene signature**.
+The biomarkers in this chapter are mainly molecular biomarkers. As Chapter 7 showed, a transcriptome measurement records the expression of tens of thousands of genes at once, so finding the few genes related to a disease is a feature selection problem. When several genes are combined into a single score, the gene set is called a **gene signature**.
+
+> **Definition:** A **molecular biomarker** is a biomarker measured at the molecular level, such as a gene expression level, a DNA variant, or the concentration of a protein or metabolite.
+
+> **Definition:** **Feature selection** keeps only a subset of the original variables (for example genes) that is useful for prediction or interpretation and discards the rest.
 
 ### 1.2 Categories of Biomarkers
 
@@ -98,11 +101,19 @@ Biomarkers are classified by what they indicate. Following the BEST (Biomarkers,
 
 *Table 1. The seven categories of biomarkers*
 
+> **Definition:** A **diagnostic biomarker** tells whether a disease is present now, or which subtype it is.
+
 One measurement can belong to several categories, because the category is set not by the nature of the measurement but by the question it is used to answer. For example, the blood concentration of a protein can be used for diagnosis and also for monitoring during treatment.
 
 ### 1.3 Distinguishing Prognostic and Predictive Biomarkers
 
-Prognostic and predictive sound alike and are often confused. A **prognostic biomarker** tells whether the outcome will be good or bad whatever treatment is given, and a **predictive biomarker** tells whether the effect of a specific treatment differs according to the marker. Statistically, a predictive biomarker is a variable that has an **interaction** with the treatment.
+Prognostic and predictive sound alike and are often confused, but they indicate different things. Statistically, a predictive biomarker is a variable that has an interaction with the treatment.
+
+> **Definition:** A **prognostic biomarker** tells whether the future outcome (an event such as relapse, progression, or death) will be good or bad whatever treatment is given.
+
+> **Definition:** A **predictive biomarker** tells whether the effect of a specific treatment differs according to the value of the marker, that is, which patients are likely to respond to that treatment.
+
+> **Definition:** An **interaction** is a relation in which the effect of one variable (for example a treatment) on the outcome depends on the value of another variable (for example a marker).
 
 The following are the 5-year survival rates in a hypothetical trial comparing two treatments, split by marker A and marker B.
 
@@ -227,10 +238,18 @@ sum(separates)
 Methods for the $`p \gg n`$ problem fall into three broad directions.
 
 1. **Feature selection:** keep only some of the original genes. The remaining variables are real genes, so interpretation is easy, and the list of biomarker candidates is the result itself. Sections 3-5 cover this.
-2. **Feature extraction:** combine the original variables into a small number of new variables. PCA in Chapter 4 is the typical example, covered in Section 6.
+2. **Feature extraction:** uses new variables built from combinations of the original ones instead of the originals. PCA in Chapter 4 is the typical example, covered in Section 6.
 3. **Regularization:** use all variables but penalize the size of the coefficients, which makes the solution unique and reduces variance. Ridge regression in Section 5 belongs here, and the LASSO is both regularization and feature selection.
 
-Feature selection methods are divided into three kinds by how selection is combined with model training. A **filter method** ranks variables by a statistic unrelated to the model, a **wrapper method** searches variable subsets using model performance as the criterion, and an **embedded method** selects variables during the training of the model itself.
+> **Definition:** **Feature extraction** combines the original variables into a small number of new variables.
+
+Feature selection methods are divided into three kinds by how selection is combined with model training.
+
+> **Definition:** A **filter method** is a feature selection method that ranks variables by a statistic unrelated to the model and keeps the top ones.
+
+> **Definition:** A **wrapper method** is a feature selection method that searches variable subsets using model performance as the criterion.
+
+> **Definition:** An **embedded method** is a feature selection method that selects variables during the training of the model itself.
 
 ---
 
@@ -252,7 +271,9 @@ Let the sample mean, sample variance, and sample size of the cases be $`\bar x_1
 t = \frac{\bar x_1 - \bar x_0}{\sqrt{s_1^2 / n_1 + s_0^2 / n_0}}
 ```
 
-The numerator is the difference between the group means, and the denominator is the standard error of that difference. So $`t`$ tells how many times larger the mean difference is than random variation, and ranking is usually done by $`\lvert t \rvert`$. Welch's t statistic does not assume equal variances in the two groups, which suits expression data, where the variance differs from gene to gene.
+The numerator is the difference between the group means, and the denominator is the standard error of that difference. So $`t`$ tells how many times larger the mean difference is than random variation, and ranking is usually done by $`\lvert t \rvert`$. This statistic suits expression data, where the variance differs from gene to gene.
+
+> **Definition:** **Welch's t statistic** is the difference of two group means divided by the standard error of that difference, $`\sqrt{s_1^2 / n_1 + s_0^2 / n_0}`$; it does not assume that the two groups have equal variances.
 
 > **[Probability and Statistics]** Under the null hypothesis that the two group means are equal, Welch's t statistic approximately follows a t distribution whose degrees of freedom are approximated by the Welch-Satterthwaite formula $`\nu = (s_1^2/n_1 + s_0^2/n_0)^2 / \{ (s_1^2/n_1)^2/(n_1 - 1) + (s_0^2/n_0)^2/(n_0 - 1) \}`$. The p-value is the probability, under this distribution, of a value more extreme than the observed $`\lvert t \rvert`$, and Chapter 9 covers it in detail.
 
@@ -269,7 +290,9 @@ For gene A the standard error is $`\sqrt{0.2467/4 + 0.0700/4} = \sqrt{0.0792} = 
 
 ### 3.3 Fold Change
 
-Biologists often express a mean difference as a **fold change**. If, on the original scale, the case mean is four times the control mean, the fold change is 4. If the expression values have been transformed with the base-2 logarithm, the difference of the log-scale means is the **log fold change**.
+> **Definition:** A **fold change** is the ratio of two group means on the original scale, telling how many times one mean is the other.
+
+Biologists often express a mean difference as a fold change. If, on the original scale, the case mean is four times the control mean, the fold change is 4. If the expression values have been transformed with the base-2 logarithm, the difference of the log-scale means is the **log fold change**.
 
 ```math
 \log_2 \mathrm{FC} = \bar x_1 - \bar x_0 \quad (\text{for values on the } \log_2 \text{ scale}), \qquad \mathrm{FC} = 2^{\bar x_1 - \bar x_0}
@@ -338,15 +361,21 @@ A wrapper method wraps a classifier like a box, trains the model on each variabl
 
 ### 4.2 Forward Selection and Backward Elimination
 
-**Forward selection** starts from the empty set and at each step adds the variable, among those not yet included, whose addition improves performance the most. Choosing $`k`$ variables requires $`p + (p - 1) + \cdots + (p - k + 1)`$ model fits. For $`p = 2000`$ and $`k = 10`$ that is 19,955 fits.
+> **Definition:** **Forward selection** is a greedy search that starts from the empty set and at each step adds the variable, among those not yet included, whose addition improves performance the most.
 
-**Backward elimination** starts from all variables and at each step removes the variable whose removal hurts performance the least (or helps the most). It must first fit the model with all variables, so it cannot be used when that model is undefined, as in least squares regression with $`p > n`$.
+Choosing $`k`$ variables requires $`p + (p - 1) + \cdots + (p - k + 1)`$ model fits. For $`p = 2000`$ and $`k = 10`$ that is 19,955 fits.
+
+> **Definition:** **Backward elimination** is a greedy search that starts from all variables and at each step removes the variable whose removal hurts performance the least (or helps the most).
+
+Backward elimination must first fit the model with all variables, so it cannot be used when that model is undefined, as in least squares regression with $`p > n`$.
 
 Neither method revisits a decision once made, so neither guarantees the best subset. For example, if two variables are useful only together, forward selection may choose neither of them at the first step.
 
 ### 4.3 Recursive Feature Elimination
 
-**Recursive feature elimination (RFE)** reduces the cost of backward elimination. Instead of re-evaluating every candidate each time one variable is removed, it looks at the importance that the fitted model assigns to each variable (the absolute coefficient, for a linear model) and removes many of the least important variables at once. Guyon et al. proposed RFE combined with a linear support vector machine (SVM) for gene selection in cancer classification and reported a leave-one-out error of zero with 2 genes on leukemia data [2].
+> **Definition:** **Recursive feature elimination (RFE)** reduces the cost of backward elimination by repeatedly removing many of the least important variables at once, judged by the importance that the fitted model assigns to each variable (the absolute coefficient, for a linear model).
+
+Because RFE does not re-evaluate every candidate each time one variable is removed, it needs far less computation. Guyon et al. proposed RFE combined with a linear support vector machine (SVM) for gene selection in cancer classification and reported a leave-one-out error of zero with 2 genes on leukemia data [2].
 
 The RFE algorithm is as follows.
 
@@ -406,19 +435,25 @@ A wrapper method has the advantage of using the final model's performance direct
 
 ### 5.1 Penalized Loss Functions
 
-An embedded method puts variable selection inside the optimization problem that trains the model. The most widely used kind is **penalized regression**, which penalizes the coefficients. In linear regression it minimizes the residual sum of squares plus a penalty term.
+> **Definition:** **Penalized regression** estimates the coefficients by minimizing an objective that adds a penalty on the size of the coefficients to the loss function.
+
+An embedded method puts variable selection inside the optimization problem that trains the model. The most widely used kind is penalized regression. In linear regression it minimizes the residual sum of squares plus a penalty term.
 
 ```math
 \hat\beta(\lambda) = \underset{\beta_0, \beta}{\text{argmin}} \; \frac{1}{2} \sum_{i=1}^{n} \left( y_i - \beta_0 - \sum_{j=1}^{p} x_{ij} \beta_j \right)^2 + \lambda \, P(\beta)
 ```
 
-$`P(\beta)`$ is a penalty function that measures the size of the coefficients, and $`\lambda \ge 0`$ is the **regularization parameter**, which sets the strength of the penalty. With $`\lambda = 0`$ this is ordinary least squares, and as $`\lambda`$ grows the coefficients shrink toward 0. The intercept $`\beta_0`$ is not penalized. For classification, the negative log-likelihood of logistic regression replaces the residual sum of squares. The glmnet package in R uses an objective whose loss term is divided by the sample size $`n`$, so glmnet's $`\lambda`$ corresponds to the $`\lambda`$ of the formula above divided by $`n`$.
+$`P(\beta)`$ is a penalty function that measures the size of the coefficients, and $`\lambda \ge 0`$ is the regularization parameter. The intercept $`\beta_0`$ is not penalized. For classification, the negative log-likelihood of logistic regression replaces the residual sum of squares. The glmnet package in R uses an objective whose loss term is divided by the sample size $`n`$, so glmnet's $`\lambda`$ corresponds to the $`\lambda`$ of the formula above divided by $`n`$.
+
+> **Definition:** The **regularization parameter** is the value $`\lambda \ge 0`$ that sets the strength of the penalty in penalized regression; with $`\lambda = 0`$ the fit is the unpenalized one (ordinary least squares in linear regression), and as $`\lambda`$ grows the coefficients shrink toward 0.
 
 > **Caution:** The penalty is charged on the size of the coefficients, so the result depends on the scale of the variables. If variables with different units are mixed, each must be standardized to mean 0 and standard deviation 1 before training. R's glmnet package standardizes internally by default and reports the coefficients on the original scale.
 
 ### 5.2 Ridge Regression
 
-**Ridge regression** uses $`P(\beta) = \frac{1}{2} \sum_j \beta_j^2`$, the L2 penalty. The objective is differentiable, so setting the gradient to zero gives a closed-form solution. With centered variables and the intercept handled separately,
+> **Definition:** **Ridge regression** is the penalized regression that uses the L2 penalty $`P(\beta) = \frac{1}{2} \sum_j \beta_j^2`$ on the sum of squared coefficients.
+
+The ridge objective is differentiable, so setting the gradient to zero gives a closed-form solution. With centered variables and the intercept handled separately,
 
 ```math
 \hat\beta_{\text{ridge}} = (X^\top X + \lambda I)^{-1} X^\top y
@@ -457,11 +492,13 @@ In the special case where the variables are mutually orthogonal and each has len
 - For ridge ($`P = \frac{1}{2}\beta_j^2`$), differentiating gives $`-(z_j - \beta_j) + \lambda \beta_j = 0`$, so $`\hat\beta_j = z_j / (1 + \lambda)`$. Every coefficient shrinks by the same factor.
 - For the LASSO ($`P = \lvert \beta_j \rvert`$), the objective is not differentiable at $`\beta_j = 0`$, so we split cases. If $`\beta_j > 0`$, then $`\beta_j = z_j - \lambda`$, which must be positive, so this is possible only when $`z_j > \lambda`$. If $`\beta_j < 0`$, then $`\beta_j = z_j + \lambda`$, possible only when $`z_j < -\lambda`$. If $`\lvert z_j \rvert \le \lambda`$, the minimum is at 0.
 
-Written as one formula, the LASSO solution is the following **soft-thresholding function**.
+Written as one formula, the LASSO solution is the following soft-thresholding function.
 
 ```math
 \hat\beta_j = S(z_j, \lambda) = \mathrm{sign}(z_j) \, \bigl( \lvert z_j \rvert - \lambda \bigr)_+, \qquad (a)_+ = \max(a, 0)
 ```
+
+> **Definition:** The **soft-thresholding function** $`S(z, \lambda) = \mathrm{sign}(z) (\lvert z \rvert - \lambda)_+`$ moves a value $`z`$ toward 0 by $`\lambda`$ and cuts it to 0 if it would cross 0.
 
 > **[Calculus]** $`f(\beta) = \lvert \beta \rvert`$ is not differentiable at $`\beta = 0`$, where its left derivative $`-1`$ and right derivative $`+1`$ differ. At such points the optimality condition is written with the subgradient, which allows every slope in $`[-1, 1]`$ between the two values. The condition for $`\beta_j = 0`$ to be optimal is $`0 \in -(z_j - 0) + \lambda [-1, 1]`$, that is, $`\lvert z_j \rvert \le \lambda`$.
 
@@ -483,7 +520,9 @@ The LASSO shows a weakness when variables are highly correlated. Among several v
 
 > **Definition:** The **elastic net** is a penalized regression that uses a mixture of the L1 and L2 penalties, $`\lambda \{ \alpha \sum_j \lvert \beta_j \rvert + \frac{1 - \alpha}{2} \sum_j \beta_j^2 \}`$ ($`0 \le \alpha \le 1`$).
 
-With $`\alpha = 1`$ it is the LASSO, and with $`\alpha = 0`$ it is ridge. The formula is the glmnet package's parameterization. Zou and Hastie showed that the elastic net produces sparse models like the LASSO while having a **grouping effect**, by which highly correlated variables enter or leave the model together [4]. The reason is that the L2 term makes the objective strictly convex. For two variables with correlation near 1, the L1 penalty is the same whether the coefficient goes entirely to one variable or is split, as long as the sum is the same, but the L2 penalty prefers an even split because $`b^2 + 0^2 > (b/2)^2 + (b/2)^2`$.
+With $`\alpha = 1`$ it is the LASSO, and with $`\alpha = 0`$ it is ridge. The formula is the glmnet package's parameterization. Zou and Hastie showed that the elastic net produces sparse models like the LASSO while having a grouping effect [4]. The reason is that the L2 term makes the objective strictly convex. For two variables with correlation near 1, the L1 penalty is the same whether the coefficient goes entirely to one variable or is split, as long as the sum is the same, but the L2 penalty prefers an even split because $`b^2 + 0^2 > (b/2)^2 + (b/2)^2`$.
+
+> **Definition:** The **grouping effect** is the property that highly correlated variables enter or leave the model together.
 
 The code below compares the two methods on data in which three variables (`x1`-`x3`) with mutual correlation about 0.96 are related to the response through a common factor `z`. The other 47 variables are noise.
 
@@ -522,12 +561,14 @@ lasso  enet
 
 ### 5.7 Choosing the Regularization Strength and the Coefficient Path
 
-$`\lambda`$ is a **hyperparameter** that is not estimated directly from the data, so it is chosen by cross-validation. glmnet starts from the largest $`\lambda`$ (the smallest $`\lambda`$ at which all coefficients are 0), decreases it on a log scale, and computes the solution at about 100 values of $`\lambda`$; the collection of these solutions is the **coefficient path**. `cv.glmnet()` computes the cross-validation error at each $`\lambda`$ and reports two values.
+$`\lambda`$ is a **hyperparameter** that is not estimated directly from the data, so it is chosen by cross-validation. glmnet starts from the largest $`\lambda`$ (the smallest $`\lambda`$ at which all coefficients are 0), decreases it on a log scale, and computes the solution at about 100 values of $`\lambda`$. `cv.glmnet()` computes the cross-validation error at each $`\lambda`$ and reports two values.
 
 - `lambda.min` is the $`\lambda`$ with the smallest cross-validation error.
 - `lambda.1se` is the largest $`\lambda`$ whose cross-validation error is at most the minimum plus one standard error of it. This is the **one-standard-error rule**, which chooses the simplest model (the one with fewest variables) whose error is statistically indistinguishable from the minimum.
 
 Biomarker discovery often uses `lambda.1se`, because a short candidate list lowers the cost of validation.
+
+> **Definition:** The **coefficient path** is the collection of coefficient estimates computed over a range of the regularization parameter $`\lambda`$; it shows how each coefficient changes with $`\lambda`$.
 
 ### 5.8 LASSO Logistic Regression in R
 
@@ -601,9 +642,11 @@ round(pc_t, 2)
 
 Some methods use the class labels to build new variables.
 
-- **Partial least squares (PLS):** whereas principal components maximize the variance of $`X`$, PLS components maximize the covariance between a linear combination of $`X`$ and $`y`$. A few components can therefore gather the information related to the response.
+- **PLS:** whereas principal components maximize the variance of $`X`$, PLS uses the covariance with the response $`y`$, so a few components can gather the information related to the response.
 - **Gene set scores:** the expression of the genes in a co-expression module of Chapter 11 or in a known pathway is averaged or summarized by its first principal component and used as one variable. The module eigengene of Chapter 11 is an example.
-- **Non-negative matrix factorization:** a non-negative expression matrix is factored into the product of two non-negative matrices, giving additive groups of genes (metagenes).
+- **Non-negative matrix factorization (NMF):** a non-negative expression matrix is factored into the product of two non-negative matrices, giving additive groups of genes (metagenes).
+
+> **Definition:** **Partial least squares (PLS)** is a feature extraction method that builds components in turn along the directions maximizing the covariance between a linear combination of $`X`$ and the response $`y`$.
 
 t-SNE and UMAP from Chapter 4 are nonlinear embeddings for visualization. There is either no fixed way to place new samples in the same coordinates (t-SNE) or considerable randomness, so they are rarely used as classifier input features.
 
@@ -631,7 +674,7 @@ When the goal is a biomarker for clinical use, selection has the advantage, beca
 
 > **Definition:** **Selection bias** is the underestimation of error that occurs when a model using selected features is evaluated on the same samples that were used to select those features.
 
-Ambroise and McLachlan pointed out that reports of prediction rules with almost no error, built from a few genes using expression data on a small number of tumor samples and thousands of genes, did not allow for this bias [5]. Those reports either tested the rule on the samples used to select the genes or ran cross-validation without redoing gene selection at each stage. The authors recommended correcting the bias by performing cross-validation or the bootstrap external to the gene selection process, and showed on two published data sets that, after this correction, the cross-validated error of a rule built from a few genes is no longer zero [5].
+Ambroise and McLachlan pointed out that reports of prediction rules with almost no error, built from a few genes using expression data on a small number of tumor samples and thousands of genes, did not allow for selection bias [5]. Those reports either tested the rule on the samples used to select the genes or ran cross-validation without redoing gene selection at each stage. The authors recommended correcting the bias by performing cross-validation or the bootstrap external to the gene selection process, and showed on two published data sets that, after this correction, the cross-validated error of a rule built from a few genes is no longer zero [5].
 
 The bias arises for the same reason as the chance separation of Section 2.3. Genes selected with all samples are genes that happen to correlate with the classes in all samples, and hence also in the samples that later serve as validation folds. The validation fold has already been used to choose the genes, so it is no longer new data.
 
@@ -725,7 +768,9 @@ Unsupervised preprocessing that does not look at $`y`$ (log transformation of ex
 
 ### 8.1 Instability of Selection Results
 
-When $`p \gg n`$, a small change in the data greatly changes which genes are selected. Fixing `lambda.1se` from Section 5.8, the LASSO is reapplied to 100 bootstrap samples drawn with replacement from the 60 training samples, and the selection results are compared. The similarity of two sets $`A`$ and $`B`$ is measured by the **Jaccard index** $`J(A, B) = \lvert A \cap B \rvert / \lvert A \cup B \rvert`$, which is 1 when the sets are equal and 0 when they share no element.
+> **Definition:** The **Jaccard index** $`J(A, B) = \lvert A \cap B \rvert / \lvert A \cup B \rvert`$ measures the similarity of two sets as the size of their intersection divided by the size of their union; it is 1 when the sets are equal and 0 when they share no element.
+
+When $`p \gg n`$, a small change in the data greatly changes which genes are selected. Fixing `lambda.1se` from Section 5.8, the LASSO is reapplied to 100 bootstrap samples drawn with replacement from the 60 training samples, and the selection results are compared. The similarity of two sets is measured by the Jaccard index.
 
 ```r
 lam <- cvfit$lambda.1se
@@ -766,7 +811,9 @@ Each bootstrap selected 3-15 genes, but the selections of two bootstraps overlap
 
 ### 8.2 Stability Selection
 
-**Stability selection** turns the instability of selection to advantage. Meinshausen and Bühlmann proposed repeatedly drawing subsamples of the data, running a high-dimensional selection method on each subsample, and keeping only the variables that are selected consistently [6]. The method gives finite-sample bounds on the number of falsely selected variables, so it can also serve as a criterion for choosing the amount of regularization [6].
+> **Definition:** **Stability selection** repeatedly draws subsamples of the data, runs a selection method on each subsample, and keeps only the variables that are selected consistently.
+
+Stability selection turns the instability of selection to advantage; Meinshausen and Bühlmann proposed it for high-dimensional selection methods [6]. The method gives finite-sample bounds on the number of falsely selected variables, so it can also serve as a criterion for choosing the amount of regularization [6].
 
 The procedure is as follows.
 
@@ -818,39 +865,6 @@ Even after good internal validation, performance often drops sharply at external
 | Within a group of highly correlated genes, the LASSO usually picks one or a few, while the elastic net tends to pick the whole group. | **T.** The L2 term of the elastic net creates the grouping effect (Section 5.6). |
 | Selecting genes once on all the data and then cross-validating only saves computation and gives the same result. | **F.** The validation folds were used for selection, so the error is heavily underestimated: on data with no signal, 0.529 became 0.060 (Section 7.3). |
 | The first principal component is the direction of largest variance and therefore also the direction that best separates the classes. | **F.** PCA does not use the class labels. In Section 6.1 the third component separated the classes best. |
-
----
-
-<br>
-
-## Glossary
-
-| English | Korean | One-Line Definition |
-|:-----|:-----|:-----|
-| molecular biomarker | 분자 바이오마커 | A biomarker measured at the molecular level, such as gene expression, variants, or protein concentrations |
-| gene signature | 유전자 시그니처 | A set of genes combined into a single score |
-| diagnostic / prognostic / predictive biomarker | 진단 / 예후 / 예측 바이오마커 | A biomarker that indicates the present disease, the future outcome regardless of treatment, or the difference in effect of a specific treatment |
-| interaction | 상호작용 | A relation in which the effect of one variable depends on the value of another |
-| feature selection / extraction | 특성 선택 / 특성 추출 | Keeping a subset of the original variables / building new variables by combining them |
-| filter / wrapper / embedded method | 필터 / 래퍼 / 임베디드 방법 | Selecting variables by a model-free statistic, by searching on model performance, or within model training itself |
-| Welch's t statistic | Welch의 t 통계량 | The mean difference divided by its standard error, allowing unequal variances in the two groups |
-| fold change | 배수 변화 | The ratio of two group means on the original scale |
-| volcano plot | 화산 그림 | A scatter plot of the log fold change against $`-\log_{10} p`$ |
-| forward selection / backward elimination | 전진 선택 / 후진 제거 | Greedy search that adds or removes one variable at a time while comparing performance |
-| recursive feature elimination (RFE) | 재귀적 특성 제거 | Repeatedly removing several variables with the smallest model weights |
-| penalized regression | 벌점 회귀 | Regression estimated by adding a penalty on coefficient size to the loss |
-| regularization parameter | 규제 매개변수 | The $`\lambda`$ that sets the strength of the penalty |
-| ridge regression | 릿지 회귀 | Penalized regression with a penalty on the sum of squared coefficients |
-| soft-thresholding function | 연성 임계값 함수 | A function that moves a value toward 0 by $`\lambda`$ and cuts it to 0 if it would cross 0 |
-| grouping effect | 묶음 효과 | The property that highly correlated variables are selected or dropped together |
-| coefficient path | 계수 경로 | The collection of coefficients computed as $`\lambda`$ varies |
-| one-standard-error rule | 1-표준오차 규칙 | Choosing the simplest model within one standard error of the minimum error |
-| principal component regression | 주성분 회귀 | Regression with principal component scores as explanatory variables |
-| partial least squares (PLS) | 부분 최소제곱 | Building components in directions of maximal covariance with the response |
-| Jaccard index | 자카드 지수 | The size of the intersection of two sets divided by the size of their union |
-| stability selection | 안정성 선택 | Repeating selection on subsamples and keeping only variables selected consistently |
-
-*Table 7. Glossary*
 
 ---
 

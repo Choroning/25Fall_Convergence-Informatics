@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **Last Updated:** 2026-11-19
+> **Last Updated:** 2026-11-26
 
 > **Learning Objectives:**
 > 1. Distinguish the scope of bioinformatics and computational biology and describe the typical problems the two fields address
@@ -77,7 +77,6 @@
   - [12.2 Expression and Variant Problems](#122-expression-and-variant-problems)
   - [12.3 Structure, Network, and Evolution Problems](#123-structure-network-and-evolution-problems)
 - [Concept Applications](#concept-applications)
-- [Glossary](#glossary)
 - [Summary](#summary)
 - [Self-Check Questions](#self-check-questions)
 - [References](#references)
@@ -112,6 +111,8 @@ There are three main reasons why biological data become objects of computation.
 - **The volume is large.** One human genome is about 3 billion base pairs [1], and a single sequencing experiment produces hundreds of millions of short sequence fragments. This is not a scale a person can read by eye.
 - **Measurements are noisy.** Sequencing machines misread letters with some probability, and gene expression differs even among cells under the same conditions. Interpreting the results therefore requires probability models and statistical tests (Chapter 9).
 
+> **Definition:** A **gene** is a stretch of DNA that carries the information needed to make a functional product (a protein or a functional RNA).
+
 In the classification of Chapter 2, a raw sequence is unstructured data, and counting its length, base composition, and substring frequencies into a table turns it into structured data. Much of bioinformatics is this kind of feature extraction, turning unstructured sequences into tables that can be analyzed.
 
 ---
@@ -124,8 +125,9 @@ In the classification of Chapter 2, a raw sequence is unstructured data, and cou
 
 Every organism consists of one or more **cells**. A cell is a small space enclosed by a membrane, in which genetic information is stored and copied and proteins are made according to that information. Organisms fall into two groups by cell structure.
 
-- **Prokaryotes:** Bacteria and archaea belong here. They have no nuclear membrane, so the DNA lies directly in the cytoplasm, and the genome is usually a single circular chromosome.
-- **Eukaryotes:** Fungi such as yeast, plants, and animals belong here. The DNA is divided into several linear chromosomes inside a **nucleus** enclosed by a nuclear membrane. They also have organelles such as mitochondria, and mitochondria carry their own small DNA.
+> **Definition:** A **prokaryote** is an organism without a nuclear membrane, whose DNA lies directly in the cytoplasm; bacteria and archaea belong here, and the DNA usually forms a single circular chromosome.
+
+> **Definition:** A **eukaryote** is an organism whose DNA is divided into several linear chromosomes inside a nucleus enclosed by a nuclear membrane; fungi such as yeast, plants, and animals belong here. Eukaryotes also have organelles such as mitochondria, and mitochondria carry their own small DNA.
 
 A **virus** cannot reproduce by itself and reproduces by borrowing the machinery of a host cell, so it is usually not considered a cell. Viral genomes are small and well characterized, however, and serve as frequent examples in bioinformatics. The bacteriophage phiX174 used in the examples of Section 11 is a virus that infects bacteria, and its genome is single-stranded DNA of 5,386 bases.
 
@@ -168,11 +170,17 @@ There are five bases, which fall into two groups by ring structure.
 
 *Table 3. The five bases of nucleic acids*
 
+> **Definition:** A **purine** is a nitrogenous base with two rings; among the bases of nucleic acids, adenine (A) and guanine (G) are purines.
+
+> **Definition:** A **pyrimidine** is a nitrogenous base with a single ring; among the bases of nucleic acids, cytosine (C), thymine (T), and uracil (U) are pyrimidines.
+
 The distinction between purines and pyrimidines is used again in the classification of mutations in Section 7.1 (transitions and transversions) and in the IUPAC codes (R, Y).
 
 ### 3.2 The Sugar-Phosphate Backbone and Direction
 
-The carbons of the sugar are numbered 1' through 5' (the prime distinguishes them from the atom numbers of the base). The base is attached to the 1' carbon and the phosphate group to the 5' carbon. Two neighboring nucleotides are joined by a **phosphodiester bond** between the 3' hydroxyl of the first and the 5' phosphate of the second. The chain of alternating sugars and phosphates formed in this way is called the **sugar-phosphate backbone**, and the bases stick out sideways from it.
+The carbons of the sugar are numbered 1' through 5' (the prime distinguishes them from the atom numbers of the base). The base is attached to the 1' carbon and the phosphate group to the 5' carbon. Two neighboring nucleotides are joined by a phosphodiester bond. The chain of alternating sugars and phosphates formed in this way is called the **sugar-phosphate backbone**, and the bases stick out sideways from it.
+
+> **Definition:** A **phosphodiester bond** joins the 3' hydroxyl of one nucleotide to the 5' phosphate of the next, linking the nucleotides of a nucleic acid strand in order.
 
 Because the bonds always run from 3' to 5', a nucleic acid strand has a direction. One end keeps a free 5' phosphate and the other a free 3' hydroxyl; these are called the **5' end** and the **3' end**. By convention a sequence is written in the 5' to 3' direction. Writing `ATGC` therefore means 5'-ATGC-3', and it is a different molecule from 5'-CGTA-3'.
 
@@ -184,9 +192,13 @@ DNA in a cell is usually a **double helix** of two twisted strands. The two stra
 
 > **Definition:** **Complementary base pairing** is the rule by which A pairs with T (A with U in RNA) and G pairs with C through hydrogen bonds.
 
-An A-T pair is joined by two hydrogen bonds and a G-C pair by three. DNA rich in GC pairs therefore needs a higher temperature to separate its two strands, which is one reason the **GC content** of a sequence is computed so often. Because a purine (two rings) always pairs with a pyrimidine (one ring), the width of the helix stays constant.
+An A-T pair is joined by two hydrogen bonds and a G-C pair by three. DNA rich in GC pairs therefore needs a higher temperature to separate its two strands, which is one reason the GC content of a sequence is computed so often. Because a purine (two rings) always pairs with a pyrimidine (one ring), the width of the helix stays constant.
 
-The two strands run in opposite directions, which is called **antiparallel**. If one strand runs 5' to 3' from left to right, its partner runs 3' to 5' at the same positions.
+> **Definition:** The **GC content** of a sequence is the proportion of its bases that are G or C.
+
+> **Definition:** **Antiparallel** is the state in which the two strands of a double helix run in opposite directions.
+
+If one strand runs 5' to 3' from left to right, its partner runs 3' to 5' at the same positions.
 
 ```text
 5'- A T G G C T T C A -3'
@@ -211,7 +223,7 @@ RNA differs from DNA in three ways. Its sugar is ribose, it uses uracil instead 
 | Kind of RNA | Role |
 |:-----|:-----|
 | Messenger RNA (mRNA) | Template that carries the information of a gene to the ribosome |
-| Transfer RNA (tRNA) | Adapter that reads a codon and brings the matching amino acid to the ribosome |
+| Transfer RNA (tRNA) | Adapter that reads a three-base codon (Section 5.2) and brings the matching amino acid to the ribosome |
 | Ribosomal RNA (rRNA) | Core of the structure and catalytic activity of the ribosome |
 | Other noncoding RNAs | Regulation of gene expression, for example microRNAs (miRNA) and long noncoding RNAs (lncRNA) |
 
@@ -221,7 +233,7 @@ RNA differs from DNA in three ways. Its sugar is ribose, it uses uracil instead 
 
 From the viewpoint of informatics, a DNA sequence is a string over the alphabet $`\Sigma_{\mathrm{DNA}} = \lbrace A, C, G, T \rbrace`$, and an RNA sequence is a string over $`\lbrace A, C, G, U \rbrace`$. There are $`4^n`$ DNA strings of length $`n`$, so even strings of length 10 number about a million (1,048,576).
 
-Real data contain positions where the base could not be determined. Such positions are written with the internationally agreed **IUPAC codes**.
+Real data contain positions where the base could not be determined. Such positions are written with the internationally agreed IUPAC codes.
 
 | Code | Meaning | Code | Meaning |
 |:-----|:-----|:-----|:-----|
@@ -233,6 +245,8 @@ Real data contain positions where the base could not be determined. Such positio
 | N | any base | `-` | gap in an alignment (Chapter 8) |
 
 *Table 5. IUPAC codes for nucleic acids*
+
+> **Definition:** An **IUPAC code** is an internationally agreed one-letter symbol that writes a position whose base could not be determined as the set of possible bases (for example R for A or G).
 
 A position where the sequencing machine could not decide the base is usually recorded as `N`. Code that analyzes sequences should allow from the start for letters other than A, C, G, and T in its input.
 
@@ -257,7 +271,7 @@ The proteins of living things are made mainly of twenty standard amino acids. Th
 
 *Table 6. Classification of the twenty standard amino acids*
 
-This classification is used to understand the substitution matrices of Chapter 8. Substitutions between amino acids with similar properties (for example leucine and isoleucine) harm protein function less and therefore often persist in evolution, while substitutions between amino acids with very different properties rarely persist. Among the one-letter symbols, B, J, O, U, X, and Z serve purposes outside the twenty above (ambiguous, rare, or unknown amino acids), and `*` denotes a stop codon.
+This classification is used to understand the substitution matrices of Chapter 8. Substitutions between amino acids with similar properties (for example leucine and isoleucine) harm protein function less and therefore often persist in evolution, while substitutions between amino acids with very different properties rarely persist. Among the one-letter symbols, B, J, O, U, X, and Z serve purposes outside the twenty above (ambiguous, rare, or unknown amino acids), and `*` denotes a stop codon (Section 5.2).
 
 ### 4.2 Peptide Bonds and the Direction of a Protein
 
@@ -291,8 +305,12 @@ The primary structure is obtained relatively easily by sequencing, but the terti
 The information is transferred by three processes.
 
 - **Replication:** DNA copies itself. The two strands unwind and each serves as a template for a new complementary strand, so each new double helix consists of one old strand and one new strand. It happens every time a cell divides.
-- **Transcription:** A stretch of DNA (a gene) is copied into RNA. RNA polymerase reads the **template strand** in the 3' to 5' direction and synthesizes RNA in the 5' to 3' direction. As a result the RNA sequence equals the sequence of the strand complementary to the template, the **coding strand**, with T replaced by U.
-- **Translation:** The ribosome reads mRNA three bases at a time in the 5' to 3' direction and joins the amino acid corresponding to each triplet into a protein. A tRNA attaches to the mRNA through an anticodon complementary to the triplet and delivers the amino acid.
+- **Transcription:** RNA polymerase reads the **template strand** in the 3' to 5' direction and synthesizes RNA in the 5' to 3' direction. As a result the RNA sequence equals the sequence of the strand complementary to the template, the **coding strand**, with T replaced by U.
+- **Translation:** As the ribosome reads the mRNA three bases at a time, a tRNA attaches to each triplet through a complementary anticodon and delivers its amino acid, which the ribosome joins into the protein.
+
+> **Definition:** **Transcription** is the process in which RNA polymerase synthesizes RNA complementary to a stretch of DNA (a gene) used as a template, that is, the copying of the information in DNA into RNA.
+
+> **Definition:** **Translation** is the process in which the ribosome reads mRNA three bases at a time in the 5' to 3' direction and joins the amino acid corresponding to each triplet into a protein.
 
 ```mermaid
 flowchart LR
@@ -310,7 +328,11 @@ Because the coding strand and the mRNA have the same sequence except for T and U
 
 > **Definition:** A **codon** is a run of three consecutive bases in mRNA that specifies one amino acid or the end of translation.
 
-Four bases make $`4^3 = 64`$ three-letter words. Of these, 61 specify the twenty amino acids, and three (`TAA`, `TAG`, `TGA`; UAA, UAG, UGA in RNA) are **stop codons** that halt translation. `ATG` (AUG) specifies methionine and also serves as the **start codon** where translation begins. The table of correspondences between codons and amino acids is called the **genetic code**.
+> **Definition:** A **stop codon** is a codon that specifies no amino acid and halts translation (`TAA`, `TAG`, `TGA`).
+
+> **Definition:** A **start codon** is the codon at which translation begins; `ATG` (AUG in RNA) plays this role while also specifying methionine.
+
+Four bases make $`4^3 = 64`$ three-letter words. Of these, 61 specify the twenty amino acids, and the remaining three (`TAA`, `TAG`, `TGA`; UAA, UAG, UGA in RNA) are stop codons. The correspondence between codons and amino acids is tabulated below.
 
 | First base | Second T | Second C | Second A | Second G | Third base |
 |:-----|:-----|:-----|:-----|:-----|:-----|
@@ -333,6 +355,8 @@ Four bases make $`4^3 = 64`$ three-letter words. Of these, 61 specify the twenty
 
 *Table 8. The standard genetic code (written on the DNA coding strand)*
 
+> **Definition:** The **genetic code** is the rule of correspondence between the 64 codons and the amino acid, or the end of translation, that each codon specifies.
+
 Table 8 shows the following properties.
 
 - **Degeneracy:** Sixty-four codons specify 21 meanings (twenty amino acids and stop), so several codons specify the same amino acid. Methionine (M) and tryptophan (W) have only one codon each, while leucine (L), serine (S), and arginine (R) have six each.
@@ -343,7 +367,9 @@ Table 8 shows the following properties.
 
 ### 5.3 Reading Frames and Open Reading Frames
 
-Translation reads three bases at a time, so the amino acid sequence depends entirely on where the reading starts. One strand has three **reading frames**, starting at the first, second, and third letter, and the reverse complement strand has three more, so double-stranded DNA has six reading frames in all.
+> **Definition:** A **reading frame** is the choice of starting position that fixes the codon boundaries when a sequence is read three bases at a time.
+
+Translation reads three bases at a time, so the amino acid sequence depends entirely on where the reading starts. One strand has three reading frames, starting at the first, second, and third letter, and the reverse complement strand has three more, so double-stranded DNA has six reading frames in all.
 
 ```text
          A T G G C T T C A G G T C T G A A A C G C T A A
@@ -363,8 +389,11 @@ In Figure 3, +1, +2, and +3 denote the reading frames starting at the first, sec
 A prokaryotic gene is usually one continuous ORF, but in the genes of many eukaryotes, including humans, the stretch translated into protein is broken into several pieces.
 
 - **Promoter:** A regulatory region in front of the gene where RNA polymerase binds to start transcription.
-- **Exons and introns:** In the transcribed RNA, the stretches that remain in the final mRNA are exons and the stretches cut out are introns.
 - **Untranslated regions (UTRs):** The stretches of mRNA before the start codon (5' UTR) and after the stop codon (3' UTR) that are not translated.
+
+> **Definition:** An **exon** is a region of a gene that, after transcription, survives splicing and remains in the final mRNA; the term refers both to the DNA region and to the corresponding stretch of RNA.
+
+> **Definition:** An **intron** is a region of a gene that is transcribed but cut out by splicing before the final mRNA is formed; the term refers both to the DNA region and to the corresponding stretch of RNA.
 
 ```mermaid
 flowchart LR
@@ -397,7 +426,7 @@ Even with these extensions, it remains true that no route is known by which info
 
 > **Definition:** A **genome** is the whole genetic information of an organism, that is, the entire DNA sequence of all its chromosomes (and organelles).
 
-A **gene** is a stretch of DNA that carries the information needed to make a functional product (a protein or a functional RNA). The human genome sequence consists of the sequences of the 22 autosomes and the two sex chromosomes X and Y; the complete sequence of a human genome published in 2022 (T2T-CHM13, excluding the Y chromosome) is about 3.055 billion base pairs, and 19,969 genes were annotated as protein-coding [1]. In the same annotation the number of genes including noncoding genes was 63,494 [1]. Most of the genome is therefore sequence that does not encode protein, containing regulatory regions, noncoding RNA genes, and repeats.
+The human genome sequence consists of the sequences of the 22 autosomes and the two sex chromosomes X and Y; the complete sequence of a human genome published in 2022 (T2T-CHM13, excluding the Y chromosome) is about 3.055 billion base pairs, and 19,969 genes were annotated as protein-coding [1]. In the same annotation the number of genes including noncoding genes was 63,494 [1]. Most of the genome is therefore sequence that does not encode protein, containing regulatory regions, noncoding RNA genes, and repeats.
 
 Genome size varies greatly among organisms. The two sequences used in Section 11 and Chapter 9 are the phiX174 bacteriophage genome of 5,386 bases and the yeast (Saccharomyces cerevisiae) chromosome I sequence shipped with the Biostrings package, of 230,208 bases. Human cells are **diploid**, carrying two sets of chromosomes, so the amount of DNA in one cell is twice the genome size.
 
@@ -405,11 +434,17 @@ Genome size varies greatly among organisms. The two sequences used in Section 11
 
 > **Definition:** The **transcriptome** is the whole set of RNA molecules in a particular cell or tissue at a particular time.
 
-The genome is almost the same in nearly every cell of a person, but the transcriptome differs with the cell type and state. Liver cells and nerve cells carry the same genome yet transcribe different genes, which is why they do different work. The amount by which a gene is transcribed into RNA is called its **expression** level. Expression levels are measured with microarrays or RNA-seq (Section 8.5), and the results are arranged in a matrix with genes as rows and samples as columns. **Differential expression** analysis, which finds genes expressed differently in diseased and normal tissue, is the starting point of the statistical methods of Chapter 9 and of the biomarker discovery, clustering, and classification of Chapter 10 onward.
+> **Definition:** **Expression** is the degree to which a gene is transcribed into RNA; the amount is the expression level of the gene.
+
+The genome is almost the same in nearly every cell of a person, but the transcriptome differs with the cell type and state. Liver cells and nerve cells carry the same genome yet transcribe different genes, which is why they do different work. Expression levels are measured with microarrays or RNA-seq (Section 8.5), and the results are arranged in a matrix with genes as rows and samples as columns. Differential expression analysis, which finds genes expressed differently in diseased and normal tissue, is the starting point of the statistical methods of Chapter 9 and of the biomarker discovery, clustering, and classification of Chapter 10 onward.
+
+> **Definition:** **Differential expression** is a difference in the expression level of a gene between two conditions, such as diseased and normal tissue.
 
 ### 6.3 The Proteome
 
-The **proteome** is the whole set of proteins in a cell or tissue. Protein amounts are often not proportional to mRNA amounts. Translation efficiency and protein degradation rates differ among genes, and **post-translational modifications** such as phosphorylation change protein function after translation. The proteome is measured mainly by mass spectrometry.
+> **Definition:** The **proteome** is the whole set of proteins in a cell or tissue.
+
+Protein amounts are often not proportional to mRNA amounts. Translation efficiency and protein degradation rates differ among genes, and **post-translational modifications** such as phosphorylation change protein function after translation. The proteome is measured mainly by mass spectrometry.
 
 ### 6.4 The Shape of Omics Data
 
@@ -425,6 +460,10 @@ Fields such as genomics, transcriptomics, and proteomics that measure an entire 
 
 *Table 9. Major omics fields*
 
+> **Definition:** A **read** is a sequence fragment that a sequencing machine reads out at once.
+
+> **Definition:** An **allele** is one of the different sequences that can occur at the same position of the genome.
+
 What omics data have in common is that the number of variables $`p`$ (genes, proteins, positions) is much larger than the number of samples $`n`$. Matrices with tens of samples and 20,000 genes are common. The curse of dimensionality in Chapter 4, multiple testing in Chapter 9, and feature selection from Chapter 10 onward all arise from this $`p \gg n`$ structure.
 
 ---
@@ -435,10 +474,15 @@ What omics data have in common is that the number of variables $`p`$ (genes, pro
 
 ### 7.1 Point Mutations
 
-A **mutation** is a change in a DNA sequence. Mutations arise from causes such as replication errors, chemicals, and ultraviolet light. A **substitution**, in which one base changes into another, is the simplest mutation and falls into two kinds by the purine and pyrimidine distinction.
+> **Definition:** A **mutation** is a change in a DNA sequence.
 
-- **Transition:** A substitution between purines (A and G) or between pyrimidines (C and T). There are four possible directions: A to G, G to A, C to T, and T to C.
-- **Transversion:** A substitution between a purine and a pyrimidine. There are eight possible directions.
+> **Definition:** A **substitution** is a mutation in which one base changes into another, the simplest kind of mutation.
+
+Mutations arise from causes such as replication errors, chemicals, and ultraviolet light. Substitutions fall into two kinds by the purine and pyrimidine distinction.
+
+> **Definition:** A **transition** is a substitution between purines (A and G) or between pyrimidines (C and T). There are four possible directions: A to G, G to A, C to T, and T to C.
+
+> **Definition:** A **transversion** is a substitution between a purine and a pyrimidine. There are eight possible directions.
 
 By the number of directions alone, transversions would be twice as frequent as transitions, but in the sequences of real organisms transitions are observed far more often. A change between bases with the same number of rings is known to occur more easily chemically. The fact that the DNA scoring scheme of Chapter 8 treats all mismatches alike is a simplification that ignores this difference.
 
@@ -452,11 +496,19 @@ Substitutions in protein-coding regions are also classified by their effect on t
 
 *Table 10. Effects of substitutions in coding regions*
 
+> **Definition:** A **synonymous substitution** is a base substitution in a coding region after which the changed codon specifies the same amino acid, so the amino acid sequence does not change.
+
+> **Definition:** A **missense mutation** is a substitution that changes a codon into one that specifies a different amino acid.
+
+> **Definition:** A **nonsense mutation** is a substitution that turns a codon specifying an amino acid into a stop codon, so that translation stops there.
+
 Because synonymous substitutions do not change the protein, they are under weaker natural selection and accumulate more than nonsynonymous substitutions in evolution. When the same gene from several species is compared in the multiple alignment of Chapter 8, Section 9, most differences are concentrated at the third positions of codons.
 
 ### 7.2 Insertions, Deletions, and Frameshifts
 
-The addition of one or more bases is an **insertion** and their loss a **deletion**; together they are called **indels**. In a coding region, an indel whose length is not a multiple of three shifts the whole reading frame after it.
+The addition of one or more bases is an **insertion** and their loss a **deletion**. In a coding region, an indel whose length is not a multiple of three shifts the whole reading frame after it.
+
+> **Definition:** An **indel** is an insertion or a deletion of bases; the term covers both.
 
 > **Definition:** A **frameshift mutation** is a mutation in which an insertion or deletion of a length that is not a multiple of three in a coding region changes all codon boundaries after it.
 
@@ -464,7 +516,9 @@ In the earlier example, deleting the first base `G` of the second codon makes th
 
 ### 7.3 Structural Variants
 
-Changes of stretches longer than point mutations and short indels are called **structural variants**. They include long deletions and duplications, inversions in which the direction of a stretch is flipped, and translocations to another chromosome. Variation among people in the number of copies of a stretch is called **copy number variation (CNV)**. Structural variants are often longer than one short read, so the long-read technologies of Section 8.3 are better at finding them.
+> **Definition:** A **structural variant** is a change of a stretch longer than point mutations and short indels.
+
+Structural variants include long deletions and duplications, inversions in which the direction of a stretch is flipped, and translocations to another chromosome. Variation among people in the number of copies of a stretch is called **copy number variation (CNV)**. Structural variants are often longer than one short read, so the long-read technologies of Section 8.3 are better at finding them.
 
 ### 7.4 Germline and Somatic Variants
 
@@ -473,7 +527,9 @@ Changes of stretches longer than point mutations and short indels are called **s
 
 ### 7.5 Alleles, Genotypes, and SNPs
 
-Different sequences at the same position are called **alleles**. A diploid organism carries two alleles at each position, and their combination is the **genotype**. If the two alleles are the same the individual is homozygous, and if they differ it is heterozygous. For example, if A and G are observed at a position, the possible genotypes are AA, AG, and GG.
+> **Definition:** A **genotype** is the combination of alleles that an individual carries at a position; a diploid organism carries two alleles at each position.
+
+If the two alleles are the same the individual is homozygous, and if they differ it is heterozygous. For example, if A and G are observed at a position, the possible genotypes are AA, AG, and GG.
 
 > **Definition:** A **single nucleotide polymorphism (SNP)** is a variant at one base position that is commonly observed in a population (conventionally with an allele frequency of 1% or more).
 
@@ -485,7 +541,7 @@ SNPs are the most common kind of genetic difference among people, and studies th
 
 ## 8. Sequencing Technologies
 
-**Sequencing** is the technology of reading out the order of bases in a DNA or RNA molecule. A sequence fragment that the machine reads at once is called a **read**. No technology reads a whole chromosome from start to end in one pass, so analysis is always a computational problem of joining many reads back together or matching them to an already known sequence.
+**Sequencing** is the technology of reading out the order of bases in a DNA or RNA molecule. No technology reads a whole chromosome from start to end in one pass, so analysis is always a computational problem of joining many reads back together or matching them to an already known sequence.
 
 ### 8.1 Sanger Sequencing
 
@@ -519,7 +575,11 @@ Long-read technologies read a single molecule directly without amplification and
 
 ### 8.4 Depth and Coverage
 
-The number of reads covering a position of the genome is the **depth** at that position, and the average depth over the whole genome is the **coverage**. Reading $`N`$ reads of length $`L`$ from a genome of size $`G`$ gives the average coverage
+> **Definition:** The **depth** at a position of the genome is the number of reads covering it.
+
+> **Definition:** The **coverage** is the average depth over the whole genome.
+
+Reading $`N`$ reads of length $`L`$ from a genome of size $`G`$ gives the average coverage
 
 ```math
 C = \frac{N L}{G}
@@ -551,7 +611,7 @@ flowchart LR
 
 *Figure 5. A typical workflow for sequencing data*
 
-- **Read mapping:** For a species whose sequence is already known, the position in the reference genome from which each read came is found. Because hundreds of millions of reads must be matched to a reference of billions of bases, fast methods that combine the alignment algorithms of Chapter 8 with a k-mer index are used.
+- **Read mapping:** For a species whose sequence is already known, the position in the reference genome from which each read came is found. Because hundreds of millions of reads must be matched to a reference of billions of bases, fast methods that combine the alignment algorithms of Chapter 8 with an index of k-mers (substrings of length k, Section 11.5) are used.
 - **De novo assembly:** Without a reference, overlapping reads are joined to reconstruct long sequences. When a repeat is longer than a read, it cannot be decided where to continue, and the assembly breaks.
 - **Variant calling:** The mapped reads are compared with the reference to decide the alleles at each position. Depth and quality scores are used to distinguish sequencing errors from real variants.
 - **Quantification:** In RNA-seq, the reads mapped to each gene are counted to build a gene × sample count matrix. The statistical analysis of this matrix is the subject of Chapter 9, Section 7.
@@ -630,7 +690,9 @@ To store a score as one character, a fixed value (an offset) is added to it as a
 
 ## 10. Major Databases
 
-Biological data are gathered in public databases shared by researchers worldwide. Publishing a paper often requires depositing newly obtained sequences in a public database. Each entry receives a unique **accession number**, and when its content changes the version number increases, like the `.4` in `NM_002449.4`.
+Biological data are gathered in public databases shared by researchers worldwide. Publishing a paper often requires depositing newly obtained sequences in a public database. Each entry receives a unique accession number, and when its content changes the version number increases, like the `.4` in `NM_002449.4`.
+
+> **Definition:** An **accession number** is the unique identifier that a public database gives to each entry.
 
 ### 10.1 INSDC and GenBank
 
@@ -719,7 +781,7 @@ revcomp(revcomp(dna)) == dna
 
 ### 11.3 GC Content and Sliding Windows
 
-GC content is the proportion of G and C in a sequence.
+GC content (Section 3.3) is computed as follows.
 
 ```math
 \mathrm{GC} = \frac{n_G + n_C}{n_A + n_C + n_G + n_T}
@@ -1011,37 +1073,6 @@ This section summarizes the typical computational problems that start from the d
 | A deletion of three bases in a coding region does not cause a frameshift. | **T.** A deletion whose length is a multiple of three only changes or removes one amino acid (or two when it spans a boundary), and the reading frame after it stays the same. |
 | A base with Q = 30 is wrong about once in 1,000 times. | **T.** $`P = 10^{-30/10} = 0.001`$. |
 | With an average coverage of 10, every position of the genome is read at least once. | **F.** Even in the ideal Poisson model a fraction $`e^{-10} \approx 4.5 \times 10^{-5}`$ is never read, and in practice the uneven depth leaves more regions missed. |
-
----
-
-<br>
-
-## Glossary
-
-| English | Korean | One-Line Definition |
-|:-----|:-----|:-----|
-| prokaryote / eukaryote | 원핵생물 / 진핵생물 | An organism without a nuclear membrane, and one whose DNA lies inside a nucleus |
-| purine / pyrimidine | 퓨린 / 피리미딘 | Bases with two rings (A, G) and bases with one ring (C, T, U) |
-| phosphodiester bond | 인산다이에스터 결합 | The bond joining the 3' carbon of one nucleotide to the 5' phosphate of the next |
-| antiparallel | 역평행 | The state in which the two strands of a double helix run in opposite directions |
-| GC content | GC 함량 | The proportion of G and C in a sequence |
-| IUPAC code | IUPAC 부호 | International standard symbols for undetermined bases |
-| residue | 잔기 | One amino acid within a polypeptide chain |
-| transcription / translation | 전사 / 번역 | Copying DNA into RNA, and synthesizing protein from mRNA |
-| genetic code | 유전 암호 | The table of correspondences between the 64 codons and amino acids |
-| reading frame | 읽기 틀 | The choice of start position for reading a sequence three bases at a time |
-| exon / intron | 엑손 / 인트론 | Stretches kept in mature mRNA, and stretches cut out by splicing |
-| alternative splicing | 선택적 스플라이싱 | Producing several mRNAs from one gene by varying the combination of exons |
-| proteome | 단백질체 | All proteins of a particular cell or tissue |
-| transition / transversion | 전이 / 전환 | A substitution within the same base group, and one between a purine and a pyrimidine |
-| synonymous / missense / nonsense | 동의 치환 / 과오 돌연변이 / 넌센스 돌연변이 | A substitution that keeps the amino acid, one that changes it to another, and one that creates a stop codon |
-| structural variant | 구조 변이 | A deletion, duplication, inversion, or translocation of a long stretch |
-| allele / genotype | 대립 유전자 / 유전자형 | Different sequences at the same position, and the combination of alleles an individual carries |
-| read | 리드 | A sequence fragment read at once by a sequencing machine |
-| depth / coverage | 깊이 / 커버리지 | The number of reads covering a position, and its average |
-| accession number | 접근 번호 | The unique identifier of a database entry |
-
-*Table 16. Glossary*
 
 ---
 
