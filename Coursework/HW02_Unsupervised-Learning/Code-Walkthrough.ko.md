@@ -2,7 +2,7 @@
 
 [레포지토리 안내](../../README.ko.md) | [English](Code-Walkthrough.md) | [한국어](Code-Walkthrough.ko.md)
 
-> **최종 수정일:** 2026-11-17
+> **최종 수정일:** 2026-11-26
 
 > **학습 목표:**
 > 1. 패키지 목록을 반복문으로 설치하고 불러오며, 스크립트의 위치를 기준으로 데이터 폴더를 찾을 수 있다
@@ -171,7 +171,7 @@ analyze_dataset <- function(file_name, label_prefix) {
   y_labels <- stringr::str_remove(rownames(mx_scaled), "[_0-9]+$")
 ```
 
-- `read.delim()`은 탭 구분 파일을 읽고, `row.names = 1`은 첫 열 `sampleName`을 행 이름으로 쓴다. 결과는 21행(샘플) × 특징 수 열의 데이터 프레임이다.
+- `read.delim()`은 탭 구분 파일을 읽고, `row.names = 1`은 첫 열 `sampleName`을 행 이름으로 쓴다. 결과는 21행(샘플) × 특성 수 열의 데이터 프레임이다.
 - `scale()`은 열마다 평균을 빼고 표준편차로 나눈 행렬을 돌려준다. 행이 샘플이므로 각 유전자가 표준화된다.
 - `Rtsne()`는 똑같은 행이 있으면 오류를 내므로 `duplicated()`로 중복 행을 찾아 지운다. 이 데이터에는 중복 행이 없어 21행이 그대로 남는다.
 - `str_remove(문자열, 패턴)`은 정규식에 맞는 부분을 지운다. `"[_0-9]+$"`는 끝에 붙은 밑줄과 숫자의 연속이므로 `COVID19_Patient1`은 `COVID19_Patient`가 된다. 끝의 `Patient1`에서 숫자 `1`만 지워지고, `Patient`는 글자여서 남는다.

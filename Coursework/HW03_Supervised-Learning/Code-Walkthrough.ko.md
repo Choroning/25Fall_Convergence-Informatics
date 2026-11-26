@@ -2,10 +2,10 @@
 
 [레포지토리 안내](../../README.ko.md) | [English](Code-Walkthrough.md) | [한국어](Code-Walkthrough.ko.md)
 
-> **최종 수정일:** 2026-11-17
+> **최종 수정일:** 2026-11-27
 
 > **학습 목표:**
-> 1. LOOCV 반복문 안에서 limma 특징 선택, SMOTE, PAMR 학습과 예측을 차례로 수행하는 코드를 읽고 각 단계의 입력과 출력을 설명할 수 있다
+> 1. LOOCV 반복문 안에서 limma 특성 선택, SMOTE, PAMR 학습과 예측을 차례로 수행하는 코드를 읽고 각 단계의 입력과 출력을 설명할 수 있다
 > 2. caret의 `trainControl()`과 `train()`으로 여러 모델을 같은 교차 검증 분할에서 학습하고, 결과 표에서 지표별 최고값을 뽑을 수 있다
 > 3. 행렬의 원소별 비교와 `rowSums()`, `sweep()`으로 한 벡터와 데이터베이스 전체 사이의 일치 개수와 거리를 한 번에 계산할 수 있다
 > 4. dplyr와 ggplot2, ggrepel, cowplot으로 순위 그림, 히스토그램, 막대그래프, 산점도를 만들고 특정 개체를 강조할 수 있다
@@ -17,9 +17,9 @@
 - [1. 파일 구성과 실행 방법](#1-파일-구성과-실행-방법)
 - [2. 다섯 스크립트의 공통 부분](#2-다섯-스크립트의-공통-부분)
 - [3. Assignment3_Q1.R: LOOCV 분류 파이프라인](#3-assignment3_q1r-loocv-분류-파이프라인)
-  - [3.1 라벨과 특징 행렬](#31-라벨과-특징-행렬)
+  - [3.1 라벨과 특성 행렬](#31-라벨과-특성-행렬)
   - [3.2 훈련 세트와 검증 샘플의 분리](#32-훈련-세트와-검증-샘플의-분리)
-  - [3.3 limma 특징 선택](#33-limma-특징-선택)
+  - [3.3 limma 특성 선택](#33-limma-특성-선택)
   - [3.4 SMOTE](#34-smote)
   - [3.5 PAMR 학습과 예측](#35-pamr-학습과-예측)
   - [3.6 결과 정리와 출력](#36-결과-정리와-출력)
@@ -117,7 +117,7 @@ if (dir.exists(WORK_DIR)) {
 
 ## 3. Assignment3_Q1.R: LOOCV 분류 파이프라인
 
-### 3.1 라벨과 특징 행렬
+### 3.1 라벨과 특성 행렬
 
 ```r
 ## 2. 데이터 로드 및 전처리
@@ -182,7 +182,7 @@ run_pamr_loocv <- function(X, y) {
 
 `run_pamr_loocv()`는 샘플 수만큼 반복하며, `setdiff(1:n, i)`로 i번째를 뺀 훈련 세트의 행 번호를 만든다. `drop = FALSE`는 한 행만 꺼내도 결과를 벡터가 아닌 1행 행렬로 유지하여, 이후의 행렬 연산이 같은 모양으로 동작하게 한다. `set.seed(2025)`는 반복문 앞에서 한 번 호출되어 SMOTE의 난수를 고정한다.
 
-### 3.3 limma 특징 선택
+### 3.3 limma 특성 선택
 
 ```r
     ## 3-2. limma 기반 Feature Selection (Train set only)
@@ -210,7 +210,7 @@ run_pamr_loocv <- function(X, y) {
 - `model.matrix(~ y_train_curr)`는 절편 열과 Asthma 여부를 나타내는 열로 이루어진 설계 행렬을 만든다.
 - limma는 행이 유전자, 열이 샘플인 행렬을 받으므로 `t()`로 전치하여 `lmFit()`에 넘긴다. `lmFit()`은 유전자마다 선형 모델을 적합하고, `eBayes()`는 모든 유전자의 분산 정보를 함께 써서 조정된 t 통계량과 유의확률을 계산한다.
 - `topTable(coef = 2, number = 20, sort.by = "P")`는 두 번째 계수(Asthma와 Control의 차이)의 유의확률이 작은 순으로 유전자 20개를 고른다. `adjust.method = "none"`은 다중 검정 보정을 하지 않지만, 정렬 순서는 보정 여부와 상관없이 같다.
-- 훈련 세트에 class가 하나뿐이면 검정을 할 수 없으므로 모든 특징을 쓰는 분기가 있다. LOOCV에서는 훈련 세트에 항상 두 class가 있으므로 이 분기는 실행되지 않는다.
+- 훈련 세트에 클래스가 하나뿐이면 검정을 할 수 없으므로 모든 특성을 쓰는 분기가 있다. LOOCV에서는 훈련 세트에 항상 두 클래스가 있으므로 이 분기는 실행되지 않는다.
 
 ### 3.4 SMOTE
 
@@ -232,7 +232,7 @@ run_pamr_loocv <- function(X, y) {
     X_train_final <- data.matrix(X_train_smote)
 ```
 
-`smotefamily::SMOTE()`는 특징 데이터 프레임 `X`와 라벨 `target`을 따로 받는다. `K = 1`은 소수 class의 각 샘플이 가장 가까운 같은 class 샘플 하나와의 사이에 합성 샘플을 만들게 하고, `dup_size = 0`은 만들 개수를 두 class의 크기 차이에서 자동으로 정하게 한다. 결과의 `$data`는 원래 샘플과 합성 샘플을 합친 데이터 프레임이고, 마지막 열이 라벨(`class`)이다. `as.factor()`는 문자 라벨의 수준을 알파벳순으로 정하므로, `y_train_smote`의 수준은 3.1절의 `y`와 달리 Asthma, Control 순서이다. 이 데이터에서 Asthma가 3명인 훈련 세트는 15 대 17, 2명인 훈련 세트는 18 대 18이 된다.
+`smotefamily::SMOTE()`는 특성 데이터 프레임 `X`와 라벨 `target`을 따로 받는다. `K = 1`은 소수 클래스의 각 샘플이 가장 가까운 같은 클래스 샘플 하나와의 사이에 합성 샘플을 만들게 하고, `dup_size = 0`은 만들 개수를 두 클래스의 크기 차이에서 자동으로 정하게 한다. 결과의 `$data`는 원래 샘플과 합성 샘플을 합친 데이터 프레임이고, 마지막 열이 라벨(`class`)이다. `as.factor()`는 문자 라벨의 수준을 알파벳순으로 정하므로, `y_train_smote`의 수준은 3.1절의 `y`와 달리 Asthma, Control 순서이다. 이 데이터에서 Asthma가 3명인 훈련 세트는 15 대 17, 2명인 훈련 세트는 18 대 18이 된다.
 
 ### 3.5 PAMR 학습과 예측
 
@@ -266,9 +266,9 @@ run_pamr_loocv <- function(X, y) {
 ```
 
 - pamr은 `x`(유전자 × 샘플 행렬), `y`(라벨), `geneid`를 담은 리스트를 입력으로 받는다.
-- `pamr.train(threshold = NULL)`은 기본값에 따라 0부터 모든 유전자가 0으로 수축되는 값까지 임계값 30개를 만들고, 각 임계값에서의 수축된 class 평균을 저장한다. 학습 중 출력되는 진행 표시는 `capture.output()`으로 감춘다. `capture.output()`의 인자는 호출한 함수의 환경에서 평가되므로 `pam_fit`은 반복문 안의 변수로 남는다.
-- `pam_fit$threshold[length(pam_fit$threshold)]`는 임계값 벡터의 마지막 값, 즉 가장 큰 임계값이다. 이 값에서는 남는 유전자가 0개가 되어 예측이 class 사전 확률로만 정해진다. 그 결과와 의미는 [HW3 과제 해설의 3.4절](Assignment-Explanation.ko.md#34-임계값-선택의-검토)에 있다.
-- `pamr.predict(type = "class")`는 검증 샘플의 class를 factor로 돌려주며, `as.character()`로 바꾸어 `preds`에 저장한다.
+- `pamr.train(threshold = NULL)`은 기본값에 따라 0부터 모든 유전자가 0으로 수축되는 값까지 임계값 30개를 만들고, 각 임계값에서의 수축된 클래스 평균을 저장한다. 학습 중 출력되는 진행 표시는 `capture.output()`으로 감춘다. `capture.output()`의 인자는 호출한 함수의 환경에서 평가되므로 `pam_fit`은 반복문 안의 변수로 남는다.
+- `pam_fit$threshold[length(pam_fit$threshold)]`는 임계값 벡터의 마지막 값, 즉 가장 큰 임계값이다. 이 값에서는 남는 유전자가 0개가 되어 예측이 클래스 사전 확률로만 정해진다. 그 결과와 의미는 [HW3 과제 해설의 3.4절](Assignment-Explanation.ko.md#34-임계값-선택의-검토)에 있다.
+- `pamr.predict(type = "class")`는 검증 샘플의 클래스를 팩터로 돌려주며, `as.character()`로 바꾸어 `preds`에 저장한다.
 
 ### 3.6 결과 정리와 출력
 
@@ -342,7 +342,7 @@ pca_df <- data.frame(
 )
 ```
 
-`Disease` 열을 factor로 바꾸고, 나머지 열 이름(`F1`\~`F10`)으로 특징 행렬을 만든 뒤 `scale()`로 표준화한다. PCA는 표준화한 행렬에 `prcomp()`를 적용하고 처음 두 주성분 점수를 데이터 프레임에 담는다.
+`Disease` 열을 팩터로 바꾸고, 나머지 열 이름(`F1`\~`F10`)으로 특성 행렬을 만든 뒤 `scale()`로 표준화한다. PCA는 표준화한 행렬에 `prcomp()`를 적용하고 처음 두 주성분 점수를 데이터 프레임에 담는다.
 
 ```r
 set.seed(2025)
@@ -435,7 +435,7 @@ ctrl_acc <- trainControl(
 
 - `levels = c("Healthy", "COVID19")`로 수준 순서를 정한다. 정확도는 수준 순서와 상관없이 같다.
 - `str(df)`는 999행 11열의 구조를 출력한다.
-- `trainControl(method = "repeatedcv", number = 10, repeats = 3)`은 10-겹 교차 검증을 서로 다른 분할로 3번 반복하여 30개 검증 결과의 평균을 낸다. `classProbs = TRUE`는 class 확률도 계산하게 하고, `savePredictions = "final"`은 최종 매개변수의 검증 예측을 저장한다.
+- `trainControl(method = "repeatedcv", number = 10, repeats = 3)`은 10-겹 교차 검증을 서로 다른 분할로 3번 반복하여 30개 검증 결과의 평균을 낸다. `classProbs = TRUE`는 클래스 확률도 계산하게 하고, `savePredictions = "final"`은 최종 매개변수의 검증 예측을 저장한다.
 
 ### 5.2 모델 학습
 
@@ -518,7 +518,7 @@ fit_gbm <- train(
 model_list$GBM <- fit_gbm
 ```
 
-랜덤 포레스트는 `mtry`(각 분할에서 고려하는 변수 수)를 2\~8로 바꾸고, GBM은 `expand.grid()`로 트리 수 3개, 깊이 3개, 학습률 2개, 잎 노드 최소 샘플 수 2개의 조합 36개를 시험한다. 두 트리 모델은 변수의 척도에 영향을 받지 않으므로 표준화하지 않는다. `verbose = FALSE`는 GBM의 학습 과정 출력을 끈다. 학습된 모델은 이름을 붙여 `model_list`에 모은다.
+Random Forest는 `mtry`(각 분할에서 고려하는 변수 수)를 2\~8로 바꾸고, GBM은 `expand.grid()`로 트리 수 3개, 깊이 3개, 학습률 2개, 잎 노드 최소 샘플 수 2개의 조합 36개를 시험한다. 두 트리 모델은 변수의 척도에 영향을 받지 않으므로 표준화하지 않는다. `verbose = FALSE`는 GBM의 학습 과정 출력을 끈다. 학습된 모델은 이름을 붙여 `model_list`에 모은다.
 
 ### 5.3 모델별 최고 정확도
 
@@ -610,8 +610,8 @@ get_best_sens <- function(fit) {
   return(res$Sens[idx])
 ```
 
-- COVID19를 첫 번째 수준으로 두어 양성 class로 지정한다. `twoClassSummary`는 첫 번째 수준을 양성으로 보고 민감도를 계산한다.
-- `summaryFunction = twoClassSummary`는 정확도 대신 ROC 곡선 아래 넓이(`ROC`), 민감도(`Sens`), 특이도(`Spec`)를 계산하며, class 확률이 필요하므로 `classProbs = TRUE`와 함께 쓴다.
+- COVID19를 첫 번째 수준으로 두어 양성 클래스로 지정한다. `twoClassSummary`는 첫 번째 수준을 양성으로 보고 민감도를 계산한다.
+- `summaryFunction = twoClassSummary`는 정확도 대신 ROC 곡선 아래 넓이(`ROC`), 민감도(`Sens`), 특이도(`Spec`)를 계산하며, 클래스 확률이 필요하므로 `classProbs = TRUE`와 함께 쓴다.
 - 아홉 번의 `train()` 호출에서 `metric = "Sens"`로 민감도가 가장 높은 매개변수를 고르고, 정리 함수도 `res$Sens`에서 최댓값을 꺼낸다.
 
 ```text
@@ -681,8 +681,8 @@ score_df <- data.frame(
 
 - `grep("^DNA_", colnames(db), value = TRUE)`는 이름이 `DNA_`로 시작하는 열 이름 1,000개를 돌려준다. `X_db`는 2,178 × 1,000 행렬, `x_q`는 길이 1,000의 수치 벡터이다.
 - `matrix(rep(x_q, each = n_db), nrow = n_db)`는 모든 행이 `x_q`인 2,178 × 1,000 행렬이다. `rep(each = n_db)`가 `x_q`의 각 원소를 2,178번씩 반복하고, 행렬은 열 방향으로 채워지므로 j번째 열이 모두 `x_q[j]`가 된다. 이 행렬과 `X_db`를 `==`로 비교하면 원소별 일치 여부를 담은 논리 행렬이 나온다.
-- `rowSums()`는 논리값의 `TRUE`를 1로 세어 개인별 일치 개수를 주고, 해밍 거리는 1,000에서 그 값을 뺀 값이다.
-- `sweep(X_db, 2, x_q, FUN = "-")`는 각 행에서 `x_q`를 빼고(2는 열 방향의 통계량을 쓴다는 뜻), 제곱의 행 합에 제곱근을 씌우면 유클리드 거리이다.
+- `rowSums()`는 논리값의 `TRUE`를 1로 세어 개인별 일치 개수를 주고, Hamming 거리는 1,000에서 그 값을 뺀 값이다.
+- `sweep(X_db, 2, x_q, FUN = "-")`는 각 행에서 `x_q`를 빼고(2는 열 방향의 통계량을 쓴다는 뜻), 제곱의 행 합에 제곱근을 씌우면 Euclidean 거리이다.
 
 ### 7.2 후보 식별과 요약 출력
 
@@ -708,7 +708,7 @@ mean_hamming <- mean(score_df$Hamming)
 sd_hamming   <- sd(score_df$Hamming)
 ```
 
-`which.min()`은 해밍 거리가 가장 작은 행 번호를 돌려준다. 2위는 해밍 거리, 동률이면 유클리드 거리 순으로 정렬한 `order()`의 두 번째 원소이다. 두 후보를 표시하는 논리 열과 일치 개수, 해밍 거리의 평균과 표준편차를 계산한 뒤 `cat(sprintf(...))`로 요약을 출력한다.
+`which.min()`은 Hamming 거리가 가장 작은 행 번호를 돌려준다. 2위는 Hamming 거리, 동률이면 Euclidean 거리 순으로 정렬한 `order()`의 두 번째 원소이다. 두 후보를 표시하는 논리 열과 일치 개수, Hamming 거리의 평균과 표준편차를 계산한 뒤 `cat(sprintf(...))`로 요약을 출력한다.
 
 ```text
 - Matches with Query:
@@ -754,7 +754,7 @@ p_dist <- ggplot(dist_ranked,
   ) +
 ```
 
-dplyr의 `arrange(Hamming)`은 해밍 거리의 오름차순으로 행을 정렬하고, `mutate(Rank = row_number())`는 정렬된 순서대로 순위를 붙인다. 전체 점과 선을 그린 위에 1위와 2위의 행만 골라 빨간색과 파란색의 큰 점을 덧그리고, ggrepel의 `geom_text_repel()`로 이름표가 점과 겹치지 않게 단다.
+dplyr의 `arrange(Hamming)`은 Hamming 거리의 오름차순으로 행을 정렬하고, `mutate(Rank = row_number())`는 정렬된 순서대로 순위를 붙인다. 전체 점과 선을 그린 위에 1위와 2위의 행만 골라 빨간색과 파란색의 큰 점을 덧그리고, ggrepel의 `geom_text_repel()`로 이름표가 점과 겹치지 않게 단다.
 
 ```r
 p_hist <- ggplot(score_df, aes(x = Hamming)) +
@@ -766,7 +766,7 @@ p_hist <- ggplot(score_df, aes(x = Hamming)) +
              color = "blue", linetype = "dashed", linewidth = 1.0) +
 ```
 
-히스토그램의 구간 폭은 해밍 거리 표준편차의 절반을 내림한 값이며, 이 데이터에서는 $\lfloor 19.42/2 \rfloor = 9$이다. `geom_vline()`은 1위(실선, 빨간색)와 2위(점선, 파란색)의 해밍 거리에 세로선을 긋고, 이어지는 `annotate("text", y = Inf, vjust = ...)`가 그래프 위쪽 가장자리에 후보 이름을 적는다.
+히스토그램의 구간 폭은 Hamming 거리 표준편차의 절반을 내림한 값이며, 이 데이터에서는 $\lfloor 19.42/2 \rfloor = 9$이다. `geom_vline()`은 1위(실선, 빨간색)와 2위(점선, 파란색)의 Hamming 거리에 세로선을 긋고, 이어지는 `annotate("text", y = Inf, vjust = ...)`가 그래프 위쪽 가장자리에 후보 이름을 적는다.
 
 ```r
 top_n <- 30
@@ -787,7 +787,7 @@ p_top <- ggplot(top_scores,
   scale_fill_manual(values = c(`TRUE` = "red", `FALSE` = "grey70")) +
 ```
 
-일치 개수의 내림차순으로 상위 30명을 고른다. `coord_flip()`으로 막대를 가로로 눕히면 factor의 첫 수준이 아래에 놓이므로, `levels = rev(...)`로 순서를 뒤집어 1위가 맨 위에 오게 한다. `fill = Subject == best_subject`는 논리값으로 색을 나누고, `scale_fill_manual()`이 `TRUE`를 빨간색, `FALSE`를 회색으로 칠한다.
+일치 개수의 내림차순으로 상위 30명을 고른다. `coord_flip()`으로 막대를 가로로 눕히면 팩터의 첫 수준이 아래에 놓이므로, `levels = rev(...)`로 순서를 뒤집어 1위가 맨 위에 오게 한다. `fill = Subject == best_subject`는 논리값으로 색을 나누고, `scale_fill_manual()`이 `TRUE`를 빨간색, `FALSE`를 회색으로 칠한다.
 
 ```r
 X_all <- rbind(X_db, x_q)  # (n_db + 1) x p
@@ -818,12 +818,12 @@ pc_df$Group[n_db + 1] <- "Query"
 
 | 개념 | 핵심 요약 |
 |:-----|:-----|
-| LOOCV 반복문 | `setdiff(1:n, i)`로 훈련 세트를 만들고, 특징 선택, SMOTE, 학습을 모두 반복문 안에서 수행한다. |
+| LOOCV 반복문 | `setdiff(1:n, i)`로 훈련 세트를 만들고, 특성 선택, SMOTE, 학습을 모두 반복문 안에서 수행한다. |
 | limma | 유전자 × 샘플 행렬을 `lmFit()`과 `eBayes()`에 넘기고, `topTable(coef = 2, number = 20, sort.by = "P")`로 상위 유전자를 고른다. |
 | PAMR 임계값 | `pamr.train()`의 임계값 벡터는 0부터 커지므로 마지막 값은 모든 유전자를 0으로 수축시키는 가장 큰 임계값이다. |
 | caret 비교 | 같은 `set.seed()`와 `trainControl()`로 모든 모델의 교차 검증 분할을 맞추고, `fit$results`에서 지표별 최고값을 꺼낸다. |
-| 민감도 기준 | 양성 class를 첫 수준으로 두고 `twoClassSummary`와 `metric = "Sens"`를 쓴다. |
-| 벡터와 행렬의 비교 | `X == matrix(rep(x, each = n), nrow = n)`과 `rowSums()`로 일치 개수를, `sweep()`으로 유클리드 거리를 한 번에 구한다. |
+| 민감도 기준 | 양성 클래스를 첫 수준으로 두고 `twoClassSummary`와 `metric = "Sens"`를 쓴다. |
+| 벡터와 행렬의 비교 | `X == matrix(rep(x, each = n), nrow = n)`과 `rowSums()`로 일치 개수를, `sweep()`으로 Euclidean 거리를 한 번에 구한다. |
 
 ---
 

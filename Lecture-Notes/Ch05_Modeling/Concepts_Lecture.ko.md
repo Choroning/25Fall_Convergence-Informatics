@@ -2,7 +2,7 @@
 
 [레포지토리 안내](../../README.ko.md) | [English](Concepts_Lecture.md) | [한국어](Concepts_Lecture.ko.md)
 
-> **최종 수정일:** 2026-11-19
+> **최종 수정일:** 2026-11-27
 
 > **학습 목표:**
 > 1. 결정적 모델과 확률적 모델을 구분할 수 있다
@@ -74,9 +74,9 @@
 
 모델 또는 모델링(Modeling)이라는 말은 다음을 가리킬 수 있다.
 
-- **개념 모델 (Conceptual model)**: 일반적인 규칙과 개념을 사용하여 시스템을 표현한 것이다.
-- **과학 모델 (Scientific model)**: 물리적 시스템을 단순화하고 이상화하여 이해한 것이다.
-- **물리 모델 (Physical model)**: 지구본이나 모형 비행기처럼 대상을 3차원으로 물리적으로 표현한 것이다.
+- **개념 모델(conceptual model)**: 일반적인 규칙과 개념을 사용하여 시스템을 표현한 것이다.
+- **과학 모델(scientific model)**: 물리적 시스템을 단순화하고 이상화하여 이해한 것이다.
+- **물리 모델(physical model)**: 지구본이나 모형 비행기처럼 대상을 3차원으로 물리적으로 표현한 것이다.
 - **모델 (예술)**: 시각 예술가의 창작 과정에서 자세를 취해 주는 사람이다. 이 경우에도 모델은 작품 속 인물이라는 실제 대상을 대신하는 존재이다.
 
 > **핵심:** 이 장에서는 방정식과 확률을 사용하여 변수 간의 관계를 서술하는 수학적 모델과 통계적 모델에 초점을 둔다.
@@ -137,9 +137,9 @@ flowchart TD
 
 | 유형 | 설명 |
 |------|------|
-| **회귀 모델 (Regression Models)** | 방정식을 사용하여 종속변수와 독립변수 사이의 관계를 모델링한다 |
-| **상관 모델 (Correlation Models)** | 두 변수 간의 선형성 강도를 분석한다 |
-| **기타 모델 (Other Models)** | 그 밖의 확률적 모델링 접근법이다 |
+| **회귀 모델(regression models)** | 방정식을 사용하여 종속변수와 독립변수 사이의 관계를 모델링한다 |
+| **상관 모델(correlation models)** | 두 변수 간의 선형성 강도를 분석한다 |
+| **기타 모델(other models)** | 그 밖의 확률적 모델링 접근법이다 |
 
 *표 1. 확률적 모델의 세 가지 유형*
 
@@ -157,12 +157,12 @@ flowchart TD
 
 ### 4.2 변수의 유형
 
-**종속변수 (Dependent variable, Y)**:
+**종속변수(dependent variable, Y)**:
 - 관심 있는 특정 현상을 나타낸다.
 - 동의어로 반응변수(Response variable)와 결과변수(Outcome variable)가 있다.
 - 보통 $Y$로 표기한다.
 
-**독립변수 (Independent variable, X)**:
+**독립변수(independent variable, X)**:
 - 종속변수에 영향을 줄 수 있는 변수이다.
 - 동의어로 설명변수(Explanatory variable)와 예측변수(Predictor)가 있다.
 - 보통 $X_1, \ldots, X_k$로 표기한다.
@@ -173,8 +173,8 @@ flowchart TD
 
 |  | 단순 (설명변수 1개) | 다중 (설명변수 2개 이상) |
 |--|---|----|
-| **선형 (Linear)** | 단순 선형 회귀 (Simple Linear Regression) | 다중 선형 회귀 (Multiple Linear Regression) |
-| **비선형 (Non-Linear)** | 단순 비선형 회귀 (Simple Non-Linear Regression) | 다중 비선형 회귀 (Multiple Non-Linear Regression) |
+| **선형(linear)** | 단순 선형 회귀 (Simple Linear Regression) | 다중 선형 회귀 (Multiple Linear Regression) |
+| **비선형(non-linear)** | 단순 비선형 회귀 (Simple Non-Linear Regression) | 다중 비선형 회귀 (Multiple Non-Linear Regression) |
 
 *표 2. 설명변수의 수와 선형성에 따른 회귀 모델의 분류*
 
@@ -231,11 +231,11 @@ $$\varepsilon_i \sim N(0, \sigma^2)$$
 
 ### 5.4 모집단 vs. 표본
 
-- **모집단 (Population)**: 알려지지 않은 관계 $Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$이다.
-- **표본 (Sample)**: 추정된 관계 $Y_i = \hat{\beta}_0 + \hat{\beta}_1 X_i + \hat{\varepsilon}_i$이다.
+- **모집단(population)**: 알려지지 않은 관계 $Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$이다.
+- **표본(sample)**: 추정된 관계 $Y_i = \hat{\beta}_0 + \hat{\beta}_1 X_i + \hat{\varepsilon}_i$이다.
 - 표본 데이터를 사용하여 알려지지 않은 모집단 모수를 추정한다.
 
-> **핵심:** 모집단 모델은 참(미지의) 모수를 포함하고, 표본 모델은 관측된 데이터로부터 도출된 추정 모수(hat 표기)를 사용한다.
+> **핵심:** 모집단 모델은 참(미지의) 모수를 포함하고, 표본 모델은 관측된 데이터로부터 도출된 추정 모수(햇 표기)를 사용한다.
 
 ### 5.5 모집단 회귀선과 표본 회귀선
 
@@ -430,7 +430,7 @@ OLS 추정량이 널리 쓰이는 데는 이론적 근거가 있다. 오차의 �
 
 - **비편향성:** $`E(\hat{\beta}_0) = \beta_0`$, $`E(\hat{\beta}_1) = \beta_1`$이다. 표본을 무수히 다시 뽑아 추정하면 추정값의 평균이 참값과 같다.
 - **분산:** $`\mathrm{Var}(\hat{\beta}_1) = \sigma^2 / S_{xx}`$이다. 10.3절의 표준오차는 이 식의 $`\sigma`$를 표본 추정값 s로 바꾼 것이다.
-- **최량성(가우스-마르코프 정리):** $`y_i`$의 선형 결합으로 만든 비편향 추정량 가운데 OLS 추정량의 분산이 가장 작다. 그래서 OLS 추정량을 최량 선형 비편향 추정량(BLUE, best linear unbiased estimator)이라 한다.
+- **최량성(Gauss-Markov 정리):** $`y_i`$의 선형 결합으로 만든 비편향 추정량 가운데 OLS 추정량의 분산이 가장 작다. 그래서 OLS 추정량을 최량 선형 비편향 추정량(BLUE, best linear unbiased estimator)이라 한다.
 
 여기에 오차가 정규분포를 따른다는 가정(5.3절)을 더하면, OLS 추정량은 최대가능도 추정량과 같아지고, $`\hat{\beta}_1`$ 자체도 정규분포를 따르므로 10.3절의 t 검정과 신뢰 구간이 표본이 작아도 정확하게 성립한다. 반대로 오차의 분산이 관측마다 다르거나(이분산성) 오차끼리 상관되어 있으면 OLS 추정량은 여전히 비편향이지만 더는 분산이 가장 작지 않고, 보통의 표준오차 공식도 틀린다. 10.4절의 잔차 진단이 중요한 이유이다.
 
@@ -484,10 +484,10 @@ round(c(r = r, r2 = r^2, b_yx = unname(b_yx), b_xy = unname(b_xy), product = unn
 
 | 결과 변수 | 독립 관측 | 상관 관측 | 비모수 대안 |
 |-----------|----------|----------|------------|
-| **연속형** (예: 통증 척도, 인지 기능) | **T-검정 (T-test)**: 두 독립 그룹 간의 평균 비교 | **대응 t-검정 (Paired t-test)**: 두 관련 그룹 간의 평균 비교 (예: 동일 대상의 전과 후) | **Wilcoxon 부호 순위 검정 (Wilcoxon sign-rank test)**: 대응 t-검정의 비모수 대안 |
-| | **분산분석 (ANOVA)**: 셋 이상의 독립 그룹 간의 평균 비교 | **반복측정 분산분석 (Repeated-measures ANOVA)**: 두 개 이상의 그룹에서 시간에 따른 평균 변화 비교 (반복 측정) | **Wilcoxon 순위합 검정 (Wilcoxon sum-rank test)** (= Mann-Whitney U 검정): t-검정의 비모수 대안 |
-| | **Pearson 상관계수 (Pearson's correlation coefficient)** (선형 상관): 두 연속 변수 간의 선형 상관을 나타냄 | **혼합 모델 / GEE 모델 (Mixed models / GEE modeling)**: 두 개 이상의 그룹에서 시간에 따른 변화를 비교하는 다변량 회귀 기법; 시간에 따른 변화율 제공 | **Kruskal-Wallis 검정 (Kruskal-Wallis test)**: ANOVA의 비모수 대안 |
-| | **선형 회귀 (Linear regression)**: 결과가 연속형일 때 사용하는 다변량 회귀 기법; 기울기 제공 | | **Spearman 순위 상관계수 (Spearman rank correlation coefficient)**: Pearson 상관계수의 비모수 대안 |
+| **연속형** (예: 통증 척도, 인지 기능) | **t-검정(t-test)**: 두 독립 그룹 간의 평균 비교 | **대응 t-검정(paired t-test)**: 두 관련 그룹 간의 평균 비교 (예: 동일 대상의 전과 후) | **Wilcoxon 부호 순위 검정(Wilcoxon sign-rank test)**: 대응 t-검정의 비모수 대안 |
+| | **분산분석(ANOVA)**: 셋 이상의 독립 그룹 간의 평균 비교 | **반복측정 분산분석(repeated-measures ANOVA)**: 두 개 이상의 그룹에서 시간에 따른 평균 변화 비교 (반복 측정) | **Wilcoxon 순위합 검정(Wilcoxon sum-rank test)** (= Mann-Whitney U 검정): t-검정의 비모수 대안 |
+| | **Pearson 상관계수(Pearson's correlation coefficient)** (선형 상관): 두 연속 변수 간의 선형 상관을 나타냄 | **혼합 모델 / GEE 모델(mixed models / GEE modeling)**: 두 개 이상의 그룹에서 시간에 따른 변화를 비교하는 다변량 회귀 기법; 시간에 따른 변화율 제공 | **Kruskal-Wallis 검정(Kruskal-Wallis test)**: ANOVA의 비모수 대안 |
+| | **선형 회귀(linear regression)**: 결과가 연속형일 때 사용하는 다변량 회귀 기법; 기울기 제공 | | **Spearman 순위 상관계수(Spearman rank correlation coefficient)**: Pearson 상관계수의 비모수 대안 |
 
 *표 6. 결과 변수가 연속형일 때 관측 구조에 따른 분석 방법*
 
