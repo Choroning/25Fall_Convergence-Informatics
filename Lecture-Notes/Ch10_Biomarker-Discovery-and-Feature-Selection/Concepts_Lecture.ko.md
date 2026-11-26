@@ -394,7 +394,7 @@ svm_rfe <- function(X, y, sizes) {
   path <- list()
   for (s in sizes) {
     fit <- svm(X[, keep], y, kernel = "linear", cost = 1, scale = TRUE)
-    w <- drop(t(fit$coefs) %*% fit$SV)      # 선형 SVM에서 각 유전자의 가중치
+    w <- drop(t(fit$coefs) %*% fit$SV)      # weight of each gene in the linear SVM
     keep <- keep[order(abs(w), decreasing = TRUE)][1:s]
     path[[as.character(s)]] <- keep
   }
@@ -530,7 +530,7 @@ $`\alpha = 1`$이면 LASSO이고 $`\alpha = 0`$이면 Ridge이다. 위 식은 gl
 library(glmnet)
 set.seed(21)
 m <- 100
-z <- rnorm(m)                                 # 세 유전자의 공통 요인
+z <- rnorm(m)                                 # common factor of three genes
 G <- cbind(z + rnorm(m, sd = 0.2), z + rnorm(m, sd = 0.2), z + rnorm(m, sd = 0.2),
            matrix(rnorm(m * 47), nrow = m))
 colnames(G) <- paste0("x", 1:50)
@@ -703,7 +703,7 @@ flowchart TB
 
 ```r
 library(class)
-welch_t <- function(X, y) {                # 모든 유전자의 Welch t 통계량을 한 번에 계산
+welch_t <- function(X, y) {                # Welch t statistic of every gene at once
   a <- X[y == levels(y)[2], , drop = FALSE]; b <- X[y == levels(y)[1], , drop = FALSE]
   (colMeans(a) - colMeans(b)) /
     sqrt(apply(a, 2, var) / nrow(a) + apply(b, 2, var) / nrow(b))

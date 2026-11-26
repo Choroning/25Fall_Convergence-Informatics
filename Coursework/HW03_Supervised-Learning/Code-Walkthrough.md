@@ -2,7 +2,7 @@
 
 [Repository Guide](../../README.md) | [English](Code-Walkthrough.md) | [한국어](Code-Walkthrough.ko.md)
 
-> **Last Updated:** 2026-11-17
+> **Last Updated:** 2026-11-27
 
 > **Learning Objectives:**
 > 1. Read code that performs limma feature selection, SMOTE, and PAMR training and prediction in turn inside a LOOCV loop, and explain the input and output of each step
@@ -70,13 +70,13 @@ source("Coursework/HW03_Supervised-Learning/Solution/Assignment3_Q1.R")
 
 Lines 1-31 of `Assignment3_Q1.R` serve as the example.
 
-```r
+```r wide-ok
 # @file    Assignment3_Q1.R
 # @brief   Asthma vs Control classification using LOOCV pipeline with limma feature selection, SMOTE oversampling, and PAMR classifier
 # @author  Cheolwon Park
 # @date    2025-12-05
 
-## 0. 환경 설정 및 패키지 로드
+## 0. Set up the environment and load packages
 setRepositories(ind = 1:7)
 req_pkgs <- c("caret", "limma", "smotefamily", "pamr", "BiocManager")
 for (p in req_pkgs) {
@@ -95,7 +95,7 @@ for (p in req_pkgs) {
 }
 
 
-## 1. 작업 경로 설정
+## 1. Set the working directory
 WORK_DIR <- file.path(dirname(sys.frame(1)$ofile %||% "."), "../data")
 if (dir.exists(WORK_DIR)) {
   setwd(WORK_DIR)
@@ -119,8 +119,8 @@ if (dir.exists(WORK_DIR)) {
 
 ### 3.1 Labels and Feature Matrix
 
-```r
-## 2. 데이터 로드 및 전처리
+```r wide-ok
+## 2. Load and preprocess the data
 if (file.exists("Data1.tsv")) {
   data1 <- read.delim("Data1.tsv",
                       header = TRUE,
@@ -130,28 +130,28 @@ if (file.exists("Data1.tsv")) {
   stop("Error: 'Data1.tsv' 파일을 찾을 수 없습니다.")
 }
 
-## 2-1. Binary Label 생성 (Asthma vs Control)
+## 2-1. Create the binary label (Asthma vs Control)
 sample_id <- data1[, 1]
 
 labels <- ifelse(grepl("Asthma", sample_id, ignore.case = TRUE),
                  "Asthma", "Control")
 y <- factor(labels, levels = c("Control", "Asthma"))
 
-## 2-2. Feature Matrix 변환
+## 2-2. Convert to a feature matrix
 X_raw <- data1[, -1, drop = FALSE]
 X <- data.matrix(X_raw)
 
-## 2-3. NA / Inf 처리
+## 2-3. Handle NA / Inf
 X[is.na(X)] <- 0
 X[!is.finite(X)] <- 0
 
-## 2-4. NZV 제거
+## 2-4. Remove NZV
 nzv_idx <- caret::nearZeroVar(X)
 if (length(nzv_idx) > 0) {
   X <- X[, -nzv_idx, drop = FALSE]
 }
 
-## 정보 (마지막에 출력용)
+## Info (for the final printout)
 n_samples  <- nrow(X)
 n_features <- ncol(X)
 class_table <- table(y)
@@ -171,7 +171,7 @@ run_pamr_loocv <- function(X, y) {
   set.seed(2025)
 
   for (i in 1:n) {
-    ## 3-1. Train / Test 분리
+    ## 3-1. Split into Train / Test
     train_idx <- setdiff(1:n, i)
     test_idx  <- i
 
@@ -185,7 +185,7 @@ run_pamr_loocv <- function(X, y) {
 ### 3.3 limma Feature Selection
 
 ```r
-    ## 3-2. limma 기반 Feature Selection (Train set only)
+    ## 3-2. limma-based Feature Selection (Train set only)
     if (length(unique(y_train_curr)) < 2) {
       top_features <- colnames(X_train_curr)
     } else {
@@ -215,7 +215,7 @@ run_pamr_loocv <- function(X, y) {
 ### 3.4 SMOTE
 
 ```r
-    ## 3-3. SMOTE로 클래스 불균형 보정
+    ## 3-3. Correct the class imbalance with SMOTE
     train_df <- as.data.frame(X_train_sel)
     train_df$class <- y_train_curr
 
@@ -237,7 +237,7 @@ run_pamr_loocv <- function(X, y) {
 ### 3.5 PAMR Training and Prediction
 
 ```r
-    ## 3-4. PAMR 학습
+    ## 3-4. Train PAMR
     pam_data <- list(
       x = t(X_train_final),
       y = y_train_smote,
@@ -248,7 +248,7 @@ run_pamr_loocv <- function(X, y) {
       pam_fit <- pamr::pamr.train(pam_data, threshold = NULL)
     })
 
-    ## threshold 벡터의 마지막 값 사용
+    ## use the last value of the threshold vector
     best_threshold <- pam_fit$threshold[length(pam_fit$threshold)]
 
     pred_i <- pamr::pamr.predict(
@@ -273,7 +273,7 @@ run_pamr_loocv <- function(X, y) {
 ### 3.6 Collecting and Printing the Results
 
 ```r
-## 5. 결과 정리 및 한 번에 출력
+## 5. Summarize the results and print them at once
 result_df <- data.frame(
   SampleID  = sample_id,
   Actual    = as.character(y),
@@ -312,21 +312,21 @@ Truth     Asthma Control
 ## 4. Assignment3_Q2-1.R: Three Two-Dimensional Visualizations
 
 ```r
-## 2. 데이터 불러오기
+## 2. Load the data
 data <- read.delim("Data2.tsv",
                    header = TRUE,
                    sep = "\t",
                    check.names = FALSE)
 
 
-## 3. 라벨 / 피처 분리
+## 3. Separate labels / features
 data$Disease <- factor(data$Disease)  # "COVID19", "Healthy"
 
 feature_cols <- setdiff(colnames(data), "Disease")
 X <- as.matrix(data[, feature_cols])
 
 
-## 4. 표준화
+## 4. Standardization
 X_scaled <- scale(X)
 
 ## ------------------------------------------------
@@ -369,12 +369,12 @@ umap_out <- umap(X_scaled, config = umap_config)
 - Each of the three results is drawn as a ggplot scatter plot, and `theme(plot.title = element_text(hjust = 0.5))` centers the title.
 
 ```r
-## 하나의 플롯에서 legend 추출
+## Extract the legend from one plot
 legend_b <- cowplot::get_legend(
   p_pca + theme(legend.position = "right")
 )
 
-## 각 플롯에서는 legend 제거
+## Remove the legend from each plot
 p_pca_nl  <- p_pca  + theme(legend.position = "none")
 p_tsne_nl <- p_tsne + theme(legend.position = "none")
 p_umap_nl <- p_umap + theme(legend.position = "none")
@@ -410,8 +410,8 @@ cowplot's `get_legend()` extracts only the legend from one plot. After the legen
 ### 5.1 Cross-Validation Setup
 
 ```r
-## 3. 라벨 / 피처 준비
-## Disease: Healthy / COVID19 (양성 클래스는 COVID19)
+## 3. Prepare labels / features
+## Disease: Healthy / COVID19 (the positive class is COVID19)
 data$Disease <- factor(data$Disease,
                        levels = c("Healthy", "COVID19"))
 
@@ -421,7 +421,7 @@ df <- data[, c(feature_cols, "Disease")]
 str(df)
 
 
-## 4. 교차검증 설정 (Accuracy)
+## 4. Cross-validation setup (Accuracy)
 set.seed(2025)
 
 ctrl_acc <- trainControl(
@@ -457,7 +457,7 @@ model_list$Logistic <- fit_glm
 All models are trained with `train()` calls of the same form. `Disease ~ .` is a formula using all the remaining columns as explanatory variables, `method` selects the model, and `preProcess = c("center", "scale")` standardizes with the mean and standard deviation computed from the training data of each validation iteration. Arguments unknown to `train()`, such as `family = binomial`, are passed to the internal model function (`glm()`). The `set.seed(2025)` before each call makes all models use the same cross-validation splits, which makes the comparison fair.
 
 ```r
-## 5-4. k-NN (k-최근접이웃)
+## 5-4. k-NN (k-nearest neighbors)
 set.seed(2025)
 fit_knn <- train(
   Disease ~ .,
@@ -478,7 +478,7 @@ fit_nb <- train(
   method = "nb",
   preProcess = c("center", "scale"),
   trControl = ctrl_acc,
-  tuneLength = 5,          # usekernel, fL, adjust 등을 자동 튜닝
+  tuneLength = 5,          # usekernel, fL, adjust, etc. are tuned automatically
   metric = "Accuracy"
 )
 model_list$NaiveBayes <- fit_nb
@@ -522,8 +522,8 @@ Random Forest varies `mtry` (the number of variables considered at each split) f
 
 ### 5.3 Best Accuracy of Each Model
 
-```r
-## 6. 모델별 최고 Accuracy 정리
+```r wide-ok
+## 6. Best Accuracy per model
 get_best_acc <- function(fit) {
   res <- fit$results
   idx <- which.max(res$Accuracy)
@@ -537,14 +537,14 @@ result_table <- data.frame(
   BestAccuracy = as.numeric(best_acc)
 )
 
-## Accuracy 내림차순 정렬
+## Sort by Accuracy in descending order
 result_table <- result_table[order(-result_table$BestAccuracy), ]
 
 cat("\n=== 모델별 최고 CV Accuracy (내림차순 정렬) ===\n")
 print(result_table, row.names = FALSE)
 
 
-## 7. 가장 좋은 모델 객체 확인
+## 7. Check the best model object
 best_model_name <- result_table$Model[1]
 cat("\nAccuracy 기준 최적 모델:", best_model_name, "\n")
 
@@ -554,7 +554,7 @@ print(best_model)
 
 `fit$results` is a data frame holding the mean cross-validated accuracy for each parameter candidate, and `which.max()` extracts the largest value. `sapply()` applies this to all models to make a named vector, and `order(-...)` sorts it in decreasing order. Several warnings are printed during the run, but the result is as follows.
 
-```text
+```text wide-ok
 === 모델별 최고 CV Accuracy (내림차순 정렬) ===
         Model BestAccuracy
    NaiveBayes    0.9305892
@@ -581,28 +581,28 @@ The final `print(best_model)` prints the results of Naive Bayes for each paramet
 `Assignment3_Q2-3.R` has the same structure as `Assignment3_Q2-2.R` and differs in only three places.
 
 ```r
-## 3. 라벨 / 피처 준비
-## 양성 클래스(positive)를 COVID19로 두기 위해 레벨 순서를 이렇게 설정
+## 3. Prepare labels / features
+## Set the level order this way so that the positive class is COVID19
 data$Disease <- factor(data$Disease,
                        levels = c("COVID19", "Healthy"))
 ```
 
 ```r
-## 4. 교차검증 설정 (Sensitivity)
+## 4. Cross-validation setup (Sensitivity)
 set.seed(2025)
 
 ctrl_sens <- trainControl(
   method = "repeatedcv",
   number = 10,
   repeats = 3,
-  classProbs = TRUE,          # 확률 필요
-  summaryFunction = twoClassSummary,  # ROC, Sens, Spec 계산
+  classProbs = TRUE,          # probabilities needed
+  summaryFunction = twoClassSummary,  # compute ROC, Sens, Spec
   savePredictions = "final"
 )
 ```
 
 ```r
-## 6. 모델별 최고 Sensitivity 정리
+## 6. Best Sensitivity per model
 
 get_best_sens <- function(fit) {
   res <- fit$results
@@ -614,7 +614,7 @@ get_best_sens <- function(fit) {
 - `summaryFunction = twoClassSummary` computes the area under the ROC curve (`ROC`), sensitivity (`Sens`), and specificity (`Spec`) instead of accuracy, and since it needs class probabilities, it is used together with `classProbs = TRUE`.
 - In the nine `train()` calls, `metric = "Sens"` chooses the parameter with the highest sensitivity, and the summary function also extracts the maximum from `res$Sens`.
 
-```text
+```text wide-ok
 === 모델별 최고 CV Sensitivity (내림차순 정렬) ===
         Model BestSensitivity
           GBM       0.9106667
@@ -639,7 +639,7 @@ Sensitivity 기준 최적 모델: GBM
 ### 7.1 Data, Number of Matches, and Distances
 
 ```r
-## 2. 데이터 불러오기
+## 2. Load the data
 db    <- read.csv("Data3_DNA_Database.csv",
                   header = TRUE,
                   stringsAsFactors = FALSE)
@@ -647,7 +647,7 @@ query <- read.csv("Data3_DNA_Query.csv",
                   header = TRUE,
                   stringsAsFactors = FALSE)
 
-## Subject: 개체 ID, DNA_1 ~ DNA_1000: DNA 마커라고 가정
+## Subject: individual ID, DNA_1 ~ DNA_1000: assumed to be DNA markers
 feature_cols <- grep("^DNA_", colnames(db), value = TRUE)
 
 X_db <- as.matrix(db[, feature_cols])
@@ -657,10 +657,10 @@ n_db <- nrow(X_db)
 p    <- ncol(X_db)
 
 
-## 3. 쿼리 샘플과의 유사도 계산
-##  - Matches: 완전히 동일한 DNA 마커 개수
-##  - Hamming: 서로 다른 마커 개수 (p - Matches)
-##  - Euclidean: 유클리드 거리 (참고용)
+## 3. Compute the similarity to the query sample
+##  - Matches: number of identical DNA markers
+##  - Hamming: number of differing markers (p - Matches)
+##  - Euclidean: Euclidean distance (for reference)
 same_mat <- X_db == matrix(rep(x_q, each = n_db),
                            nrow = n_db)
 
@@ -687,12 +687,12 @@ score_df <- data.frame(
 ### 7.2 Identifying the Candidates and Printing the Summary
 
 ```r
-## 4. 최적 후보(연쇄살인범) 및 2등 후보 식별
-## Hamming 거리가 작을수록, Matches가 클수록 쿼리와 유사
-best_idx       <- which.min(score_df$Hamming)  # Hamming 기준 최솟값
+## 4. Identify the best candidate (the serial killer) and the runner-up
+## The smaller the Hamming distance and the larger Matches, the more similar to the query
+best_idx       <- which.min(score_df$Hamming)  # minimum by Hamming
 best_subject   <- score_df$Subject[best_idx]
 
-## 두 번째로 가까운 후보
+## Second closest candidate
 hamming_order  <- order(score_df$Hamming, score_df$Euclid)
 second_idx     <- hamming_order[2]
 second_subject <- score_df$Subject[second_idx]
@@ -700,7 +700,7 @@ second_subject <- score_df$Subject[second_idx]
 score_df$IsBest   <- score_df$Subject == best_subject
 score_df$IsSecond <- score_df$Subject == second_subject
 
-## 요약 통계
+## Summary statistics
 mean_matches <- mean(score_df$Matches)
 sd_matches   <- sd(score_df$Matches)
 
@@ -710,7 +710,7 @@ sd_hamming   <- sd(score_df$Hamming)
 
 `which.min()` returns the row number with the smallest Hamming distance. The second candidate is the second element of `order()` sorted by Hamming distance and, for ties, by Euclidean distance. After computing logical columns marking the two candidates and the means and standard deviations of the number of matches and the Hamming distance, the script prints the summary with `cat(sprintf(...))`.
 
-```text
+```text wide-ok
 - Matches with Query:
   * Mean matches:  373.48
   * SD of matches: 19.42

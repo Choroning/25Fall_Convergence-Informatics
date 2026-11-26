@@ -63,13 +63,13 @@
 
 ```plaintext
 25Fall_Convergence-Informatics
-├── Lecture-Notes               강의자료 장별 강의 노트와 보충 단원
-├── Coursework                  과제의 문제와 풀이, 실습 코드
-├── images                      강의 노트와 과제 해설의 그림
-├── Course-Information.ko.md    수업 운영 정보
+├── Lecture-Notes               Lecture notes by slide chapter and supplementary units
+├── Coursework                  Assignment problems and solutions, lab code
+├── images                      Figures of the lecture notes and assignment explanations
+├── Course-Information.ko.md    Course operations
 ├── Course-Information.md
-├── LICENSE                     문서 라이선스 (CC BY-NC-SA 4.0)
-├── LICENSE-CODE                코드 라이선스 (PolyForm Noncommercial 1.0.0)
+├── LICENSE                     Documentation license (CC BY-NC-SA 4.0)
+├── LICENSE-CODE                Code license (PolyForm Noncommercial 1.0.0)
 ├── README.ko.md
 └── README.md
 ```

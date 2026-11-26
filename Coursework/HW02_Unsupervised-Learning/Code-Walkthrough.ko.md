@@ -2,7 +2,7 @@
 
 [레포지토리 안내](../../README.ko.md) | [English](Code-Walkthrough.md) | [한국어](Code-Walkthrough.ko.md)
 
-> **최종 수정일:** 2026-11-26
+> **최종 수정일:** 2026-11-27
 
 > **학습 목표:**
 > 1. 패키지 목록을 반복문으로 설치하고 불러오며, 스크립트의 위치를 기준으로 데이터 폴더를 찾을 수 있다
@@ -78,7 +78,7 @@ source("Coursework/HW02_Unsupervised-Learning/Solution/Assignment2_Q1.R")
 # @author  Cheolwon Park
 # @date    2025-12-01
 
-# 1. 라이브러리 로드
+# 1. Load libraries
 setRepositories(ind = 1:7)
 pkg_list <- c("ggplot2", "gridExtra", "grid", "Rtsne", "umap", "stringr")
 for (p in pkg_list) {
@@ -94,8 +94,8 @@ for (p in pkg_list) {
 
 ### 2.2 작업 경로 설정
 
-```r
-# 2. 작업 경로 설정
+```r wide-ok
+# 2. Set the working directory
 WORK_DIR <- file.path(dirname(sys.frame(1)$ofile %||% "."), "../data")
 if(dir.exists(WORK_DIR)) setwd(WORK_DIR) else warning("경로를 확인하세요.")
 ```
@@ -129,7 +129,7 @@ get_legend <- function(myggplot){
 ```r
 create_plot <- function(df, x_col, y_col, group_col, title_txt, x_lab, y_lab) {
 
-  # Convex Hull 좌표 계산
+  # Compute the convex hull coordinates
   hull_data <- do.call(rbind, lapply(split(df, df[[group_col]]), function(d) {
     d[chull(d[[x_col]], d[[y_col]]), ]
   }))
@@ -139,7 +139,7 @@ create_plot <- function(df, x_col, y_col, group_col, title_txt, x_lab, y_lab) {
     geom_point(size = 1.2, alpha = 0.8) +
     labs(title = title_txt, x = x_lab, y = y_lab) +
     theme_bw() +
-    theme(legend.position = "bottom", # 추출용 (나중에 숨김)
+    theme(legend.position = "bottom", # for extraction (hidden later)
           legend.title = element_blank(),
           plot.title = element_text(size = 11, face = "bold"))
 }
@@ -157,17 +157,17 @@ analyze_dataset <- function(file_name, label_prefix) {
 
   if(!file.exists(file_name)) return(NULL)
 
-  # 데이터 로드
+  # Load the data
   raw_df <- read.delim(file_name, header = TRUE, row.names = 1)
 
-  # 스케일링 수행
+  # Scale the data
   mx_scaled <- scale(raw_df)
 
-  # 중복 제거 (t-SNE 오류 방지)
+  # Remove duplicates (avoids a t-SNE error)
   unique_idx <- !duplicated(mx_scaled)
   mx_scaled <- mx_scaled[unique_idx, ]
 
-  # 라벨 파싱
+  # Parse the labels
   y_labels <- stringr::str_remove(rownames(mx_scaled), "[_0-9]+$")
 ```
 
@@ -225,33 +225,33 @@ umap 패키지의 `umap()`은 설정을 인자로 바꿀 수 있으며, 여기�
 
 ### 3.4 실행과 배치
 
-```r
-# 파일명 정의
+```r wide-ok
+# Define the file names
 file_orig <- "1.Homework2_OriginalData.tsv"
 file_filt <- "2.Homework2_FilteredData.tsv"
 
-# 분석 실행
+# Run the analysis
 plots_orig <- analyze_dataset(file_orig, "Original")
 plots_filt <- analyze_dataset(file_filt, "Filtered")
 
 if(!is.null(plots_orig) & !is.null(plots_filt)) {
 
-  # 범례 추출 (Original PCA 그래프에서 하나 가져옴)
+  # Extract the legend (taken from the Original PCA plot)
   shared_leg <- get_legend(plots_orig[[1]])
 
-  # 모든 개별 그래프에서 범례 숨기기
+  # Hide the legend in every individual plot
   pl_list <- c(plots_orig, plots_filt)
   pl_list_noleg <- lapply(pl_list, function(p) p + theme(legend.position = "none"))
 
-  # 그리드 배치 (2행 3열)
-  # 상단: Original Data (PCA, t-SNE, UMAP)
-  # 하단: Filtered Data (PCA, t-SNE, UMAP)
-  # 최하단: 공통 범례
+  # Grid layout (2 rows, 3 columns)
+  # Top: Original Data (PCA, t-SNE, UMAP)
+  # Bottom: Filtered Data (PCA, t-SNE, UMAP)
+  # Bottom row: shared legend
 
   grid.arrange(arrangeGrob(grobs = pl_list_noleg, nrow = 2, ncol = 3),
                shared_leg,
                nrow = 2,
-               heights = c(9, 1), # 그래프 영역 9 : 범례 영역 1 비율
+               heights = c(9, 1), # ratio of plot area 9 : legend area 1
                top = textGrob("Dimension Reduction Result",
                               gp = gpar(fontsize = 14, fontface = "bold")))
 
@@ -274,10 +274,10 @@ if(!is.null(plots_orig) & !is.null(plots_filt)) {
 ```r
   raw_dataset <- read.delim(target_file, header = TRUE, row.names = 1)
 
-  # [Standardization] 데이터 표준화 (Z-score)
+  # [Standardization] Standardize the data (Z-score)
   z_score_matrix <- scale(raw_dataset)
 
-  # 4. 계층적 군집 분석 (Hierarchical Clustering)
+  # 4. Hierarchical clustering
   # Distance: Euclidean, Linkage: Ward.D2
   dist_metric <- dist(z_score_matrix, method = "euclidean")
   hierarchical_model <- hclust(dist_metric, method = "ward.D2")
@@ -289,18 +289,18 @@ if(!is.null(plots_orig) & !is.null(plots_filt)) {
 
 ```r
   viz_tree <- fviz_dend(hierarchical_model, k = 4,
-                        horiz = TRUE,              # [핵심] 가로형 배치
-                        cex = 0.7,                 # 폰트 크기
-                        k_colors = "jco",          # JCO 출판용 색상
-                        color_labels_by_k = TRUE,  # 그룹별 라벨 색상
-                        rect = TRUE,               # 그룹 박스 표시
+                        horiz = TRUE,              # [Key] horizontal layout
+                        cex = 0.7,                 # font size
+                        k_colors = "jco",          # JCO publication colors
+                        color_labels_by_k = TRUE,  # label colors by group
+                        rect = TRUE,               # show group boxes
                         rect_border = "jco",
                         rect_fill = TRUE,
                         main = "Hierarchical Clustering Dendrogram (Ward's Method)",
                         xlab = "Samples", ylab = "Height (Euclidean Distance)") +
     theme(
-      plot.title = element_text(face = "bold", size = 14, hjust = 0.5), # 제목: 볼드, 중앙 정렬
-      plot.margin = margin(t = 10, r = 10, b = 10, l = 10) # 가로형이므로 기본 여백만 있어도 충분
+      plot.title = element_text(face = "bold", size = 14, hjust = 0.5), # title: bold, centered
+      plot.margin = margin(t = 10, r = 10, b = 10, l = 10) # default margins are enough for the horizontal layout
     )
 
   print(viz_tree)
@@ -315,16 +315,16 @@ factoextra의 `fviz_dend()`는 `hclust` 결과를 ggplot2 덴드로그램으로 
 ## 5. Assignment2_Q4.R: Silhouette 그림
 
 ```r
-  # [Standardization] 스케일링 수행 (필수 과정)
-  # K-means는 거리 기반 알고리즘이므로 변수 간 스케일을 맞춰야 함
+  # [Standardization] Perform the scaling (required step)
+  # K-means is a distance-based algorithm, so the variables must be on the same scale
   std_data <- scale(raw_df)
 
   # -------------------------------------------------------
-  # 4. 실루엣 스코어 플롯 그리기 (k = 2 ~ 10)
+  # 4. Draw the silhouette score plot (k = 2 ~ 10)
   # -------------------------------------------------------
-  # fviz_nbclust 함수: 최적의 군집 수를 찾기 위한 시각화 도구
-  # - method = "silhouette": 실루엣 계수 사용
-  # - k.max = 10: 2부터 10까지 탐색
+  # fviz_nbclust function: a visualization tool for finding the optimal number of clusters
+  # - method = "silhouette": use the silhouette coefficient
+  # - k.max = 10: search from 2 to 10
 
   viz_silhouette <- fviz_nbclust(std_data, kmeans, method = "silhouette", k.max = 10) +
     labs(title = "Q4. Silhouette Score for K-means Clustering",
@@ -337,7 +337,7 @@ factoextra의 `fviz_dend()`는 `hclust` 결과를 ggplot2 덴드로그램으로 
       axis.title = element_text(face = "bold")
     )
 
-  # 5. 결과 출력
+  # 5. Print the results
   print(viz_silhouette)
 ```
 
@@ -355,19 +355,19 @@ factoextra의 `fviz_dend()`는 `hclust` 결과를 ggplot2 덴드로그램으로 
 ### 6.1 데이터 준비
 
 ```r
-  # 엑셀 파일 읽기 (첫 번째 시트 로드)
+  # Read the Excel file (load the first sheet)
   data_df <- read_excel(filename, sheet = 1)
 
-  # 데이터 전처리
-  # 필요한 컬럼만 선택 (Date, ProfWeight_Kg, StudentWeight_Kg)
-  # 엑셀에서 읽어올 때 컬럼명이 정확한지 확인 필요
+  # Preprocess the data
+  # Select only the needed columns (Date, ProfWeight_Kg, StudentWeight_Kg)
+  # check that the column names are exact when read from Excel
   df_model <- data_df[, c("Date", "ProfWeight_Kg", "StudentWeight_Kg")]
 
-  # 결측치 제거
+  # Remove missing values
   df_model <- na.omit(df_model)
 
-  # 날짜 형식 변환 및 경과일(Days) 계산
-  # readxl은 날짜를 POSIXct로 읽어오므로 Date로 변환
+  # Convert the date format and compute the elapsed days (Days)
+  # readxl reads dates as POSIXct, so convert to Date
   df_model$Date <- as.Date(df_model$Date)
   start_date <- min(df_model$Date)
   df_model$Days <- as.numeric(df_model$Date - start_date)
@@ -380,7 +380,7 @@ factoextra의 `fviz_dend()`는 `hclust` 결과를 ggplot2 덴드로그램으로 
 ### 6.2 모델 적합과 결과 출력
 
 ```r
-  # 4. 예측 모델링 (Simple Linear Regression)
+  # 4. Predictive modeling (Simple Linear Regression)
 
   # (1) Professor Model
   model_prof <- lm(ProfWeight_Kg ~ Days, data = df_model)
@@ -390,10 +390,10 @@ factoextra의 `fviz_dend()`는 `hclust` 결과를 ggplot2 덴드로그램으로 
   model_stud <- lm(StudentWeight_Kg ~ Days, data = df_model)
   summary_stud <- summary(model_stud)
 
-  # 결과 출력
+  # Print the results
   cat("==================================================\n")
   cat("[Established Model for Professor]\n")
-  # 계수(Intercept, Slope) 출력
+  # Print the coefficients (Intercept, Slope)
   print(coef(summary_prof))
   cat("R-squared:", summary_prof$r.squared, "\n\n")
 ```
@@ -474,14 +474,14 @@ Conclusion: The Student had a faster weight loss effect.
 두 스크립트는 문제 6과 같은 방식으로 데이터를 준비하고 두 모델을 다시 적합한 뒤, 목표 날짜만 바꾸어 예측한다. `Assignment2_Q7.R`의 28\~37행은 다음과 같다.
 
 ```r
-  # 4. 2021-11-22 시점 예측
+  # 4. Prediction at 2021-11-22
   target_date <- as.Date("2021-11-22")
   days_elapsed <- as.numeric(target_date - start_date)
 
-  # 예측을 위한 데이터프레임 생성
+  # Create a data frame for prediction
   new_data <- data.frame(Days = days_elapsed)
 
-  # predict 함수 사용
+  # Use the predict function
   pred_prof <- predict(model_prof, newdata = new_data)
   pred_stud <- predict(model_stud, newdata = new_data)
 ```
@@ -522,15 +522,15 @@ Student's Predicted Weight:   2.81 kg
 
 ```r
   p <- ggplot(plot_data, aes(x = Days, y = Weight, color = Group)) +
-    # (1) 산점도 (Scatter Plot) - 실제 데이터 포인트
+    # (1) Scatter Plot - actual data points
     geom_point(size = 2.5, alpha = 0.7) +
 
-    # (2) 회귀 모델 (Fitted Models) - 선형 회귀선 (Linear Regression Line)
-    # method = "lm": 선형 회귀 모델 사용
-    # se = FALSE: 신뢰구간 표시 안 함 (선만 깔끔하게 보기 위해, 필요시 TRUE로 변경)
+    # (2) Fitted Models - Linear Regression Line
+    # method = "lm": use a linear regression model
+    # se = FALSE: do not show the confidence interval (for a clean line only; change to TRUE if needed)
     geom_smooth(method = "lm", se = FALSE, size = 1.2) +
 
-    # (3) 스타일 및 레이블 설정
+    # (3) Style and label settings
     scale_color_manual(values = c("Professor" = "red", "Student" = "blue")) +
     labs(title = "Weight Loss Trajectory: Professor vs. Student",
          subtitle = "Scatter Plot with Linear Regression Models",

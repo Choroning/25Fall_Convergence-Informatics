@@ -761,7 +761,7 @@ A C G T
 
 ```r
 revcomp <- function(s) {
-  comp <- chartr("ACGT", "TGCA", s)          # A와 T, C와 G를 서로 바꿈
+  comp <- chartr("ACGT", "TGCA", s)          # swap A with T and C with G
   paste(rev(strsplit(comp, "")[[1]]), collapse = "")
 }
 revcomp(dna)

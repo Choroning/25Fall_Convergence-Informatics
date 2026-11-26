@@ -141,8 +141,8 @@ RStudio는 **Help > Cheatsheets**를 통해 접근할 수 있는 내장 참조 �
 ### 1.7 R 작업 공간 (Workspace)
 
 ```r
-getwd()       # 현재 작업 디렉토리 확인
-setwd("path") # 작업 디렉토리 변경 (주의: "\"는 이스케이프 문자)
+getwd()       # Check current working directory
+setwd("path") # Change working directory (Warning: "\" is escape character)
 ```
 
 `getwd()`는 현재 작업 디렉토리를 반환하고, `setwd()`는 작업 디렉토리를 바꾼다. R 문자열에서 `\`는 이스케이프 문자이므로 Windows 경로는 `"C:/data"`나 `"C:\\data"`처럼 `/` 또는 `\\`로 구분해야 한다.
@@ -208,9 +208,9 @@ R의 객체 이름은 문자 또는 점(`.`)으로 시작하고, 문자, 숫자,
 ### 2.2 유형 확인 및 검사
 
 ```r
-class(x)   # 변수의 데이터 유형 확인
-str(x)     # 객체의 내부 구조 확인
-ls()       # 환경에 로드된 모든 변수 나열
+class(x)   # Check the data type of a variable
+str(x)     # View the internal structure of an object
+ls()       # List all loaded variables in the environment
 ```
 
 ### 2.3 데이터 프레임 (Data Frame)
@@ -224,9 +224,9 @@ ls()       # 환경에 로드된 모든 변수 나열
 데이터 프레임은 수치형, 문자형, 논리형, 팩터 등 **서로 다른 데이터 유형을 하나의 객체에 결합**할 수 있기 때문에 특히 유용하다. 열마다 다른 유형을 가질 수 있고, 한 열 안의 값은 같은 유형이다. 이것이 모든 원소가 같은 유형이어야 하는 행렬(Matrix)과의 핵심적인 차이점이다.
 
 ```r
-# 데이터 프레임 vs. 행렬
-# - 데이터 프레임은 열/행 이름과 혼합 데이터 유형(팩터 포함)을 지원
-# - 행렬은 모든 원소가 같은 유형이어야 함
+# Data frames vs. matrices
+# - Data frames support column/row names and mixed data types (including factors)
+# - Matrices require all elements to be the same type
 ```
 
 `data()`를 사용하여 내장 데이터셋을 로드하고(예: `data(iris)`), `head()`, `tail()`, `dim()`, `nrow()`, `ncol()`을 사용하여 빠르게 검사할 수 있다.
@@ -512,9 +512,9 @@ str(d2)
 ### 3.1 할당 연산자
 
 ```r
-x <- 10           # 권장되는 할당 연산자
-y <- "Hello"       # 문자열 할당
-z <- TRUE          # 논리값 할당
+x <- 10           # Preferred assignment operator
+y <- "Hello"       # Assign a character string
+z <- TRUE          # Assign a logical value
 ```
 
 `=`도 할당에 사용할 수 있지만, 동등 비교 연산자 `==`와의 혼동을 피하기 위해 `<-`를 사용하는 것이 **강력히 권장된다**.
@@ -522,8 +522,8 @@ z <- TRUE          # 논리값 할당
 ### 3.2 변수 제거
 
 ```r
-rm(x)              # 단일 변수 제거
-rm(list = ls())    # 환경에서 모든 변수 제거
+rm(x)              # Remove a single variable
+rm(list = ls())    # Remove all variables from the environment
 ```
 
 > **핵심:** R에서 할당에는 항상 `<-`를 사용하고, `=`는 함수 인수를 지정할 때 사용한다(예: `rnorm(n = 100, mean = 0)`).
@@ -601,15 +601,15 @@ logicalVector   <- c(TRUE, TRUE, FALSE, FALSE, FALSE)
 ### 4.2 수열 생성
 
 ```r
-# 콜론 연산자 사용
+# Using the colon operator
 1:10                              # 1, 2, 3, ..., 10
 
-# seq() 사용
-seq(from = 1, to = 10)            # 1:10과 동일
+# Using seq()
+seq(from = 1, to = 10)            # Same as 1:10
 seq(from = 1, to = 10, by = 2)    # 1, 3, 5, 7, 9
-seq(1, 10, length = 5)            # 균등 간격의 5개 값
+seq(1, 10, length = 5)            # 5 evenly spaced values
 
-# rep() 사용
+# Using rep()
 rep(1, 3)                         # 1, 1, 1
 rep(c("a", "b"), 5)               # "a","b","a","b",...
 rep(1:3, each = 10)               # 1,1,...,2,2,...,3,3,...
@@ -618,16 +618,16 @@ rep(1:3, each = 10)               # 1,1,...,2,2,...,3,3,...
 ### 4.3 난수 생성
 
 ```r
-rnorm(n = 100, mean = 180, sd = 1)  # N(180, 1)에서 100개의 난수 값
+rnorm(n = 100, mean = 180, sd = 1)  # 100 random values from N(180, 1)
 ```
 
 ### 4.4 벡터 인덱싱
 
 ```r
 x <- c(10, 20, 30, 40, 50)
-x[1]          # 첫 번째 원소: 10
-x[c(1, 3)]   # 첫 번째와 세 번째 원소: 10, 30
-x[-2]         # 두 번째를 제외한 모든 원소: 10, 30, 40, 50
+x[1]          # First element: 10
+x[c(1, 3)]   # First and third elements: 10, 30
+x[-2]         # All except the second: 10, 30, 40, 50
 ```
 
 R의 인덱스는 1부터 시작하며, 음수 인덱스는 해당 위치의 원소를 제외한다.
@@ -640,16 +640,16 @@ R의 인덱스는 1부터 시작하며, 음수 인덱스는 해당 위치의 원
 a <- c(1, 2, 3)
 b <- c(4, 5, 6)
 
-a + b    # 원소별 덧셈: 5, 7, 9
-a * b    # 원소별 곱셈: 4, 10, 18
-a > 2    # 원소별 비교: FALSE, FALSE, TRUE
+a + b    # Element-wise addition: 5, 7, 9
+a * b    # Element-wise multiplication: 4, 10, 18
+a > 2    # Element-wise comparison: FALSE, FALSE, TRUE
 ```
 
 ### 4.6 벡터 결합
 
 ```r
-cbind(a, b)   # 열 방향으로 결합 (나란히)
-rbind(a, b)   # 행 방향으로 결합 (쌓기)
+cbind(a, b)   # Combine column-wise (side by side)
+rbind(a, b)   # Combine row-wise (stacked)
 ```
 
 길이가 3인 `a`와 `b`를 결합하면 `cbind(a, b)`는 3행 2열 행렬을, `rbind(a, b)`는 2행 3열 행렬을 만든다.
@@ -857,52 +857,52 @@ rank(dose)
 ### 5.1 출력 함수
 
 ```r
-print("Hello World")     # 단일 객체의 서식화된 출력
-cat("Value:", x, "\n")   # 연결된 일반 텍스트 출력
+print("Hello World")     # Formatted output of a single object
+cat("Value:", x, "\n")   # Concatenated plain-text output
 ```
 
 ### 5.2 요약 통계 함수
 
 ```r
-sum(1:100)       # 합: 5050
-mean(x)          # 산술 평균
-median(x)        # 중앙값
-sd(x)            # 표준편차
-length(x)        # 원소 개수
-min(x)           # 최솟값
-max(x)           # 최댓값
-summary(x)       # 최솟값, Q1, 중앙값, 평균, Q3, 최댓값
+sum(1:100)       # Sum: 5050
+mean(x)          # Arithmetic mean
+median(x)        # Median
+sd(x)            # Standard deviation
+length(x)        # Number of elements
+min(x)           # Minimum value
+max(x)           # Maximum value
+summary(x)       # Min, Q1, Median, Mean, Q3, Max
 ```
 
 ### 5.3 데이터 검사 함수
 
 ```r
-head(iris)          # 처음 6행 (기본값)
-tail(iris)          # 마지막 6행 (기본값)
-head(iris, n = 10)  # 처음 10행
-dim(iris)           # 차원 (행, 열)
-nrow(iris)          # 행 수
-ncol(iris)          # 열 수
-fix(iris)           # 스프레드시트 형태의 편집기에서 데이터 열기
+head(iris)          # First 6 rows (default)
+tail(iris)          # Last 6 rows (default)
+head(iris, n = 10)  # First 10 rows
+dim(iris)           # Dimensions (rows, columns)
+nrow(iris)          # Number of rows
+ncol(iris)          # Number of columns
+fix(iris)           # Open data in spreadsheet-like editor
 ```
 
 ### 5.4 행렬과 팩터 함수
 
 ```r
-# 행렬 생성
+# Create a matrix
 A <- matrix(NA, nrow = 10, ncol = 5)
 
-# 팩터 변수 생성
+# Create a factor variable
 B <- factor(c("a", "b", "a", "b"))
-levels(B)     # 팩터 수준 확인
+levels(B)     # View factor levels
 ```
 
 ### 5.5 도움말 사용
 
 ```r
-help(sum)      # 함수의 도움말 페이지 열기
-?sum           # help()의 단축키
-help.start()   # 브라우저에서 R의 HTML 도움말 시스템 열기
+help(sum)      # Open help page for a function
+?sum           # Shortcut for help()
+help.start()   # Open R's HTML help system in a browser
 ```
 
 > **핵심:** `summary()`를 수치형 변수에 사용하면 기술 통계량을 얻을 수 있고, 팩터 변수에 사용하면 빈도수를 얻을 수 있다. 동작이 변수 유형에 따라 자동으로 달라진다.
@@ -1106,13 +1106,13 @@ blood
 ### 6.1 패키지 설치 및 로드
 
 ```r
-# 패키지 다운로드를 위한 저장소 설정
+# Set repository for downloading packages
 setRepositories()
 
-# CRAN에서 패키지 설치
+# Install a package from CRAN
 install.packages("ggplot2")
 
-# 현재 세션에 패키지 로드
+# Load a package into the current session
 library(ggplot2)
 ```
 
@@ -1126,11 +1126,11 @@ library(ggplot2)
 R은 기본적인 플로팅 함수를 제공하지만, `ggplot2`나 `ggpubr` 같은 서드파티 패키지를 사용하면 보다 고급스럽고 시각적으로 우수한 시각화가 가능하다.
 
 ```r
-# 기본 R 시각화
-hist(HeightMale)                                          # 히스토그램
-boxplot(Height ~ Gender, data = ourData, col = c("blue", "red"))  # 상자 그림
+# Basic R visualization
+hist(HeightMale)                                          # Histogram
+boxplot(Height ~ Gender, data = ourData, col = c("blue", "red"))  # Boxplot
 
-# 고급 시각화는 ggplot2 / ggpubr 패키지 필요
+# Advanced visualization requires ggplot2 / ggpubr packages
 ```
 
 > **핵심:** R의 가장 큰 강점 중 하나는 패키지 생태계이다. 새로운 함수를 작성하고 이를 **R 패키지**로 묶어 CRAN을 통해 커뮤니티에 공유할 수 있다. 패키지를 흔히 R 라이브러리라고도 부르지만, R에서 라이브러리는 엄밀히 패키지가 설치된 디렉토리를 뜻한다.

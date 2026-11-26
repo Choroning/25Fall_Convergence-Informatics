@@ -131,14 +131,14 @@
 
 ```r
 sim_cohort <- function(n, p = 500, b0 = -1.6) {
-  blk <- function(m, rho) {                     # 쌍별 상관이 rho인 m x 10 묶음
+  blk <- function(m, rho) {                     # m x 10 block with pairwise correlation rho
     z <- rnorm(m)
     sqrt(rho) * z + sqrt(1 - rho) * matrix(rnorm(m * 10), m, 10)
   }
   X <- cbind(blk(n, 0.6), blk(n, 0.6), matrix(rnorm(n * (p - 20)), n, p - 20))
   colnames(X) <- sprintf("g%03d", 1:p)
   eta <- b0 + 1.0 * X[, 1] + 0.8 * X[, 2] + 0.8 * X[, 3] - 1.5 * X[, 11]
-  y <- rbinom(n, 1, plogis(eta))               # 실제 위험에서 질병 상태를 추출
+  y <- rbinom(n, 1, plogis(eta))               # disease status drawn from the true risk
   list(X = X, y = y, risk = plogis(eta))
 }
 set.seed(314)
@@ -190,8 +190,8 @@ c(train_n = length(tr$y), train_cases = sum(tr$y),
 library(class)
 set.seed(8)
 n_pat <- 40; reps <- 3; p0 <- 200
-profile <- matrix(rnorm(n_pat * p0), n_pat)  # 환자마다 하나의 프로파일
-status <- sample(rep(0:1, each = n_pat / 2))  # 발현과 무관한 레이블
+profile <- matrix(rnorm(n_pat * p0), n_pat)  # one profile per patient
+status <- sample(rep(0:1, each = n_pat / 2))  # labels unrelated to expression
 patient <- rep(1:n_pat, each = reps)
 Xr <- profile[patient, ] + matrix(rnorm(n_pat * reps * p0, sd = 0.3), ncol = p0)
 yr <- factor(status[patient])
@@ -203,8 +203,8 @@ cv_err <- function(fold) {
   }
   wrong / length(yr)
 }
-fold_sample  <- sample(rep(1:5, length.out = length(yr)))     # 반복 표본이 여러 겹으로 흩어짐
-fold_patient <- sample(rep(1:5, length.out = n_pat))[patient]  # 한 환자는 한 겹에만 있음
+fold_sample  <- sample(rep(1:5, length.out = length(yr)))     # replicates split apart
+fold_patient <- sample(rep(1:5, length.out = n_pat))[patient]  # a patient stays in one fold
 round(c(sample_level_cv = cv_err(fold_sample), patient_level_cv = cv_err(fold_patient)), 3)
 ```
 
@@ -282,7 +282,7 @@ flowchart TD
 
 ```r
 library(glmnet)
-strat_folds <- function(y, K = 5) {            # 층화된 겹 번호
+strat_folds <- function(y, K = 5) {            # stratified fold labels
   f <- integer(length(y))
   for (cl in unique(y)) {
     idx <- which(y == cl)
@@ -370,7 +370,7 @@ $`\rho_{\text{old}}`$는 훈련 데이터의 유병률, $`\rho_{\text{new}}`$는
 
 ```r
 set.seed(21)
-im_tr <- sim_cohort(400, b0 = -3.6)           # 훈련 데이터의 드문 질병
+im_tr <- sim_cohort(400, b0 = -3.6)           # rare disease in training
 im_te <- sim_cohort(2000, b0 = -3.6)
 c(train_prev = mean(im_tr$y), test_prev = mean(im_te$y))
 w <- ifelse(im_tr$y == 1, sum(im_tr$y == 0) / sum(im_tr$y == 1), 1)
@@ -440,7 +440,7 @@ ord <- order(score, decreasing = TRUE)
 tp <- cumsum(label[ord] == 1)
 prec <- tp / seq_along(ord); rec <- tp / sum(label)
 rbind(threshold = score[ord], precision = round(prec, 3), recall = rec)
-mean(prec[label[ord] == 1])                    # 평균 정밀도
+mean(prec[label[ord] == 1])                    # average precision
 ```
 
 ```text
@@ -616,7 +616,7 @@ Elastic Net의 AUC는 0.924로, 실제 위험을 그대로 쓴 0.926과 거의 �
 ```r
 calib <- function(p, y, bins = 5) {
   g <- cut(p, quantile(p, 0:bins / bins), include.lowest = TRUE)
-  lp <- qlogis(pmin(pmax(p, 1e-6), 1 - 1e-6))  # 예측 확률의 로짓
+  lp <- qlogis(pmin(pmax(p, 1e-6), 1 - 1e-6))  # logit of the predicted probability
   cf <- coef(glm(y ~ lp, family = binomial))
   list(bins = round(rbind(mean_pred = tapply(p, g, mean), observed = tapply(y, g, mean)), 3),
        recalibration = round(c(intercept = cf[[1]], slope = cf[[2]]), 3))
@@ -750,10 +750,10 @@ SVM의 순열 중요도에서 AUC 감소가 큰 유전자는 `g003`(0.019), `g00
 
 ```r
 set.seed(1618)
-ex <- sim_cohort(1000, b0 = -1.0)             # 다른 병원: 환자 비율이 더 높음
-ex$X[, 1:10] <- ex$X[, 1:10] - 0.5             # 새 플랫폼에서 일부 유전자의 측정 오프셋
+ex <- sim_cohort(1000, b0 = -1.0)             # other centre: more cases
+ex$X[, 1:10] <- ex$X[, 1:10] - 0.5             # probe-specific offset on the new platform
 p_ex <- drop(predict(en, ex$X, s = "lambda.min", type = "response"))
-half <- rep(1:2, length.out = 1000)            # 절반은 재보정, 절반은 확인에 사용
+half <- rep(1:2, length.out = 1000)            # half 1 for recalibration, half 2 for checking
 lp <- qlogis(p_ex)
 recal <- glm(ex$y[half == 1] ~ lp[half == 1], family = binomial)
 p_re <- plogis(coef(recal)[1] + coef(recal)[2] * lp)

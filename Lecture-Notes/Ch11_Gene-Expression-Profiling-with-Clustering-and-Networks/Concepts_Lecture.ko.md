@@ -138,19 +138,19 @@ set.seed(2027)
 n_g <- 400; n_s <- 24
 subtype <- factor(rep(c("S1", "S2", "S3"), each = 8))
 module  <- rep(c("A", "B", "C", "D", "none"), c(40, 40, 30, 30, 260))
-mu <- runif(n_g, 4, 12)                       # 유전자마다의 기본 발현 수준 (log2 척도)
-f  <- rnorm(n_s)                              # 하위 유형과 무관한 표본 요인
+mu <- runif(n_g, 4, 12)                       # baseline level of each gene (log2 scale)
+f  <- rnorm(n_s)                              # sample factor unrelated to subtype
 Fm <- cbind(A = 3.0 * (subtype == "S1") + rnorm(n_s, sd = 0.5),
             B = 3.0 * (subtype == "S2") + rnorm(n_s, sd = 0.5),
             C = 2.5 * (subtype == "S3") + rnorm(n_s, sd = 0.5),
-            D = 1.2 * f)                      # 표본마다 각 모듈의 활성
-load <- runif(n_g, 0.2, 1.5)                  # 유전자가 모듈을 따르는 정도
+            D = 1.2 * f)                      # activity of each module in each sample
+load <- runif(n_g, 0.2, 1.5)                  # how strongly a gene follows its module
 L <- matrix(mu, n_g, n_s) + matrix(rnorm(n_g * n_s, sd = 0.5), n_g, n_s)
 for (m in c("A", "B", "C", "D")) {
   idx <- module == m
   L[idx, ] <- L[idx, ] + outer(load[idx], Fm[, m])
 }
-raw <- round(2^L)                             # 원래 척도의 발현 강도
+raw <- round(2^L)                             # intensity on the original scale
 dimnames(raw) <- list(sprintf("gene%03d", 1:n_g), paste0(subtype, "_", rep(1:8, 3)))
 raw[1:3, 1:5]
 ```
@@ -210,7 +210,7 @@ v <- apply(E, 1, var)
 keep <- order(v, decreasing = TRUE)[1:200]
 Ef <- E[keep, ]
 table(module[keep])
-Ez <- t(scale(t(Ef)))                         # 유전자(행)마다 z-점수
+Ez <- t(scale(t(Ef)))                         # z-score of each gene (row)
 round(c(mean = mean(Ez[1, ]), sd = sd(Ez[1, ])), 3)
 ```
 
@@ -322,12 +322,12 @@ Pearson 상관은 이상치 하나에 크게 흔들린다. 표본 하나에서 �
 3장 7절의 병합적 계층적 군집화는 거리가 가장 가까운 두 군집을 반복해서 합쳐 덴드로그램을 만든다. 이원 군집화는 이 방법을 유전자와 표본에 따로 적용한다.
 
 ```r
-d_gene <- as.dist(1 - cor(t(Ef)))            # 유전자 사이의 1 - Pearson r
+d_gene <- as.dist(1 - cor(t(Ef)))            # 1 - Pearson r between genes
 hc_gene <- hclust(d_gene, method = "average")
 cl_gene <- cutree(hc_gene, h = 0.7)
 big <- as.numeric(names(which(table(cl_gene) >= 8)))
 table(cluster = ifelse(cl_gene %in% big, cl_gene, 0), module = module[keep])
-d_samp <- as.dist(1 - cor(Ez))               # 표본 사이, 중심화한 유전자로 계산
+d_samp <- as.dist(1 - cor(Ez))               # between samples, on centered genes
 hc_samp <- hclust(d_samp, method = "average")
 table(cluster = cutree(hc_samp, k = 3), subtype)
 ```
@@ -444,7 +444,7 @@ $`s_K`$는 $`B`$개 기준 데이터에서 얻은 $`\log W_K^{*}`$의 표준편�
 
 ```r
 library(cluster)
-S <- t(Ez)                                    # 표본 24개 x 유전자 200개
+S <- t(Ez)                                    # 24 samples x 200 genes
 set.seed(3)
 ks <- 1:6
 wss <- sapply(ks, function(k) kmeans(S, centers = k, nstart = 25)$tot.withinss)
@@ -644,7 +644,7 @@ $`\beta`$를 정하는 기준으로 Zhang과 Horvath는 생물학적 동기를 �
 $`\beta`$를 키우면 적합 지수는 대체로 올라가지만 평균 연결 정도는 빠르게 줄어 네트워크가 지나치게 성겨진다. 그래서 적합 지수가 충분히 높아지는 가장 작은 $`\beta`$를 고른다. 이 장의 예에서는 적합 지수 0.8을 기준으로 삼는다.
 
 ```r
-fit_index <- function(k, nbreaks = 10) {     # log10 p(k)를 log10 k에 회귀한 부호 있는 R^2
+fit_index <- function(k, nbreaks = 10) {     # signed R^2 of log10 p(k) on log10 k
   bins <- cut(k, nbreaks)
   pk <- as.numeric(table(bins)) / length(k)
   mk <- tapply(k, bins, mean)
@@ -712,12 +712,12 @@ WGCNA는 $`1 - \text{TOM}`$에 Average 연결법의 계층적 군집화를 적�
 beta <- 10
 A <- abs(R)^beta; diag(A) <- 0
 k <- rowSums(A)
-Lsh <- A %*% A                                # 공유 이웃, sum_u a_iu a_uj
+Lsh <- A %*% A                                # shared neighbors, sum_u a_iu a_uj
 TOM <- (Lsh + A) / (outer(k, k, pmin) + 1 - A)
 diag(TOM) <- 1
 hc_tom <- hclust(as.dist(1 - TOM), method = "average")
 mod_tom <- cutree(hc_tom, h = 0.9)
-mod_tom[mod_tom %in% names(which(table(mod_tom) < 10))] <- 0   # 작은 가지는 미배정
+mod_tom[mod_tom %in% names(which(table(mod_tom) < 10))] <- 0   # small branches: unassigned
 table(found = mod_tom, true = module[keep])
 ```
 
@@ -744,9 +744,9 @@ found  A  B  C  D none
 WGCNA 소프트웨어는 모듈을 모듈 고유유전자나 모듈 안의 허브 유전자로 요약하고, 고유유전자를 이용해 모듈을 외부의 표본 형질과 관련짓는 기능을 제공한다 [7]. 4장의 PCA를 모듈의 유전자들에 적용하는 것이므로, 첫 주성분은 모듈 안의 유전자들이 함께 움직이는 공통 패턴이다. 주성분의 부호는 임의이므로, 모듈 유전자들의 평균 발현과 같은 방향이 되도록 부호를 맞춘다.
 
 ```r
-eigengene <- function(Z) {                    # Z: 유전자 x 표본, 행은 z-점수
+eigengene <- function(Z) {                    # Z: genes x samples, rows z-scored
   pc <- prcomp(t(Z))$x[, 1]
-  if (cor(pc, colMeans(Z)) < 0) pc <- -pc     # 평균 발현과 같은 방향으로 부호 맞춤
+  if (cor(pc, colMeans(Z)) < 0) pc <- -pc     # align sign with mean expression
   pc
 }
 mods <- setdiff(sort(unique(mod_tom)), 0)
@@ -856,11 +856,11 @@ others <- function(m) sample(genes[module == "none"], m)
 sets <- list(P1 = c(genes[module == "A"][1:25], others(25)),
              P2 = c(genes[module == "B"][1:20], others(30)),
              P3 = others(50))
-universe <- rownames(Ef)                      # 네트워크 분석에 들어간 유전자
+universe <- rownames(Ef)                      # genes that entered the network analysis
 ora <- expand.grid(module = mods, set = names(sets), stringsAsFactors = FALSE)
 ora$p <- mapply(function(m, s) {
   sel <- universe[mod_tom == m]
-  ann <- intersect(sets[[s]], universe)       # 배경 집합 안의 집합 유전자
+  ann <- intersect(sets[[s]], universe)       # annotated genes inside the universe
   x <- length(intersect(sel, ann))
   phyper(x - 1, length(ann), length(universe) - length(ann), length(sel),
          lower.tail = FALSE)

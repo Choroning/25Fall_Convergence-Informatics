@@ -334,7 +334,7 @@ flowchart LR
 - **테스트 오차(test error)**: **U자형**이다. 처음에는 모델이 실제 패턴을 포착하면서 감소하고, 이후 모델이 노이즈를 적합하기 시작하면서 증가한다.
 
 ```text
- 오차
+ Error
   ^
   |  o
   |  *  o                                o
@@ -345,11 +345,11 @@ flowchart LR
   |                 *  *
   |                       *  *  *
   |                                *  *  *
-  +-----------------------------------------> 모델 복잡도
+  +-----------------------------------------> Model complexity
                        ^
-     과소적합     최적 복잡도      과적합
+     Underfitting   Optimal        Overfitting
 
-  * 훈련 오차    o 테스트 오차
+  * Training error    o Test error
 ```
 
 *그림 3. 모델 복잡도에 따른 훈련 오차와 테스트 오차*
@@ -482,12 +482,12 @@ $$CV_{(n)} = \frac{1}{n} \sum_{i=1}^{n} \left( \frac{Y_i - \hat{Y}_i}{1 - h_i} \
 - K개의 추정치를 평균하여 최종 검증 오차율을 얻는다.
 
 ```text
-          겹 1     겹 2     겹 3     겹 4     겹 5
-1회차     [검증]   [훈련]   [훈련]   [훈련]   [훈련]   ->  MSE_1
-2회차     [훈련]   [검증]   [훈련]   [훈련]   [훈련]   ->  MSE_2
-3회차     [훈련]   [훈련]   [검증]   [훈련]   [훈련]   ->  MSE_3
-4회차     [훈련]   [훈련]   [훈련]   [검증]   [훈련]   ->  MSE_4
-5회차     [훈련]   [훈련]   [훈련]   [훈련]   [검증]   ->  MSE_5
+          Fold 1   Fold 2   Fold 3   Fold 4   Fold 5
+Round 1   [ Val ]  [Train]  [Train]  [Train]  [Train]  ->  MSE_1
+Round 2   [Train]  [ Val ]  [Train]  [Train]  [Train]  ->  MSE_2
+Round 3   [Train]  [Train]  [ Val ]  [Train]  [Train]  ->  MSE_3
+Round 4   [Train]  [Train]  [Train]  [ Val ]  [Train]  ->  MSE_4
+Round 5   [Train]  [Train]  [Train]  [Train]  [ Val ]  ->  MSE_5
 ```
 
 *그림 5. 5-겹 교차 검증에서 회차별 검증 겹의 배치*
